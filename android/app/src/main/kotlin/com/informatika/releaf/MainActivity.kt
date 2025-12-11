@@ -1,4 +1,4 @@
-package com.example.releaf02
+package com.informatika.releaf
 
 import io.flutter.embedding.android.FlutterActivity
 

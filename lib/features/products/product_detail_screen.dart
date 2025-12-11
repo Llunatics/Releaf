@@ -34,134 +34,90 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             expandedHeight: 350,
             pinned: true,
             backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.9),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 8,
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_rounded,
-                    color: AppColors.textPrimaryLight,
-                  ),
+            leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 18,
+                  color: isDark ? Colors.white : AppColors.textPrimaryLight,
                 ),
               ),
             ),
             actions: [
-              // Edit button (only if user owns this book)
+              // Edit & Delete for owner - combined in popup menu
               if (widget.book.sellerId == appState.currentUser?.id)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
+                PopupMenuButton<String>(
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      Icons.more_vert_rounded,
+                      size: 18,
+                      color: isDark ? Colors.white : AppColors.textPrimaryLight,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  onSelected: (value) {
+                    if (value == 'edit') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AddBookScreen(bookToEdit: widget.book),
                         ),
                       );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.edit_rounded,
-                        color: AppColors.primaryBlue,
-                      ),
-                    ),
-                  ),
-                ),
-              // Delete button (only if user owns this book)
-              if (widget.book.sellerId == appState.currentUser?.id)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () => _showDeleteDialog(context, appState),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.delete_rounded,
-                        color: AppColors.error,
-                      ),
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () => appState.toggleWishlist(widget.book),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      isWishlisted ? Icons.favorite : Icons.favorite_border,
-                      color: isWishlisted ? AppColors.error : AppColors.textPrimaryLight,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    // Share functionality
+                    } else if (value == 'delete') {
+                      _showDeleteDialog(context, appState);
+                    }
                   },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 8,
-                        ),
-                      ],
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit_rounded, size: 20, color: AppColors.primaryBlue),
+                          const SizedBox(width: 12),
+                          Text(appState.tr('edit_profile').replaceAll('Profil', 'Buku').replaceAll('Profile', 'Book')),
+                        ],
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.share_rounded,
-                      color: AppColors.textPrimaryLight,
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete_rounded, size: 20, color: AppColors.error),
+                          const SizedBox(width: 12),
+                          Text(appState.tr('delete'), style: TextStyle(color: AppColors.error)),
+                        ],
+                      ),
                     ),
+                  ],
+                ),
+              // Wishlist button - simplified
+              IconButton(
+                onPressed: () => appState.toggleWishlist(widget.book),
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.7),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    isWishlisted ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+                    size: 18,
+                    color: isWishlisted ? AppColors.error : (isDark ? Colors.white : AppColors.textPrimaryLight),
                   ),
                 ),
               ),
+              const SizedBox(width: 4),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(

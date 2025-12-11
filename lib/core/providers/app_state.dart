@@ -75,7 +75,8 @@ class AppState extends ChangeNotifier {
     
     // Load dummy data immediately for instant display
     _books = DummyData.books;
-    _transactions = DummyData.transactions;
+    // Don't load dummy transactions - only load user's own transactions from Supabase
+    _transactions = [];
     
     // Then try to load from Supabase in background
     _loadFromSupabase();
@@ -106,7 +107,7 @@ class AppState extends ChangeNotifier {
     _userProfile = null;
     _wishlist = [];
     _cart = [];
-    _transactions = DummyData.transactions;
+    _transactions = []; // Clear transactions - don't show other user's orders
     notifyListeners();
   }
 

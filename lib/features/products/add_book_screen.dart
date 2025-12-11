@@ -27,6 +27,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   late TextEditingController _publisherController;
   late TextEditingController _yearController;
   late TextEditingController _pagesController;
+  late TextEditingController _imageUrlController;
 
   String _selectedCategory = 'Fiction';
   BookCondition _selectedCondition = BookCondition.good;
@@ -47,6 +48,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _publisherController = TextEditingController(text: widget.bookToEdit?.publisher);
     _yearController = TextEditingController(text: widget.bookToEdit?.year.toString() ?? DateTime.now().year.toString());
     _pagesController = TextEditingController(text: widget.bookToEdit?.pages.toString());
+    _imageUrlController = TextEditingController(text: widget.bookToEdit?.imageUrl);
 
     if (widget.bookToEdit != null) {
       _selectedCategory = widget.bookToEdit!.category;
@@ -67,6 +69,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     _publisherController.dispose();
     _yearController.dispose();
     _pagesController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -95,12 +98,10 @@ class _AddBookScreenState extends State<AddBookScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Picker (Placeholder)
+              // Image Cover Section
               Center(
                 child: GestureDetector(
-                  onTap: () {
-                    // Image picker functionality
-                  },
+                  onTap: () => _showImageOptions(context, isDark),
                   child: Container(
                     width: 150,
                     height: 200,
@@ -120,23 +121,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_photo_alternate_rounded,
-                          size: 48,
-                          color: AppColors.primaryBlue.withValues(alpha: 0.5),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Add Cover',
-                          style: TextStyle(
-                            color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: _imageUrlController.text.isNotEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(14),
+                            child: Image.network(
+                              _imageUrlController.text,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) => _buildImagePlaceholder(isDark),
+                            ),
+                          )
+                        : _buildImagePlaceholder(isDark),
                   ),
                 ),
               ).animate().scale(duration: 300.ms),
@@ -507,7 +501,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
         price: double.tryParse(_priceController.text) ?? 0,
         originalPrice: double.tryParse(_originalPriceController.text) ?? double.tryParse(_priceController.text) ?? 0,
         category: _selectedCategory,
-        imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400',
+        imageUrl: _imageUrlController.text.isNotEmpty 
+            ? _imageUrlController.text 
+            : 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400',
         condition: _selectedCondition,
         isbn: _isbnController.text,
         stock: int.tryParse(_stockController.text) ?? 1,
@@ -608,6 +604,146 @@ class _AddBookScreenState extends State<AddBookScreen> {
             child: Text(appState.tr('delete'), style: const TextStyle(color: Colors.white)),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildImagePlaceholder(bool isDark) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.add_photo_alternate_rounded,
+          size: 48,
+          color: AppColors.primaryBlue.withValues(alpha: 0.5),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Add Cover',
+          style: TextStyle(
+            color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showImageOptions(BuildContext context, bool isDark) {
+    final textPrimary = isDark ? Colors.white : const Color(0xFF1E293B);
+    final cardColor = isDark ? const Color(0xFF161B22) : Colors.white;
+    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: cardColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: borderColor,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Add Book Cover',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: textPrimary,
+              ),
+            ),
+            const SizedBox(height: 24),
+            // URL Input
+            TextField(
+              controller: _imageUrlController,
+              style: TextStyle(color: textPrimary),
+              decoration: InputDecoration(
+                labelText: 'Image URL',
+                hintText: 'Paste image URL here...',
+                prefixIcon: const Icon(Icons.link_rounded),
+                filled: true,
+                fillColor: isDark ? const Color(0xFF21262D) : const Color(0xFFF8FAFC),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {});
+              },
+            ),
+            const SizedBox(height: 16),
+            // Preview if URL is entered
+            if (_imageUrlController.text.isNotEmpty)
+              Container(
+                height: 120,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: borderColor),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(11),
+                  child: Image.network(
+                    _imageUrlController.text,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error_outline, color: AppColors.error, size: 32),
+                          const SizedBox(height: 8),
+                          Text('Invalid URL', style: TextStyle(color: AppColors.error)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  setState(() {});
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Save Cover',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }

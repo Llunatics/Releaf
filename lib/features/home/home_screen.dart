@@ -4,7 +4,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/book.dart';
-import '../../core/data/dummy_data.dart';
 import '../products/product_detail_screen.dart';
 import '../products/widgets/book_card.dart';
 import '../search/search_screen.dart';
@@ -19,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  String? _selectedCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -44,76 +42,82 @@ class _HomeScreenState extends State<HomeScreen> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          // App Bar - Clean & Modern
-          SliverAppBar(
-            expandedHeight: 70,
-            floating: true,
-            pinned: true,
-            backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-            title: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+          // App Bar - Clean Design
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+              color: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+              child: SafeArea(
+                bottom: false,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Logo & Title
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            gradient: AppColors.primaryGradient,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.eco_rounded,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Releaf',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                color: isDark ? Colors.white : const Color(0xFF1E293B),
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                            Text(
+                              appState.language == 'id' ? 'Buku Bekas Berkualitas' : 'Preloved Books',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF3B82F6).withOpacity(0.3),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.eco_rounded,
-                    color: Colors.white,
-                    size: 22,
-                  ),
+                    // Action buttons
+                    Row(
+                      children: [
+                        _buildActionButton(
+                          icon: Icons.qr_code_scanner_rounded,
+                          isDark: isDark,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ScannerScreen()),
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        _buildActionButton(
+                          icon: Icons.notifications_outlined,
+                          isDark: isDark,
+                          onTap: () {
+                            // Notification
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 14),
-                Text(
-                  'Releaf',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white : const Color(0xFF1E293B),
-                    letterSpacing: -0.3,
-                  ),
-                ),
-              ],
+              ),
             ),
-            actions: [
-              // Scanner Button
-              _buildActionButton(
-                icon: Icons.qr_code_scanner_rounded,
-                isDark: isDark,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ScannerScreen()),
-                  );
-                },
-              ),
-              const SizedBox(width: 8),
-              // Search Button
-              _buildActionButton(
-                icon: Icons.search_rounded,
-                isDark: isDark,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SearchScreen()),
-                  );
-                },
-              ),
-              const SizedBox(width: 16),
-            ],
           ),
 
           // Search Bar - Clean Design
@@ -159,52 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0),
             ),
-          ),
-
-          // Categories
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    appState.tr('categories'),
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  height: 44,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    itemCount: DummyData.categories.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return _buildCategoryChip(
-                          context, 
-                          appState.tr('all'), 
-                          _selectedCategory == null,
-                          () => setState(() => _selectedCategory = null),
-                          isDark,
-                        );
-                      }
-                      final category = DummyData.categories[index - 1];
-                      return _buildCategoryChip(
-                        context,
-                        category,
-                        _selectedCategory == category,
-                        () => setState(() => _selectedCategory = category),
-                        isDark,
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ).animate().fadeIn(duration: 400.ms, delay: 100.ms),
           ),
 
           // Featured Section
@@ -278,58 +236,6 @@ class _HomeScreenState extends State<HomeScreen> {
           icon,
           color: isDark ? Colors.white : const Color(0xFF475569),
           size: 20,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCategoryChip(
-    BuildContext context, 
-    String label, 
-    bool isSelected, 
-    VoidCallback onTap,
-    bool isDark,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            gradient: isSelected ? AppColors.primaryGradient : null,
-            color: isSelected 
-              ? null 
-              : (isDark ? AppColors.surfaceDark : Colors.white),
-            borderRadius: BorderRadius.circular(12),
-            border: isSelected 
-              ? null 
-              : Border.all(
-                  color: isDark 
-                    ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
-                    : AppColors.textTertiaryLight.withValues(alpha: 0.3),
-                ),
-            boxShadow: isSelected 
-              ? [
-                  BoxShadow(
-                    color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : null,
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isSelected 
-                ? Colors.white 
-                : (isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight),
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              fontSize: 13,
-            ),
-          ),
         ),
       ),
     );

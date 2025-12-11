@@ -3,6 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
+import '../../core/models/book.dart';
 import '../products/product_detail_screen.dart';
 
 class ScannerScreen extends StatefulWidget {
@@ -35,20 +36,53 @@ class _ScannerScreenState extends State<ScannerScreen> {
           _isScanning = false;
         });
 
-        // Search for book by ISBN
-        final book = appState.books.firstWhere(
-          (b) => b.isbn.replaceAll('-', '').contains(code.replaceAll('-', '')),
-          orElse: () => appState.books.first, // Fallback for demo
-        );
+        // Clean the scanned code - remove dashes and spaces
+        final cleanCode = code.replaceAll('-', '').replaceAll(' ', '').trim();
+        
+        // Search for book by ISBN - try multiple matching strategies
+        Book? foundBook;
+        
+        for (final book in appState.books) {
+          final cleanIsbn = book.isbn.replaceAll('-', '').replaceAll(' ', '').trim();
+          
+          // Exact match
+          if (cleanIsbn == cleanCode) {
+            foundBook = book;
+            break;
+          }
+          
+          // ISBN-13 to ISBN-10 conversion check (last 10 digits without check digit)
+          if (cleanCode.length == 13 && cleanIsbn.length == 10) {
+            if (cleanCode.substring(3, 12) == cleanIsbn.substring(0, 9)) {
+              foundBook = book;
+              break;
+            }
+          }
+          
+          // ISBN-10 to ISBN-13 check
+          if (cleanCode.length == 10 && cleanIsbn.length == 13) {
+            if (cleanIsbn.substring(3, 12) == cleanCode.substring(0, 9)) {
+              foundBook = book;
+              break;
+            }
+          }
+          
+          // Partial match - contains
+          if (cleanIsbn.contains(cleanCode) || cleanCode.contains(cleanIsbn)) {
+            foundBook = book;
+            break;
+          }
+        }
 
         // Show result
-        _showResult(context, code, book, appState);
+        _showResult(context, code, foundBook, appState);
       }
     }
   }
 
-  void _showResult(BuildContext context, String code, book, AppState appState) {
+  void _showResult(BuildContext context, String code, Book? book, AppState appState) {
     final isDark = appState.isDarkMode;
+    final bool bookFound = book != null;
     
     showModalBottomSheet(
       context: context,
@@ -75,18 +109,20 @@ class _ScannerScreenState extends State<ScannerScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.success.withValues(alpha: 0.1),
+                  color: bookFound 
+                      ? AppColors.success.withValues(alpha: 0.1)
+                      : AppColors.error.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.check_circle_rounded,
-                  color: AppColors.success,
+                child: Icon(
+                  bookFound ? Icons.check_circle_rounded : Icons.search_off_rounded,
+                  color: bookFound ? AppColors.success : AppColors.error,
                   size: 48,
                 ),
               ).animate().scale(duration: 300.ms),
               const SizedBox(height: 16),
               Text(
-                'Book Found!',
+                bookFound ? 'Book Found!' : 'Book Not Found',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -99,68 +135,94 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 ),
               ).animate().fadeIn(duration: 300.ms, delay: 150.ms),
               const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.cardDark : AppColors.backgroundLight,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          book.imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.menu_book_rounded,
-                            color: AppColors.textSecondaryLight,
+              if (bookFound)
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.cardDark : AppColors.backgroundLight,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            book.imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Icon(
+                              Icons.menu_book_rounded,
+                              color: AppColors.textSecondaryLight,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            book.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: isDark ? Colors.white : AppColors.textPrimaryLight,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              book.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: isDark ? Colors.white : AppColors.textPrimaryLight,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            book.author,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                            const SizedBox(height: 4),
+                            Text(
+                              book.author,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Rp ${_formatPrice(book.price.toInt())}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryBlue,
+                            const SizedBox(height: 8),
+                            Text(
+                              'Rp ${_formatPrice(book.price.toInt())}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryBlue,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
+                    ],
+                  ),
+                ).animate().fadeIn(duration: 300.ms, delay: 200.ms)
+              else
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.cardDark : AppColors.backgroundLight,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.menu_book_rounded,
+                        size: 48,
+                        color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'No book with this ISBN found in our catalog',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
               const SizedBox(height: 24),
               Row(
                 children: [
@@ -183,31 +245,33 @@ class _ScannerScreenState extends State<ScannerScreen> {
                       child: const Text('Scan Again'),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(book: book),
+                  if (bookFound) ...[
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailScreen(book: book),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryBlue,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBlue,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text(
+                          'View Details',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: const Text(
-                        'View Details',
-                        style: TextStyle(color: Colors.white),
-                      ),
                     ),
-                  ),
+                  ],
                 ],
               ).animate().fadeIn(duration: 300.ms, delay: 300.ms),
             ],

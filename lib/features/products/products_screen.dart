@@ -18,7 +18,7 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   String? _selectedCategory;
   String _sortBy = 'newest';
-  bool _isGridView = true;
+  bool _isGridView = false;
 
   @override
   Widget build(BuildContext context) {
