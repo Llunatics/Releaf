@@ -50,8 +50,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
             actions: [
-              // Edit & Delete for owner - combined in popup menu
-              if (widget.book.sellerId == appState.currentUser?.id)
+              // Edit & Delete for owner only - must be logged in AND be the seller
+              if (appState.isLoggedIn && 
+                  widget.book.sellerId != null && 
+                  widget.book.sellerId == appState.currentUser?.id)
                 PopupMenuButton<String>(
                   icon: Container(
                     padding: const EdgeInsets.all(8),
@@ -85,7 +87,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           Icon(Icons.edit_rounded, size: 20, color: AppColors.primaryBlue),
                           const SizedBox(width: 12),
-                          Text(appState.tr('edit_profile').replaceAll('Profil', 'Buku').replaceAll('Profile', 'Book')),
+                          Text(appState.tr('edit_book')),
                         ],
                       ),
                     ),
