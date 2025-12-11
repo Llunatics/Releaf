@@ -9,8 +9,8 @@ class BookCard extends StatelessWidget {
   final Book book;
   final VoidCallback? onTap;
   final bool showDiscount;
-  final double? width; // Optional fixed width for horizontal scrolling
-  final double? height; // Optional fixed height for horizontal scrolling
+  final double? width;
+  final double? height;
 
   const BookCard({
     super.key,
@@ -27,36 +27,157 @@ class BookCard extends StatelessWidget {
     final isDark = appState.isDarkMode;
     final isWishlisted = appState.isInWishlist(book.id);
 
-    // If width/height provided, use SizedBox wrapper (for horizontal scroll)
-    // Otherwise, let parent control size (for grid)
     Widget card = Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: isDark ? AppColors.cardDark : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: isDark 
-              ? Colors.black.withOpacity(0.2)
-              : AppColors.shadowLight,
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark 
+            ? Colors.white.withOpacity(0.1)
+            : Colors.grey.withOpacity(0.15),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image Container - Takes 60% of the space
+          // Image Container with wishlist heart
           Expanded(
             flex: 6,
-            child: _buildImageSection(isDark, isWishlisted, appState),
+            child: Stack(
+              children: [
+                // Background + Book Cover
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isDark 
+                      ? Colors.grey[850] 
+                      : const Color(0xFFF5F5F5),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: CachedNetworkImage(
+                          imageUrl: book.imageUrl,
+                          fit: BoxFit.contain,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                            highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+                            child: Container(
+                              width: 80,
+                              height: 120,
+                              color: Colors.white,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.menu_book_rounded,
+                            size: 48,
+                            color: isDark ? Colors.grey[600] : Colors.grey[400],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // Wishlist Heart - top right
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (appState.isLoggedIn) {
+                        appState.toggleWishlist(book);
+                      }
+                    },
+                    child: Icon(
+                      isWishlisted ? Icons.favorite : Icons.favorite_border,
+                      size: 22,
+                      color: const Color(0xFFDC2626), // Red heart
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          // Content Section - Takes 40% of the space
+          // Content Section
           Expanded(
             flex: 4,
-            child: _buildContentSection(isDark),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Author
+                  Text(
+                    book.author,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  // Title
+                  Text(
+                    book.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : const Color(0xFF1F2937),
+                      height: 1.2,
+                    ),
+                  ),
+                  const Spacer(),
+                  // Price Section
+                  Text(
+                    'Rp${_formatPrice(book.price.toInt())}',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : const Color(0xFF1F2937),
+                    ),
+                  ),
+                  if (book.hasDiscount) ...[
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFDC2626).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            '${book.discountPercentage.toInt()}%',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFFDC2626),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'Rp${_formatPrice(book.originalPrice.toInt())}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: isDark ? Colors.grey[500] : Colors.grey[400],
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -66,190 +187,6 @@ class BookCard extends StatelessWidget {
       onTap: onTap,
       child: card,
     );
-  }
-
-  Widget _buildImageSection(bool isDark, bool isWishlisted, AppState appState) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        // Book Cover Image
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            color: isDark 
-              ? AppColors.surfaceDark 
-              : AppColors.primaryBlue.withOpacity(0.05),
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: CachedNetworkImage(
-              imageUrl: book.imageUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Shimmer.fromColors(
-                baseColor: isDark ? AppColors.surfaceDark : Colors.grey[300]!,
-                highlightColor: isDark ? AppColors.cardDark : Colors.grey[100]!,
-                child: Container(color: Colors.white),
-              ),
-              errorWidget: (context, url, error) => Center(
-                child: Icon(
-                  Icons.menu_book_rounded,
-                  size: 40,
-                  color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
-                ),
-              ),
-            ),
-          ),
-        ),
-        // Wishlist Button
-        Positioned(
-          top: 8,
-          right: 8,
-          child: GestureDetector(
-            onTap: () => appState.toggleWishlist(book),
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                isWishlisted ? Icons.favorite : Icons.favorite_border,
-                size: 16,
-                color: isWishlisted ? AppColors.error : AppColors.textSecondaryLight,
-              ),
-            ),
-          ),
-        ),
-        // Discount Badge
-        if (showDiscount && book.hasDiscount)
-          Positioned(
-            top: 8,
-            left: 8,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-              decoration: BoxDecoration(
-                color: AppColors.error,
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Text(
-                '-${book.discountPercentage.toInt()}%',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        // Condition Badge
-        Positioned(
-          bottom: 8,
-          left: 8,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-            decoration: BoxDecoration(
-              color: _getConditionColor(book.condition),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              book.condition.label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 9,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildContentSection(bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Title
-          Text(
-            book.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white : AppColors.textPrimaryLight,
-              height: 1.2,
-            ),
-          ),
-          const SizedBox(height: 2),
-          // Author
-          Text(
-            book.author,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 10,
-              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
-            ),
-          ),
-          const Spacer(),
-          // Rating Row
-          Row(
-            children: [
-              Icon(
-                Icons.star_rounded,
-                size: 14,
-                color: AppColors.warning,
-              ),
-              const SizedBox(width: 2),
-              Text(
-                book.rating.toStringAsFixed(1),
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : AppColors.textPrimaryLight,
-                ),
-              ),
-              const Spacer(),
-              if (book.hasDiscount)
-                Text(
-                  'Rp ${_formatPrice(book.originalPrice.toInt())}',
-                  style: TextStyle(
-                    fontSize: 9,
-                    color: isDark ? AppColors.textTertiaryDark : AppColors.textTertiaryLight,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 2),
-          // Price
-          Text(
-            'Rp ${_formatPrice(book.price.toInt())}',
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryBlue,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Color _getConditionColor(BookCondition condition) {
-    switch (condition) {
-      case BookCondition.likeNew:
-        return AppColors.success;
-      case BookCondition.veryGood:
-        return AppColors.info;
-      case BookCondition.good:
-        return AppColors.warning;
-      case BookCondition.acceptable:
-        return AppColors.textSecondaryLight;
-    }
   }
 
   String _formatPrice(int price) {

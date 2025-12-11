@@ -171,12 +171,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget _buildGridView(List books, bool isDark) {
     return AnimationLimiter(
       child: GridView.builder(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.58, // Good for book cards (taller than wide)
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+          childAspectRatio: 0.62,
+          crossAxisSpacing: 14,
+          mainAxisSpacing: 14,
         ),
         itemCount: books.length,
         itemBuilder: (context, index) {
