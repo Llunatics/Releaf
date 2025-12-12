@@ -15,11 +15,14 @@ class ProfileScreen extends StatelessWidget {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
 
-    final backgroundColor = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
+    final backgroundColor =
+        isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
     final cardColor = isDark ? const Color(0xFF161B22) : Colors.white;
     final textPrimary = isDark ? Colors.white : const Color(0xFF1E293B);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
-    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
+    final borderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -46,21 +49,22 @@ class ProfileScreen extends StatelessWidget {
                         width: 88,
                         height: 88,
                         decoration: BoxDecoration(
-                          color: isDark 
+                          color: isDark
                               ? const Color(0xFF1E3A5F).withValues(alpha: 0.3)
                               : const Color(0xFF3B82F6).withValues(alpha: 0.08),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: isDark 
+                            color: isDark
                                 ? const Color(0xFF3B82F6).withValues(alpha: 0.3)
-                                : const Color(0xFF3B82F6).withValues(alpha: 0.2),
+                                : const Color(0xFF3B82F6)
+                                    .withValues(alpha: 0.2),
                             width: 2,
                           ),
                         ),
                         child: Icon(
                           Icons.person_rounded,
                           size: 44,
-                          color: isDark 
+                          color: isDark
                               ? const Color(0xFF60A5FA)
                               : const Color(0xFF3B82F6),
                         ),
@@ -68,11 +72,14 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       // Name
                       Text(
-                        appState.isLoggedIn 
-                            ? (appState.userProfile?['full_name'] ?? appState.currentUser?.email?.split('@').first ?? 'User')
+                        appState.isLoggedIn
+                            ? (appState.userProfile?['full_name'] ??
+                                appState.currentUser?.email?.split('@').first ??
+                                'User')
                             : appState.tr('guest_user'),
                         style: TextStyle(
-                          color: isDark ? Colors.white : const Color(0xFF1E293B),
+                          color:
+                              isDark ? Colors.white : const Color(0xFF1E293B),
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                         ),
@@ -80,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 4),
                       // Email
                       Text(
-                        appState.isLoggedIn 
+                        appState.isLoggedIn
                             ? (appState.currentUser?.email ?? '-')
                             : 'guest@releaf.com',
                         style: TextStyle(
@@ -116,7 +123,8 @@ class ProfileScreen extends StatelessWidget {
                             textPrimary,
                             textSecondary,
                             borderColor,
-                            onTap: () => _showWishlistSheet(context, appState, isDark),
+                            onTap: () =>
+                                _showWishlistSheet(context, appState, isDark),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -130,7 +138,8 @@ class ProfileScreen extends StatelessWidget {
                             textPrimary,
                             textSecondary,
                             borderColor,
-                            onTap: () => _showOrdersSheet(context, appState, isDark),
+                            onTap: () =>
+                                _showOrdersSheet(context, appState, isDark),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -144,24 +153,26 @@ class ProfileScreen extends StatelessWidget {
                             textPrimary,
                             textSecondary,
                             borderColor,
-                            onTap: () => _showMyBooksSheet(context, appState, isDark),
+                            onTap: () =>
+                                _showMyBooksSheet(context, appState, isDark),
                           ),
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 28),
                   ],
 
                   // Preferences Section
                   _buildSectionTitle(appState.tr('preferences'), textPrimary),
                   const SizedBox(height: 14),
-                  
+
                   _buildSettingsCard([
                     _buildToggleItem(
                       icon: Icons.dark_mode_rounded,
                       title: appState.tr('dark_mode'),
-                      subtitle: appState.language == 'id' ? 'Ganti tema terang/gelap' : 'Switch between light and dark theme',
+                      subtitle: appState.language == 'id'
+                          ? 'Ganti tema terang/gelap'
+                          : 'Switch between light and dark theme',
                       value: isDark,
                       onChanged: (value) => appState.toggleTheme(),
                       cardColor: cardColor,
@@ -172,21 +183,27 @@ class ProfileScreen extends StatelessWidget {
                     _buildNavigationItem(
                       icon: Icons.notifications_outlined,
                       title: appState.tr('notifications'),
-                      subtitle: appState.language == 'id' ? 'Kelola pengaturan notifikasi' : 'Manage notification settings',
+                      subtitle: appState.language == 'id'
+                          ? 'Kelola pengaturan notifikasi'
+                          : 'Manage notification settings',
                       cardColor: cardColor,
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
-                      onTap: () => _showNotificationSettings(context, isDark, textPrimary, textSecondary, cardColor, borderColor),
+                      onTap: () => _showNotificationSettings(context, isDark,
+                          textPrimary, textSecondary, cardColor, borderColor),
                     ),
                     _buildDivider(borderColor),
                     _buildNavigationItem(
                       icon: Icons.language_rounded,
                       title: appState.tr('language'),
-                      subtitle: appState.language == 'id' ? 'Bahasa Indonesia' : 'English',
+                      subtitle: appState.language == 'id'
+                          ? 'Bahasa Indonesia'
+                          : 'English',
                       cardColor: cardColor,
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
-                      onTap: () => _showLanguageOptions(context, isDark, textPrimary, textSecondary, cardColor),
+                      onTap: () => _showLanguageOptions(context, isDark,
+                          textPrimary, textSecondary, cardColor),
                     ),
                   ], cardColor, borderColor),
 
@@ -196,75 +213,104 @@ class ProfileScreen extends StatelessWidget {
                   if (appState.isLoggedIn) ...[
                     _buildSectionTitle(appState.tr('account'), textPrimary),
                     const SizedBox(height: 14),
-                    
                     _buildSettingsCard([
                       _buildNavigationItem(
                         icon: Icons.person_outline_rounded,
                         title: appState.tr('edit_profile'),
-                        subtitle: appState.language == 'id' ? 'Ubah info pribadi' : 'Update your personal info',
+                        subtitle: appState.language == 'id'
+                            ? 'Ubah info pribadi'
+                            : 'Update your personal info',
                         cardColor: cardColor,
                         textPrimary: textPrimary,
                         textSecondary: textSecondary,
-                        onTap: () => _showEditProfile(context, isDark, textPrimary, textSecondary, cardColor, borderColor, appState),
+                        onTap: () => _showEditProfile(
+                            context,
+                            isDark,
+                            textPrimary,
+                            textSecondary,
+                            cardColor,
+                            borderColor,
+                            appState),
                       ),
                       _buildDivider(borderColor),
                       _buildNavigationItem(
                         icon: Icons.location_on_outlined,
-                        title: appState.language == 'id' ? 'Alamat' : 'Addresses',
-                        subtitle: appState.language == 'id' ? 'Kelola alamat pengiriman' : 'Manage shipping addresses',
+                        title:
+                            appState.language == 'id' ? 'Alamat' : 'Addresses',
+                        subtitle: appState.language == 'id'
+                            ? 'Kelola alamat pengiriman'
+                            : 'Manage shipping addresses',
                         cardColor: cardColor,
                         textPrimary: textPrimary,
                         textSecondary: textSecondary,
-                        onTap: () => _showAddresses(context, isDark, textPrimary, textSecondary, cardColor, borderColor),
+                        onTap: () => _showAddresses(context, isDark,
+                            textPrimary, textSecondary, cardColor, borderColor),
                       ),
                       _buildDivider(borderColor),
                       _buildNavigationItem(
                         icon: Icons.payment_rounded,
-                        title: appState.language == 'id' ? 'Metode Pembayaran' : 'Payment Methods',
-                        subtitle: appState.language == 'id' ? 'Kelola opsi pembayaran' : 'Manage payment options',
+                        title: appState.language == 'id'
+                            ? 'Metode Pembayaran'
+                            : 'Payment Methods',
+                        subtitle: appState.language == 'id'
+                            ? 'Kelola opsi pembayaran'
+                            : 'Manage payment options',
                         cardColor: cardColor,
                         textPrimary: textPrimary,
                         textSecondary: textSecondary,
-                        onTap: () => _showPaymentMethods(context, isDark, textPrimary, textSecondary, cardColor),
+                        onTap: () => _showPaymentMethods(context, isDark,
+                            textPrimary, textSecondary, cardColor),
                       ),
                     ], cardColor, borderColor),
-
                     const SizedBox(height: 24),
                   ],
 
                   // Support Section
-                  _buildSectionTitle(appState.language == 'id' ? 'Bantuan' : 'Support', textPrimary),
+                  _buildSectionTitle(
+                      appState.language == 'id' ? 'Bantuan' : 'Support',
+                      textPrimary),
                   const SizedBox(height: 14),
-                  
+
                   _buildSettingsCard([
                     _buildNavigationItem(
                       icon: Icons.help_outline_rounded,
                       title: appState.tr('help_center'),
-                      subtitle: appState.language == 'id' ? 'Dapatkan bantuan & dukungan' : 'Get help and support',
+                      subtitle: appState.language == 'id'
+                          ? 'Dapatkan bantuan & dukungan'
+                          : 'Get help and support',
                       cardColor: cardColor,
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
-                      onTap: () => _showHelpCenter(context, isDark, textPrimary, textSecondary, cardColor),
+                      onTap: () => _showHelpCenter(context, isDark, textPrimary,
+                          textSecondary, cardColor),
                     ),
                     _buildDivider(borderColor),
                     _buildNavigationItem(
                       icon: Icons.policy_outlined,
-                      title: appState.language == 'id' ? 'Kebijakan Privasi' : 'Privacy Policy',
-                      subtitle: appState.language == 'id' ? 'Baca kebijakan privasi kami' : 'Read our privacy policy',
+                      title: appState.language == 'id'
+                          ? 'Kebijakan Privasi'
+                          : 'Privacy Policy',
+                      subtitle: appState.language == 'id'
+                          ? 'Baca kebijakan privasi kami'
+                          : 'Read our privacy policy',
                       cardColor: cardColor,
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
-                      onTap: () => _showPrivacyPolicy(context, isDark, textPrimary, cardColor),
+                      onTap: () => _showPrivacyPolicy(
+                          context, isDark, textPrimary, cardColor),
                     ),
                     _buildDivider(borderColor),
                     _buildNavigationItem(
                       icon: Icons.info_outline_rounded,
-                      title: appState.language == 'id' ? 'Tentang Releaf' : 'About Releaf',
+                      title: appState.language == 'id'
+                          ? 'Tentang Releaf'
+                          : 'About Releaf',
                       subtitle: '${appState.tr('version')} 1.0.0',
                       cardColor: cardColor,
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
-                      onTap: () => _showAboutDialog(context, isDark, textPrimary, textSecondary, cardColor),
+                      onTap: () => _showAboutDialog(context, isDark,
+                          textPrimary, textSecondary, cardColor),
                     ),
                   ], cardColor, borderColor),
 
@@ -274,48 +320,57 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     height: 54,
-                    child: appState.isLoggedIn 
-                      ? OutlinedButton.icon(
-                          onPressed: () => _showLogoutDialog(context, isDark, textPrimary, textSecondary, cardColor, appState),
-                          icon: const Icon(Icons.logout_rounded, color: Color(0xFFEF4444)),
-                          label: Text(
-                            appState.tr('logout'),
-                            style: const TextStyle(
-                              color: Color(0xFFEF4444),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                    child: appState.isLoggedIn
+                        ? OutlinedButton.icon(
+                            onPressed: () => _showLogoutDialog(
+                                context,
+                                isDark,
+                                textPrimary,
+                                textSecondary,
+                                cardColor,
+                                appState),
+                            icon: const Icon(Icons.logout_rounded,
+                                color: Color(0xFFEF4444)),
+                            label: Text(
+                              appState.tr('logout'),
+                              style: const TextStyle(
+                                color: Color(0xFFEF4444),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                  color: Color(0xFFEF4444), width: 1.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          )
+                        : ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                PageTransitions.fade(const LoginScreen()),
+                              );
+                            },
+                            icon: const Icon(Icons.login_rounded,
+                                color: Colors.white),
+                            label: Text(
+                              appState.language == 'id' ? 'Masuk' : 'Sign In',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF3B82F6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                             ),
                           ),
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xFFEF4444), width: 1.5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                          ),
-                        )
-                      : ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              PageTransitions.fade(const LoginScreen()),
-                            );
-                          },
-                          icon: const Icon(Icons.login_rounded, color: Colors.white),
-                          label: Text(
-                            appState.language == 'id' ? 'Masuk' : 'Sign In',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3B82F6),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                          ),
-                        ),
                   ),
 
                   const SizedBox(height: 100),
@@ -353,7 +408,7 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 22),
@@ -392,7 +447,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsCard(List<Widget> children, Color cardColor, Color borderColor) {
+  Widget _buildSettingsCard(
+      List<Widget> children, Color cardColor, Color borderColor) {
     return Container(
       decoration: BoxDecoration(
         color: cardColor,
@@ -424,7 +480,7 @@ class ProfileScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFF3B82F6).withOpacity(0.1),
+              color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: const Color(0xFF3B82F6), size: 22),
@@ -456,8 +512,8 @@ class ProfileScreen extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xFF3B82F6),
-            activeTrackColor: const Color(0xFF3B82F6).withOpacity(0.3),
+            activeThumbColor: const Color(0xFF3B82F6),
+            activeTrackColor: const Color(0xFF3B82F6).withValues(alpha: 0.3),
           ),
         ],
       ),
@@ -483,7 +539,7 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6).withOpacity(0.1),
+                color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: const Color(0xFF3B82F6), size: 22),
@@ -524,7 +580,13 @@ class ProfileScreen extends StatelessWidget {
   }
 
   // Dialog Methods
-  void _showNotificationSettings(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor, Color borderColor) {
+  void _showNotificationSettings(
+      BuildContext context,
+      bool isDark,
+      Color textPrimary,
+      Color textSecondary,
+      Color cardColor,
+      Color borderColor) {
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -537,7 +599,7 @@ class ProfileScreen extends StatelessWidget {
           bool emailNotif = true;
           bool orderUpdates = true;
           bool promotions = false;
-          
+
           return Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
@@ -564,10 +626,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                _buildNotificationToggle('Push Notifications', pushNotif, (v) => setState(() => pushNotif = v), textPrimary),
-                _buildNotificationToggle('Email Notifications', emailNotif, (v) => setState(() => emailNotif = v), textPrimary),
-                _buildNotificationToggle('Order Updates', orderUpdates, (v) => setState(() => orderUpdates = v), textPrimary),
-                _buildNotificationToggle('Promotions', promotions, (v) => setState(() => promotions = v), textPrimary),
+                _buildNotificationToggle('Push Notifications', pushNotif,
+                    (v) => setState(() => pushNotif = v), textPrimary),
+                _buildNotificationToggle('Email Notifications', emailNotif,
+                    (v) => setState(() => emailNotif = v), textPrimary),
+                _buildNotificationToggle('Order Updates', orderUpdates,
+                    (v) => setState(() => orderUpdates = v), textPrimary),
+                _buildNotificationToggle('Promotions', promotions,
+                    (v) => setState(() => promotions = v), textPrimary),
                 const SizedBox(height: 16),
               ],
             ),
@@ -577,22 +643,25 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationToggle(String title, bool value, Function(bool) onChanged, Color textColor) {
+  Widget _buildNotificationToggle(
+      String title, bool value, Function(bool) onChanged, Color textColor) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.w500)),
+      title: Text(title,
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w500)),
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeColor: const Color(0xFF3B82F6),
+        activeThumbColor: const Color(0xFF3B82F6),
       ),
     );
   }
 
-  void _showLanguageOptions(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor) {
+  void _showLanguageOptions(BuildContext context, bool isDark,
+      Color textPrimary, Color textSecondary, Color cardColor) {
     final appState = AppStateProvider.of(context);
     final currentLang = appState.language;
-    
+
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -611,32 +680,35 @@ class ProfileScreen extends StatelessWidget {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: textSecondary.withOpacity(0.3),
+                    color: textSecondary.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
               ),
               const SizedBox(height: 24),
               Text(
-                appState.tr('select_language'), 
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary),
+                appState.tr('select_language'),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary),
               ),
               const SizedBox(height: 20),
               _buildLanguageOption(
-                'English', 
+                'English',
                 '🇺🇸',
-                currentLang == 'en', 
-                textPrimary, 
+                currentLang == 'en',
+                textPrimary,
                 () {
                   appState.setLanguage('en');
                   Navigator.pop(ctx);
                 },
               ),
               _buildLanguageOption(
-                'Bahasa Indonesia', 
+                'Bahasa Indonesia',
                 '🇮🇩',
-                currentLang == 'id', 
-                textPrimary, 
+                currentLang == 'id',
+                textPrimary,
                 () {
                   appState.setLanguage('id');
                   Navigator.pop(ctx);
@@ -650,26 +722,39 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLanguageOption(String language, String flag, bool isSelected, Color textColor, VoidCallback onTap) {
+  Widget _buildLanguageOption(String language, String flag, bool isSelected,
+      Color textColor, VoidCallback onTap) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Text(flag, style: const TextStyle(fontSize: 24)),
-      title: Text(language, style: TextStyle(color: textColor, fontWeight: FontWeight.w500)),
-      trailing: isSelected 
+      title: Text(language,
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w500)),
+      trailing: isSelected
           ? const Icon(Icons.check_circle_rounded, color: Color(0xFF3B82F6))
-          : Icon(Icons.circle_outlined, color: textColor.withOpacity(0.3)),
+          : Icon(Icons.circle_outlined, color: textColor.withValues(alpha: 0.3)),
       onTap: onTap,
     );
   }
 
-  void _showEditProfile(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor, Color borderColor, AppState appState) {
-    final inputFillColor = isDark ? const Color(0xFF1E2430) : const Color(0xFFF8FAFC);
-    final userName = appState.isLoggedIn 
-        ? (appState.userProfile?['full_name'] ?? appState.currentUser?.email?.split('@').first ?? '')
+  void _showEditProfile(
+      BuildContext context,
+      bool isDark,
+      Color textPrimary,
+      Color textSecondary,
+      Color cardColor,
+      Color borderColor,
+      AppState appState) {
+    final inputFillColor =
+        isDark ? const Color(0xFF1E2430) : const Color(0xFFF8FAFC);
+    final userName = appState.isLoggedIn
+        ? (appState.userProfile?['full_name'] ??
+            appState.currentUser?.email?.split('@').first ??
+            '')
         : '';
-    final userEmail = appState.isLoggedIn ? (appState.currentUser?.email ?? '') : '';
+    final userEmail =
+        appState.isLoggedIn ? (appState.currentUser?.email ?? '') : '';
     final userPhone = appState.userProfile?['phone'] ?? '';
-    
+
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -679,7 +764,9 @@ class ProfileScreen extends StatelessWidget {
       ),
       builder: (context) => Padding(
         padding: EdgeInsets.only(
-          left: 24, right: 24, top: 24,
+          left: 24,
+          right: 24,
+          top: 24,
           bottom: MediaQuery.of(context).viewInsets.bottom + 24,
         ),
         child: Column(
@@ -688,18 +775,37 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                width: 40, height: 4,
-                decoration: BoxDecoration(color: borderColor, borderRadius: BorderRadius.circular(2)),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                    color: borderColor, borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 24),
-            Text(appState.tr('edit_profile'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text(appState.tr('edit_profile'),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary)),
             const SizedBox(height: 24),
-            _buildEditField(appState.language == 'id' ? 'Nama Lengkap' : 'Full Name', userName, inputFillColor, borderColor, textPrimary, textSecondary),
+            _buildEditField(
+                appState.language == 'id' ? 'Nama Lengkap' : 'Full Name',
+                userName,
+                inputFillColor,
+                borderColor,
+                textPrimary,
+                textSecondary),
             const SizedBox(height: 16),
-            _buildEditField('Email', userEmail, inputFillColor, borderColor, textPrimary, textSecondary),
+            _buildEditField('Email', userEmail, inputFillColor, borderColor,
+                textPrimary, textSecondary),
             const SizedBox(height: 16),
-            _buildEditField(appState.language == 'id' ? 'Telepon' : 'Phone', userPhone, inputFillColor, borderColor, textPrimary, textSecondary),
+            _buildEditField(
+                appState.language == 'id' ? 'Telepon' : 'Phone',
+                userPhone,
+                inputFillColor,
+                borderColor,
+                textPrimary,
+                textSecondary),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
@@ -708,10 +814,13 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3B82F6),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   elevation: 0,
                 ),
-                child: Text(appState.tr('save_changes'), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                child: Text(appState.tr('save_changes'),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600)),
               ),
             ),
             const SizedBox(height: 16),
@@ -721,7 +830,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEditField(String label, String initialValue, Color fillColor, Color borderColor, Color textPrimary, Color textSecondary) {
+  Widget _buildEditField(String label, String initialValue, Color fillColor,
+      Color borderColor, Color textPrimary, Color textSecondary) {
     return TextField(
       controller: TextEditingController(text: initialValue),
       style: TextStyle(color: textPrimary),
@@ -730,14 +840,21 @@ class ProfileScreen extends StatelessWidget {
         labelStyle: TextStyle(color: textSecondary),
         filled: true,
         fillColor: fillColor,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: borderColor)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: borderColor)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2)),
       ),
     );
   }
 
-  void _showAddresses(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor, Color borderColor) {
+  void _showAddresses(BuildContext context, bool isDark, Color textPrimary,
+      Color textSecondary, Color cardColor, Color borderColor) {
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -751,14 +868,25 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Container(width: 40, height: 4, decoration: BoxDecoration(color: borderColor, borderRadius: BorderRadius.circular(2))),
+              child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: borderColor,
+                      borderRadius: BorderRadius.circular(2))),
             ),
             const SizedBox(height: 24),
-            Text('Shipping Addresses', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Shipping Addresses',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary)),
             const SizedBox(height: 24),
-            _buildAddressCard('Home', 'Jl. Sudirman No. 123, Jakarta', true, cardColor, textPrimary, textSecondary, borderColor),
+            _buildAddressCard('Home', 'Jl. Sudirman No. 123, Jakarta', true,
+                cardColor, textPrimary, textSecondary, borderColor),
             const SizedBox(height: 12),
-            _buildAddressCard('Office', 'Jl. Gatot Subroto No. 456, Jakarta', false, cardColor, textPrimary, textSecondary, borderColor),
+            _buildAddressCard('Office', 'Jl. Gatot Subroto No. 456, Jakarta',
+                false, cardColor, textPrimary, textSecondary, borderColor),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
@@ -766,10 +894,13 @@ class ProfileScreen extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.add_rounded, color: Color(0xFF3B82F6)),
-                label: const Text('Add New Address', style: TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
+                label: const Text('Add New Address',
+                    style: TextStyle(
+                        color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Color(0xFF3B82F6)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                 ),
               ),
             ),
@@ -780,17 +911,27 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAddressCard(String label, String address, bool isDefault, Color cardColor, Color textPrimary, Color textSecondary, Color borderColor) {
+  Widget _buildAddressCard(
+      String label,
+      String address,
+      bool isDefault,
+      Color cardColor,
+      Color textPrimary,
+      Color textSecondary,
+      Color borderColor) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: isDefault ? const Color(0xFF3B82F6) : borderColor, width: isDefault ? 2 : 1),
+        border: Border.all(
+            color: isDefault ? const Color(0xFF3B82F6) : borderColor,
+            width: isDefault ? 2 : 1),
       ),
       child: Row(
         children: [
-          Icon(Icons.location_on_rounded, color: isDefault ? const Color(0xFF3B82F6) : textSecondary),
+          Icon(Icons.location_on_rounded,
+              color: isDefault ? const Color(0xFF3B82F6) : textSecondary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -798,22 +939,30 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(label, style: TextStyle(fontWeight: FontWeight.w600, color: textPrimary)),
+                    Text(label,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, color: textPrimary)),
                     if (isDefault) ...[
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF3B82F6).withOpacity(0.1),
+                          color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Text('Default', style: TextStyle(color: Color(0xFF3B82F6), fontSize: 11, fontWeight: FontWeight.w600)),
+                        child: const Text('Default',
+                            style: TextStyle(
+                                color: Color(0xFF3B82F6),
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600)),
                       ),
                     ],
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(address, style: TextStyle(fontSize: 13, color: textSecondary)),
+                Text(address,
+                    style: TextStyle(fontSize: 13, color: textSecondary)),
               ],
             ),
           ),
@@ -822,7 +971,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _showPaymentMethods(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor) {
+  void _showPaymentMethods(BuildContext context, bool isDark, Color textPrimary,
+      Color textSecondary, Color cardColor) {
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -836,14 +986,29 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Container(width: 40, height: 4, decoration: BoxDecoration(color: textSecondary.withOpacity(0.3), borderRadius: BorderRadius.circular(2))),
+              child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: textSecondary.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(2))),
             ),
             const SizedBox(height: 24),
-            Text('Payment Methods', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Payment Methods',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary)),
             const SizedBox(height: 24),
-            _buildPaymentOption('Credit Card', '•••• •••• •••• 4242', Icons.credit_card_rounded, textPrimary, textSecondary),
+            _buildPaymentOption('Credit Card', '•••• •••• •••• 4242',
+                Icons.credit_card_rounded, textPrimary, textSecondary),
             const SizedBox(height: 12),
-            _buildPaymentOption('GoPay', 'john.doe@email.com', Icons.account_balance_wallet_rounded, textPrimary, textSecondary),
+            _buildPaymentOption(
+                'GoPay',
+                'john.doe@email.com',
+                Icons.account_balance_wallet_rounded,
+                textPrimary,
+                textSecondary),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
@@ -851,10 +1016,13 @@ class ProfileScreen extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.add_rounded, color: Color(0xFF3B82F6)),
-                label: const Text('Add Payment Method', style: TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
+                label: const Text('Add Payment Method',
+                    style: TextStyle(
+                        color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Color(0xFF3B82F6)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                 ),
               ),
             ),
@@ -865,24 +1033,28 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentOption(String title, String subtitle, IconData icon, Color textPrimary, Color textSecondary) {
+  Widget _buildPaymentOption(String title, String subtitle, IconData icon,
+      Color textPrimary, Color textSecondary) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: const Color(0xFF3B82F6).withOpacity(0.1),
+          color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, color: const Color(0xFF3B82F6)),
       ),
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.w600, color: textPrimary)),
-      subtitle: Text(subtitle, style: TextStyle(fontSize: 13, color: textSecondary)),
+      title: Text(title,
+          style: TextStyle(fontWeight: FontWeight.w600, color: textPrimary)),
+      subtitle:
+          Text(subtitle, style: TextStyle(fontSize: 13, color: textSecondary)),
       trailing: Icon(Icons.chevron_right_rounded, color: textSecondary),
     );
   }
 
-  void _showHelpCenter(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor) {
+  void _showHelpCenter(BuildContext context, bool isDark, Color textPrimary,
+      Color textSecondary, Color cardColor) {
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -896,15 +1068,28 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Container(width: 40, height: 4, decoration: BoxDecoration(color: textSecondary.withOpacity(0.3), borderRadius: BorderRadius.circular(2))),
+              child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: textSecondary.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(2))),
             ),
             const SizedBox(height: 24),
-            Text('Help Center', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Help Center',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary)),
             const SizedBox(height: 24),
-            _buildHelpOption(Icons.chat_bubble_outline_rounded, 'Chat with Us', 'Get instant help', textPrimary, textSecondary),
-            _buildHelpOption(Icons.email_outlined, 'Email Support', 'support@releaf.com', textPrimary, textSecondary),
-            _buildHelpOption(Icons.phone_outlined, 'Call Us', '+62 21 1234 5678', textPrimary, textSecondary),
-            _buildHelpOption(Icons.help_outline_rounded, 'FAQs', 'Find answers to common questions', textPrimary, textSecondary),
+            _buildHelpOption(Icons.chat_bubble_outline_rounded, 'Chat with Us',
+                'Get instant help', textPrimary, textSecondary),
+            _buildHelpOption(Icons.email_outlined, 'Email Support',
+                'support@releaf.com', textPrimary, textSecondary),
+            _buildHelpOption(Icons.phone_outlined, 'Call Us',
+                '+62 21 1234 5678', textPrimary, textSecondary),
+            _buildHelpOption(Icons.help_outline_rounded, 'FAQs',
+                'Find answers to common questions', textPrimary, textSecondary),
             const SizedBox(height: 16),
           ],
         ),
@@ -912,23 +1097,27 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHelpOption(IconData icon, String title, String subtitle, Color textPrimary, Color textSecondary) {
+  Widget _buildHelpOption(IconData icon, String title, String subtitle,
+      Color textPrimary, Color textSecondary) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: const Color(0xFF3B82F6).withOpacity(0.1),
+          color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, color: const Color(0xFF3B82F6)),
       ),
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.w600, color: textPrimary)),
-      subtitle: Text(subtitle, style: TextStyle(fontSize: 13, color: textSecondary)),
+      title: Text(title,
+          style: TextStyle(fontWeight: FontWeight.w600, color: textPrimary)),
+      subtitle:
+          Text(subtitle, style: TextStyle(fontSize: 13, color: textSecondary)),
     );
   }
 
-  void _showPrivacyPolicy(BuildContext context, bool isDark, Color textPrimary, Color cardColor) {
+  void _showPrivacyPolicy(
+      BuildContext context, bool isDark, Color textPrimary, Color cardColor) {
     showModalBottomSheet(
       context: context,
       backgroundColor: cardColor,
@@ -947,10 +1136,19 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Container(width: 40, height: 4, decoration: BoxDecoration(color: textPrimary.withOpacity(0.2), borderRadius: BorderRadius.circular(2))),
+                child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                        color: textPrimary.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(2))),
               ),
               const SizedBox(height: 24),
-              Text('Privacy Policy', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+              Text('Privacy Policy',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: textPrimary)),
               const SizedBox(height: 20),
               Expanded(
                 child: SingleChildScrollView(
@@ -977,7 +1175,8 @@ You have the right to access, update, or delete your personal information at any
 
 6. Contact Us
 If you have any questions about this Privacy Policy, please contact us at privacy@releaf.com.''',
-                    style: TextStyle(color: textPrimary.withOpacity(0.8), height: 1.6),
+                    style: TextStyle(
+                        color: textPrimary.withValues(alpha: 0.8), height: 1.6),
                   ),
                 ),
               ),
@@ -988,7 +1187,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
     );
   }
 
-  void _showAboutDialog(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor) {
+  void _showAboutDialog(BuildContext context, bool isDark, Color textPrimary,
+      Color textSecondary, Color cardColor) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -1010,18 +1210,24 @@ If you have any questions about this Privacy Policy, please contact us at privac
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF3B82F6).withOpacity(0.3),
+                    color: const Color(0xFF3B82F6).withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
                 ],
               ),
-              child: const Icon(Icons.eco_rounded, size: 44, color: Colors.white),
+              child:
+                  const Icon(Icons.eco_rounded, size: 44, color: Colors.white),
             ),
             const SizedBox(height: 20),
-            Text('Releaf', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Releaf',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary)),
             const SizedBox(height: 6),
-            Text('Version 1.0.0', style: TextStyle(color: textSecondary, fontSize: 14)),
+            Text('Version 1.0.0',
+                style: TextStyle(color: textSecondary, fontSize: 14)),
             const SizedBox(height: 16),
             Text(
               'Preloved Books Marketplace\nGive books a second life 📚',
@@ -1036,10 +1242,13 @@ If you have any questions about this Privacy Policy, please contact us at privac
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3B82F6),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   elevation: 0,
                 ),
-                child: const Text('Close', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                child: const Text('Close',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600)),
               ),
             ),
           ],
@@ -1048,7 +1257,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
     );
   }
 
-  void _showLogoutDialog(BuildContext context, bool isDark, Color textPrimary, Color textSecondary, Color cardColor, AppState appState) {
+  void _showLogoutDialog(BuildContext context, bool isDark, Color textPrimary,
+      Color textSecondary, Color cardColor, AppState appState) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -1061,16 +1271,21 @@ If you have any questions about this Privacy Policy, please contact us at privac
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFEF4444).withOpacity(0.12),
+                color: const Color(0xFFEF4444).withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.logout_rounded, color: Color(0xFFEF4444), size: 32),
+              child: const Icon(Icons.logout_rounded,
+                  color: Color(0xFFEF4444), size: 32),
             ),
             const SizedBox(height: 20),
-            Text(appState.tr('logout'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text(appState.tr('logout'),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary)),
             const SizedBox(height: 8),
             Text(
-              appState.language == 'id' 
+              appState.language == 'id'
                   ? 'Apakah Anda yakin ingin keluar dari akun?'
                   : 'Are you sure you want to logout from your account?',
               textAlign: TextAlign.center,
@@ -1082,8 +1297,11 @@ If you have any questions about this Privacy Policy, please contact us at privac
                 Expanded(
                   child: TextButton(
                     onPressed: () => Navigator.pop(context),
-                    style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
-                    child: Text(appState.tr('cancel'), style: TextStyle(color: textSecondary, fontWeight: FontWeight.w600)),
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14)),
+                    child: Text(appState.tr('cancel'),
+                        style: TextStyle(
+                            color: textSecondary, fontWeight: FontWeight.w600)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1094,11 +1312,12 @@ If you have any questions about this Privacy Policy, please contact us at privac
                       try {
                         // Clear user session first
                         appState.clearUserSession();
-                        
+
                         await SupabaseService.instance.signOut();
                         if (context.mounted) {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
                             (route) => false,
                           );
                         }
@@ -1109,7 +1328,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                               content: Text('Error: ${e.toString()}'),
                               backgroundColor: const Color(0xFFEF4444),
                               behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
                             ),
                           );
                         }
@@ -1119,10 +1339,12 @@ If you have any questions about this Privacy Policy, please contact us at privac
                       backgroundColor: const Color(0xFFEF4444),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       elevation: 0,
                     ),
-                    child: Text(appState.tr('logout'), style: const TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(appState.tr('logout'),
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],
@@ -1133,11 +1355,14 @@ If you have any questions about this Privacy Policy, please contact us at privac
     );
   }
 
-  void _showWishlistSheet(BuildContext context, AppState appState, bool isDark) {
+  void _showWishlistSheet(
+      BuildContext context, AppState appState, bool isDark) {
     final backgroundColor = isDark ? const Color(0xFF161B22) : Colors.white;
     final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
-    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
+    final borderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
     final cardColor = isDark ? const Color(0xFF21262D) : Colors.white;
 
     showModalBottomSheet(
@@ -1172,7 +1397,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEF4444).withOpacity(0.1),
+                      color: const Color(0xFFEF4444).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -1222,7 +1447,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           Icon(
                             Icons.favorite_border_rounded,
                             size: 64,
-                            color: textSecondary.withOpacity(0.5),
+                            color: textSecondary.withValues(alpha: 0.5),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -1238,7 +1463,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             'Browse and save books you love!',
                             style: TextStyle(
                               fontSize: 14,
-                              color: textSecondary.withOpacity(0.7),
+                              color: textSecondary.withValues(alpha: 0.7),
                             ),
                           ),
                         ],
@@ -1326,8 +1551,10 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                             vertical: 4,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: const Color(0xFF10B981).withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(6),
+                                            color: const Color(0xFF10B981)
+                                                .withValues(alpha: 0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(6),
                                           ),
                                           child: Text(
                                             'Rp ${book.price.toStringAsFixed(0)}',
@@ -1345,15 +1572,19 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                             vertical: 4,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: _getConditionColor(book.condition).withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(6),
+                                            color: _getConditionColor(
+                                                    book.condition)
+                                                .withValues(alpha: 0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(6),
                                           ),
                                           child: Text(
                                             book.condition.label,
                                             style: TextStyle(
                                               fontSize: 11,
                                               fontWeight: FontWeight.w600,
-                                              color: _getConditionColor(book.condition),
+                                              color: _getConditionColor(
+                                                  book.condition),
                                             ),
                                           ),
                                         ),
@@ -1390,8 +1621,10 @@ If you have any questions about this Privacy Policy, please contact us at privac
   void _showOrdersSheet(BuildContext context, AppState appState, bool isDark) {
     final backgroundColor = isDark ? const Color(0xFF161B22) : Colors.white;
     final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
-    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
+    final borderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
     final cardColor = isDark ? const Color(0xFF21262D) : Colors.white;
 
     showModalBottomSheet(
@@ -1426,7 +1659,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3B82F6).withOpacity(0.1),
+                      color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -1476,7 +1709,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           Icon(
                             Icons.receipt_long_outlined,
                             size: 64,
-                            color: textSecondary.withOpacity(0.5),
+                            color: textSecondary.withValues(alpha: 0.5),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -1492,7 +1725,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             'Start shopping for preloved books!',
                             style: TextStyle(
                               fontSize: 14,
-                              color: textSecondary.withOpacity(0.7),
+                              color: textSecondary.withValues(alpha: 0.7),
                             ),
                           ),
                         ],
@@ -1516,7 +1749,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Order #${transaction.id.substring(0, 8)}',
@@ -1532,7 +1766,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: _getStatusColor(transaction.status).withOpacity(0.1),
+                                      color: _getStatusColor(transaction.status)
+                                          .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
@@ -1540,7 +1775,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                       style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w700,
-                                        color: _getStatusColor(transaction.status),
+                                        color:
+                                            _getStatusColor(transaction.status),
                                       ),
                                     ),
                                   ),
@@ -1548,7 +1784,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                               ),
                               const SizedBox(height: 12),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Total Amount',
@@ -1590,8 +1827,10 @@ If you have any questions about this Privacy Policy, please contact us at privac
   void _showMyBooksSheet(BuildContext context, AppState appState, bool isDark) {
     final backgroundColor = isDark ? const Color(0xFF161B22) : Colors.white;
     final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
-    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
+    final borderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
     final cardColor = isDark ? const Color(0xFF21262D) : Colors.white;
 
     // Show user's listed books
@@ -1624,13 +1863,14 @@ If you have any questions about this Privacy Policy, please contact us at privac
               ),
               // Header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF10B981).withOpacity(0.1),
+                        color: const Color(0xFF10B981).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
@@ -1653,7 +1893,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             ),
                           ),
                           Text(
-                            appState.language == 'id' 
+                            appState.language == 'id'
                                 ? '${myBooks.length} buku dijual'
                                 : '${myBooks.length} books for sale',
                             style: TextStyle(
@@ -1679,7 +1919,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           color: const Color(0xFF3B82F6),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.add_rounded, color: Colors.white, size: 20),
+                        child: const Icon(Icons.add_rounded,
+                            color: Colors.white, size: 20),
                       ),
                     ),
                     IconButton(
@@ -1700,11 +1941,13 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             Icon(
                               Icons.menu_book_outlined,
                               size: 64,
-                              color: textSecondary.withOpacity(0.5),
+                              color: textSecondary.withValues(alpha: 0.5),
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              appState.language == 'id' ? 'Belum ada buku' : 'No books listed',
+                              appState.language == 'id'
+                                  ? 'Belum ada buku'
+                                  : 'No books listed',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -1713,12 +1956,12 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              appState.language == 'id' 
+                              appState.language == 'id'
                                   ? 'Mulai jual buku bekas Anda!'
                                   : 'Start selling your preloved books!',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: textSecondary.withOpacity(0.7),
+                                color: textSecondary.withValues(alpha: 0.7),
                               ),
                             ),
                             const SizedBox(height: 24),
@@ -1727,18 +1970,24 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                 Navigator.pop(ctx);
                                 Navigator.push(
                                   context,
-                                  PageTransitions.slideUp(const AddBookScreen()),
+                                  PageTransitions.slideUp(
+                                      const AddBookScreen()),
                                 );
                               },
-                              icon: const Icon(Icons.add_rounded, color: Colors.white),
+                              icon: const Icon(Icons.add_rounded,
+                                  color: Colors.white),
                               label: Text(
                                 appState.tr('add_book'),
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF3B82F6),
-                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
                               ),
                             ),
                           ],
@@ -1769,7 +2018,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                           width: 70,
                                           height: 100,
                                           fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) => Container(
+                                          errorBuilder: (_, __, ___) =>
+                                              Container(
                                             width: 70,
                                             height: 100,
                                             color: borderColor,
@@ -1795,7 +2045,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                 // Book Info
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         book.title,
@@ -1826,8 +2077,10 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                               vertical: 4,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF10B981).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(6),
+                                              color: const Color(0xFF10B981)
+                                                  .withValues(alpha: 0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
                                             ),
                                             child: Text(
                                               'Rp ${book.price.toStringAsFixed(0)}',
@@ -1845,19 +2098,26 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                               vertical: 4,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: book.stock > 0 
-                                                  ? const Color(0xFF10B981).withOpacity(0.1)
-                                                  : const Color(0xFFEF4444).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(6),
+                                              color: book.stock > 0
+                                                  ? const Color(0xFF10B981)
+                                                      .withValues(alpha: 0.1)
+                                                  : const Color(0xFFEF4444)
+                                                      .withValues(alpha: 0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
                                             ),
                                             child: Text(
-                                              book.stock > 0 
-                                                  ? (appState.language == 'id' ? 'TERSEDIA' : 'AVAILABLE')
-                                                  : (appState.language == 'id' ? 'TERJUAL' : 'SOLD'),
+                                              book.stock > 0
+                                                  ? (appState.language == 'id'
+                                                      ? 'TERSEDIA'
+                                                      : 'AVAILABLE')
+                                                  : (appState.language == 'id'
+                                                      ? 'TERJUAL'
+                                                      : 'SOLD'),
                                               style: TextStyle(
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w600,
-                                                color: book.stock > 0 
+                                                color: book.stock > 0
                                                     ? const Color(0xFF10B981)
                                                     : const Color(0xFFEF4444),
                                               ),
@@ -1876,14 +2136,17 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                         Navigator.pop(ctx);
                                         Navigator.push(
                                           context,
-                                          PageTransitions.slideUp(AddBookScreen(bookToEdit: book)),
+                                          PageTransitions.slideUp(
+                                              AddBookScreen(bookToEdit: book)),
                                         );
                                       },
                                       icon: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFF3B82F6).withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(8),
+                                          color: const Color(0xFF3B82F6)
+                                              .withValues(alpha: 0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         child: const Icon(
                                           Icons.edit_rounded,
@@ -1894,15 +2157,24 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        _showDeleteBookDialog(context, book, appState, isDark, textPrimary, textSecondary, cardColor, () {
+                                        _showDeleteBookDialog(
+                                            context,
+                                            book,
+                                            appState,
+                                            isDark,
+                                            textPrimary,
+                                            textSecondary,
+                                            cardColor, () {
                                           setModalState(() {});
                                         });
                                       },
                                       icon: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFFEF4444).withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(8),
+                                          color: const Color(0xFFEF4444)
+                                              .withValues(alpha: 0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         child: const Icon(
                                           Icons.delete_rounded,
@@ -1926,7 +2198,15 @@ If you have any questions about this Privacy Policy, please contact us at privac
     );
   }
 
-  void _showDeleteBookDialog(BuildContext context, Book book, AppState appState, bool isDark, Color textPrimary, Color textSecondary, Color cardColor, VoidCallback onDeleted) {
+  void _showDeleteBookDialog(
+      BuildContext context,
+      Book book,
+      AppState appState,
+      bool isDark,
+      Color textPrimary,
+      Color textSecondary,
+      Color cardColor,
+      VoidCallback onDeleted) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -1939,19 +2219,23 @@ If you have any questions about this Privacy Policy, please contact us at privac
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFEF4444).withOpacity(0.12),
+                color: const Color(0xFFEF4444).withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.delete_rounded, color: Color(0xFFEF4444), size: 32),
+              child: const Icon(Icons.delete_rounded,
+                  color: Color(0xFFEF4444), size: 32),
             ),
             const SizedBox(height: 20),
             Text(
               appState.tr('delete_book'),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: textPrimary),
             ),
             const SizedBox(height: 8),
             Text(
-              appState.language == 'id' 
+              appState.language == 'id'
                   ? 'Apakah Anda yakin ingin menghapus "${book.title}"?'
                   : 'Are you sure you want to delete "${book.title}"?',
               textAlign: TextAlign.center,
@@ -1963,8 +2247,11 @@ If you have any questions about this Privacy Policy, please contact us at privac
                 Expanded(
                   child: TextButton(
                     onPressed: () => Navigator.pop(ctx),
-                    style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
-                    child: Text(appState.tr('cancel'), style: TextStyle(color: textSecondary, fontWeight: FontWeight.w600)),
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14)),
+                    child: Text(appState.tr('cancel'),
+                        style: TextStyle(
+                            color: textSecondary, fontWeight: FontWeight.w600)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1979,14 +2266,16 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           SnackBar(
                             content: Row(
                               children: [
-                                const Icon(Icons.check_circle_rounded, color: Colors.white),
+                                const Icon(Icons.check_circle_rounded,
+                                    color: Colors.white),
                                 const SizedBox(width: 12),
                                 Text(appState.tr('book_deleted')),
                               ],
                             ),
                             backgroundColor: const Color(0xFF10B981),
                             behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
                           ),
                         );
                       }
@@ -1995,10 +2284,12 @@ If you have any questions about this Privacy Policy, please contact us at privac
                       backgroundColor: const Color(0xFFEF4444),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       elevation: 0,
                     ),
-                    child: Text(appState.tr('delete'), style: const TextStyle(fontWeight: FontWeight.w600)),
+                    child: Text(appState.tr('delete'),
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],
