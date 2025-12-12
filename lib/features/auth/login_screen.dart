@@ -110,24 +110,34 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 88,
                           height: 88,
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
-                            ),
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF3B82F6).withOpacity(0.35),
+                                color: const Color(0xFF1E3A5F).withOpacity(0.3),
                                 blurRadius: 28,
                                 offset: const Offset(0, 14),
                               ),
                             ],
                           ),
-                          child: const Icon(
-                            Icons.eco_rounded,
-                            size: 48,
-                            color: Colors.white,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              const Icon(
+                                Icons.auto_stories_rounded,
+                                size: 44,
+                                color: Color(0xFF1E3A5F),
+                              ),
+                              Positioned(
+                                top: 18,
+                                right: 18,
+                                child: Icon(
+                                  Icons.eco_rounded,
+                                  size: 18,
+                                  color: const Color(0xFF4ADE80),
+                                ),
+                              ),
+                            ],
                           ),
                         ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
                         

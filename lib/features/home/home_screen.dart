@@ -56,15 +56,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(10),
+                          width: 44,
+                          height: 44,
                           decoration: BoxDecoration(
-                            gradient: AppColors.primaryGradient,
+                            color: const Color(0xFF1E3A5F),
                             borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF1E3A5F).withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                          child: const Icon(
-                            Icons.eco_rounded,
-                            color: Colors.white,
-                            size: 22,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              const Icon(
+                                Icons.auto_stories_rounded,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Icon(
+                                  Icons.eco_rounded,
+                                  size: 12,
+                                  color: const Color(0xFF4ADE80),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 12),
