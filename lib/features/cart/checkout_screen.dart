@@ -416,10 +416,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     setState(() => _isProcessing = true);
 
-    // Simulate processing
-    await Future.delayed(const Duration(seconds: 2));
-
-    final transaction = appState.createOrderFromCart();
+    // Create order with shipping info and sync to Supabase
+    final transaction = await appState.createOrderFromCart(
+      shippingAddress: _addressController.text,
+      shippingName: _nameController.text,
+      shippingPhone: _phoneController.text,
+      paymentMethod: _selectedPayment,
+      notes: _notesController.text.isNotEmpty ? _notesController.text : null,
+    );
 
     if (!context.mounted || transaction == null) return;
     

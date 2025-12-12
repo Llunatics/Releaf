@@ -476,19 +476,63 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  BookTransaction? createOrderFromCart() {
+  Future<BookTransaction?> createOrderFromCart({
+    String? shippingAddress,
+    String? shippingName,
+    String? shippingPhone,
+    String? paymentMethod,
+    String? notes,
+  }) async {
     if (_cart.isEmpty) return null;
     
+    // Create local transaction first for immediate UI feedback
     final transaction = BookTransaction(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       items: List.from(_cart),
       totalAmount: cartTotal,
       date: DateTime.now(),
       status: TransactionStatus.pending,
+      shippingAddress: shippingAddress,
+      notes: notes,
     );
     
-    addTransaction(transaction);
-    clearCart();
+    // Add to local transactions
+    _transactions.insert(0, transaction);
+    
+    // Sync with Supabase if logged in
+    if (_currentUser != null) {
+      try {
+        final result = await SupabaseService.instance.createTransaction(
+          totalAmount: cartTotal,
+          shippingAddress: shippingAddress ?? '',
+          shippingName: shippingName ?? '',
+          shippingPhone: shippingPhone ?? '',
+          paymentMethod: paymentMethod,
+          notes: notes,
+        );
+        
+        // Update local transaction with Supabase ID
+        final idx = _transactions.indexWhere((t) => t.id == transaction.id);
+        if (idx != -1) {
+          _transactions[idx] = BookTransaction(
+            id: result['id'],
+            items: transaction.items,
+            totalAmount: transaction.totalAmount,
+            date: transaction.date,
+            status: transaction.status,
+            shippingAddress: transaction.shippingAddress,
+            notes: transaction.notes,
+          );
+        }
+      } catch (e) {
+        debugPrint('Error creating transaction in Supabase: $e');
+      }
+    }
+    
+    // Clear cart (already cleared in Supabase by createTransaction)
+    _cart.clear();
+    notifyListeners();
+    
     return transaction;
   }
 
