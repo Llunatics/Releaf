@@ -18,17 +18,43 @@ class CartScreen extends StatelessWidget {
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FE),
       appBar: AppBar(
-        title: const Text('Shopping Cart'),
-        backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FE),
+        centerTitle: true,
+        title: Column(
+          children: [
+            Text(
+              'Keranjang',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: isDark ? Colors.white : const Color(0xFF1E293B),
+              ),
+            ),
+            if (cart.isNotEmpty)
+              Text(
+                '${cart.length} item',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ),
+          ],
+        ),
         actions: [
           if (cart.isNotEmpty)
-            TextButton(
+            IconButton(
               onPressed: () {
                 _showClearCartDialog(context, appState);
               },
-              child: const Text('Clear All'),
+              icon: Icon(
+                Icons.delete_sweep_outlined,
+                color: Colors.red[400],
+              ),
+              tooltip: 'Hapus semua',
             ),
         ],
       ),
@@ -60,41 +86,55 @@ class CartScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withValues(alpha: 0.1),
+              color: isDark 
+                  ? const Color(0xFF1E3A5F).withValues(alpha: 0.3)
+                  : const Color(0xFF3B82F6).withValues(alpha: 0.08),
               shape: BoxShape.circle,
             ),
             child: Icon(
-              Icons.shopping_bag_outlined,
-              size: 80,
-              color: AppColors.primaryBlue.withValues(alpha: 0.5),
+              Icons.shopping_cart_outlined,
+              size: 70,
+              color: isDark 
+                  ? const Color(0xFF60A5FA)
+                  : const Color(0xFF3B82F6).withValues(alpha: 0.6),
             ),
           ).animate().scale(duration: 400.ms),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           Text(
-            'Your cart is empty',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+            'Keranjang Kosong',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white : const Color(0xFF1E293B),
             ),
           ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(
-            'Add some books to get started',
+            'Yuk, tambahkan buku ke keranjangmu',
             style: TextStyle(
-              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+              fontSize: 15,
+              color: isDark ? Colors.grey[400] : Colors.grey[600],
             ),
           ).animate().fadeIn(duration: 300.ms, delay: 300.ms),
-          const SizedBox(height: 32),
+          const SizedBox(height: 40),
           ElevatedButton.icon(
             onPressed: () {
               // Navigate to products
             },
-            icon: const Icon(Icons.search_rounded, color: Colors.white),
-            label: const Text('Browse Books', style: TextStyle(color: Colors.white)),
+            icon: const Icon(Icons.explore_outlined, color: Colors.white, size: 20),
+            label: const Text(
+              'Jelajahi Buku',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBlue,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              backgroundColor: const Color(0xFF3B82F6),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              elevation: 0,
             ),
           ).animate().fadeIn(duration: 300.ms, delay: 400.ms).slideY(begin: 0.2),
         ],
@@ -128,18 +168,15 @@ class CartScreen extends StatelessWidget {
         ],
       ),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.cardDark : Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadowLight,
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFE2E8F0),
+            width: 1,
+          ),
         ),
         child: Row(
           children: [
@@ -176,7 +213,7 @@ class CartScreen extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
-                      color: isDark ? Colors.white : AppColors.textPrimaryLight,
+                      color: isDark ? Colors.white : const Color(0xFF1E293B),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -184,66 +221,72 @@ class CartScreen extends StatelessWidget {
                     item.book.author,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     currencyFormat.format(item.book.price),
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      color: Color(0xFF3B82F6),
                     ),
                   ),
                 ],
               ),
             ),
             // Quantity Controls
-            Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: isDark ? AppColors.surfaceDark : AppColors.backgroundLight,
-                    borderRadius: BorderRadius.circular(12),
+            Container(
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF252525) : const Color(0xFFF1F5F9),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: item.quantity > 1
+                      ? () => appState.updateCartItemQuantity(item.book.id, item.quantity - 1)
+                      : () => appState.removeFromCart(item.book.id),
+                    icon: Icon(
+                      item.quantity > 1 ? Icons.remove : Icons.delete_outline_rounded,
+                      size: 18,
+                      color: item.quantity > 1 
+                          ? (isDark ? Colors.white : const Color(0xFF1E293B))
+                          : Colors.red[400],
+                    ),
+                    constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                    padding: EdgeInsets.zero,
                   ),
-                  child: Column(
-                    children: [
-                      IconButton(
-                        onPressed: item.quantity < item.book.stock
-                          ? () => appState.updateCartItemQuantity(item.book.id, item.quantity + 1)
-                          : null,
-                        icon: Icon(
-                          Icons.add_rounded,
-                          size: 20,
-                          color: item.quantity < item.book.stock
-                            ? AppColors.primaryBlue
-                            : AppColors.textTertiaryLight,
-                        ),
-                        constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                  Container(
+                    width: 32,
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${item.quantity}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: isDark ? Colors.white : const Color(0xFF1E293B),
                       ),
-                      Text(
-                        '${item.quantity}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : AppColors.textPrimaryLight,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: item.quantity > 1
-                          ? () => appState.updateCartItemQuantity(item.book.id, item.quantity - 1)
-                          : () => appState.removeFromCart(item.book.id),
-                        icon: Icon(
-                          item.quantity > 1 ? Icons.remove_rounded : Icons.delete_outline_rounded,
-                          size: 20,
-                          color: item.quantity > 1 ? AppColors.primaryBlue : AppColors.error,
-                        ),
-                        constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  IconButton(
+                    onPressed: item.quantity < item.book.stock
+                      ? () => appState.updateCartItemQuantity(item.book.id, item.quantity + 1)
+                      : null,
+                    icon: Icon(
+                      Icons.add,
+                      size: 18,
+                      color: item.quantity < item.book.stock
+                        ? (isDark ? Colors.white : const Color(0xFF1E293B))
+                        : Colors.grey[400],
+                    ),
+                    constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                    padding: EdgeInsets.zero,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -253,17 +296,15 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildBottomSection(BuildContext context, AppState appState, bool isDark, NumberFormat currencyFormat) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFE2E8F0),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Column(
@@ -273,18 +314,18 @@ class CartScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total (${appState.cartItemCount} items)',
+                  'Total (${appState.cartItemCount} item)',
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                    color: isDark ? Colors.grey[400] : Colors.grey[600],
                   ),
                 ),
                 Text(
                   currencyFormat.format(appState.cartTotal),
                   style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryBlue,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF3B82F6),
                   ),
                 ),
               ],
@@ -292,6 +333,7 @@ class CartScreen extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
+              height: 52,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -300,23 +342,23 @@ class CartScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBlue,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: const Color(0xFF3B82F6),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(14),
                   ),
+                  elevation: 0,
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shopping_cart_checkout_rounded, color: Colors.white),
-                    SizedBox(width: 8),
+                    Icon(Icons.shopping_cart_checkout_rounded, color: Colors.white, size: 20),
+                    SizedBox(width: 10),
                     Text(
-                      'Proceed to Checkout',
+                      'Lanjutkan ke Checkout',
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
                       ),
                     ),
                   ],

@@ -41,88 +41,41 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       backgroundColor: isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FE),
       body: CustomScrollView(
         slivers: [
-          // Modern Gradient App Bar
+          // Clean White App Bar
           SliverAppBar(
-            expandedHeight: 140,
+            expandedHeight: 0,
             floating: false,
             pinned: true,
-            backgroundColor: const Color(0xFF667EEA),
+            backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
             elevation: 0,
+            scrolledUnderElevation: 0,
             leading: IconButton(
-              icon: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: isDark ? Colors.white : const Color(0xFF1E293B),
+                size: 20,
               ),
               onPressed: () => Navigator.pop(context),
             ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+            centerTitle: true,
+            title: Column(
+              children: [
+                Text(
+                  'Checkout',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : const Color(0xFF1E293B),
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      right: -30,
-                      top: -30,
-                      child: Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withValues(alpha: 0.1),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: -20,
-                      bottom: 20,
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withValues(alpha: 0.1),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 30,
-                      left: 20,
-                      right: 20,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Checkout',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${appState.cart.length} item dalam keranjang',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white.withValues(alpha: 0.8),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                Text(
+                  '${appState.cart.length} item',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           

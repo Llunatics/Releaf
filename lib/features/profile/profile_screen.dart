@@ -26,48 +26,43 @@ class ProfileScreen extends StatelessWidget {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          // Profile Header
+          // Clean Profile Header
           SliverAppBar(
-            expandedHeight: 220,
+            expandedHeight: 200,
             pinned: true,
-            backgroundColor: isDark ? const Color(0xFF161B22) : const Color(0xFF3B82F6),
+            backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
             elevation: 0,
+            scrolledUnderElevation: 0,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: isDark
-                        ? [const Color(0xFF1E3A5F), const Color(0xFF0D1117)]
-                        : [const Color(0xFF3B82F6), const Color(0xFF1D4ED8)],
-                  ),
-                ),
+                color: isDark ? const Color(0xFF121212) : Colors.white,
                 child: SafeArea(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 30),
-                      // Avatar
+                      const SizedBox(height: 20),
+                      // Avatar - Clean circle with subtle border
                       Container(
-                        width: 90,
-                        height: 90,
+                        width: 88,
+                        height: 88,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: isDark 
+                              ? const Color(0xFF1E3A5F).withValues(alpha: 0.3)
+                              : const Color(0xFF3B82F6).withValues(alpha: 0.08),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white.withOpacity(0.3), width: 3),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
+                          border: Border.all(
+                            color: isDark 
+                                ? const Color(0xFF3B82F6).withValues(alpha: 0.3)
+                                : const Color(0xFF3B82F6).withValues(alpha: 0.2),
+                            width: 2,
+                          ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.person_rounded,
-                          size: 50,
-                          color: Color(0xFF3B82F6),
+                          size: 44,
+                          color: isDark 
+                              ? const Color(0xFF60A5FA)
+                              : const Color(0xFF3B82F6),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -76,20 +71,20 @@ class ProfileScreen extends StatelessWidget {
                         appState.isLoggedIn 
                             ? (appState.userProfile?['full_name'] ?? appState.currentUser?.email?.split('@').first ?? 'User')
                             : appState.tr('guest_user'),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
+                        style: TextStyle(
+                          color: isDark ? Colors.white : const Color(0xFF1E293B),
+                          fontSize: 20,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       // Email
                       Text(
                         appState.isLoggedIn 
                             ? (appState.currentUser?.email ?? '-')
                             : 'guest@releaf.com',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+                          color: isDark ? Colors.grey[400] : Colors.grey[600],
                           fontSize: 14,
                         ),
                       ),
