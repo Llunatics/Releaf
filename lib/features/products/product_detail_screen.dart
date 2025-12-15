@@ -4,6 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/book.dart';
 import '../../core/utils/page_transitions.dart';
+import '../../core/utils/toast_helper.dart';
 import '../home/main_screen.dart';
 import 'add_book_screen.dart';
 
@@ -154,13 +155,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   if (appState.isLoggedIn) {
                     appState.toggleWishlist(widget.book);
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Login untuk menambah wishlist'),
-                        backgroundColor: AppColors.warning,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
+                    ToastHelper.showWarning(
+                      context,
+                      appState.language == 'id' ? 'Login untuk menambah wishlist' : 'Login to add to wishlist',
                     );
                   }
                 },
@@ -483,30 +480,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       );
                     } else {
                       if (!appState.isLoggedIn) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Login untuk memesan buku'),
-                            backgroundColor: AppColors.warning,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
+                        ToastHelper.showWarning(
+                          context,
+                          appState.language == 'id' ? 'Login untuk memesan buku' : 'Login to order book',
                         );
                         return;
                       }
                       appState.addToCart(widget.book, quantity: _quantity);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              const Icon(Icons.check_circle_rounded, color: Colors.white),
-                              const SizedBox(width: 12),
-                              Expanded(child: Text('${widget.book.title} ditambahkan ke keranjang')),
-                            ],
-                          ),
-                          backgroundColor: AppColors.success,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
+                      ToastHelper.showSuccess(
+                        context,
+                        appState.language == 'id' 
+                            ? '${widget.book.title} ditambahkan ke keranjang'
+                            : '${widget.book.title} added to cart',
                       );
                     }
                   },
@@ -755,20 +740,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       await appState.deleteBook(widget.book.id);
                       if (context.mounted) {
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                const Icon(Icons.check_circle_rounded, color: Colors.white),
-                                const SizedBox(width: 12),
-                                Text(appState.tr('book_deleted')),
-                              ],
-                            ),
-                            backgroundColor: AppColors.success,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
-                        );
+                        ToastHelper.showSuccess(context, appState.tr('book_deleted'));
                       }
                     },
                     style: ElevatedButton.styleFrom(

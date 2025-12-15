@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/services/supabase_service.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/utils/page_transitions.dart';
+import '../../core/utils/toast_helper.dart';
 import 'register_screen.dart';
 import '../home/main_screen.dart';
 
@@ -552,26 +553,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           await SupabaseService.instance.resetPassword(emailController.text.trim());
                           if (ctx.mounted) {
                             Navigator.pop(ctx);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(isId ? 'Link reset terkirim! Cek email Anda.' : 'Reset link sent! Check your email.'),
-                                backgroundColor: const Color(0xFF10B981),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                margin: const EdgeInsets.all(16),
-                              ),
+                            ToastHelper.showSuccess(
+                              context,
+                              isId ? 'Link reset terkirim! Cek email Anda.' : 'Reset link sent! Check your email.',
                             );
                           }
                         } catch (e) {
                           if (ctx.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${isId ? 'Kesalahan' : 'Error'}: ${e.toString()}'),
-                                backgroundColor: const Color(0xFFEF4444),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                margin: const EdgeInsets.all(16),
-                              ),
+                            ToastHelper.showError(
+                              context,
+                              '${isId ? 'Kesalahan' : 'Error'}: ${e.toString()}',
                             );
                           }
                         }

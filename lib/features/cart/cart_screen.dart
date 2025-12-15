@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/cart_item.dart';
 import '../../core/utils/page_transitions.dart';
+import '../../core/utils/toast_helper.dart';
 import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
@@ -153,15 +154,11 @@ class CartScreen extends StatelessWidget {
           SlidableAction(
             onPressed: (context) {
               appState.removeFromCart(item.book.id);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(appState.language == 'id' 
-                      ? '${item.book.title} dihapus dari keranjang'
-                      : '${item.book.title} removed from cart'),
-                  backgroundColor: AppColors.error,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
+              ToastHelper.showError(
+                context,
+                appState.language == 'id' 
+                    ? '${item.book.title} dihapus dari keranjang'
+                    : '${item.book.title} removed from cart',
               );
             },
             backgroundColor: AppColors.error,
@@ -398,13 +395,9 @@ class CartScreen extends StatelessWidget {
             onPressed: () {
               appState.clearCart();
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(isId ? 'Keranjang dikosongkan' : 'Cart cleared'),
-                  backgroundColor: AppColors.success,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
+              ToastHelper.showSuccess(
+                context,
+                isId ? 'Keranjang dikosongkan' : 'Cart cleared',
               );
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),

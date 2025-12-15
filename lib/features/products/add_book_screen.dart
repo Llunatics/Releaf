@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/book.dart';
 import '../../core/data/dummy_data.dart';
+import '../../core/utils/toast_helper.dart';
 
 class AddBookScreen extends StatefulWidget {
   final Book? bookToEdit;
@@ -531,37 +532,17 @@ class _AddBookScreenState extends State<AddBookScreen> {
         if (!mounted) return;
         Navigator.pop(context); // Close loading
         
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle_rounded, color: Colors.white),
-                const SizedBox(width: 12),
-                Text(_isEditing ? appState.tr('book_updated') : appState.tr('book_added')),
-              ],
-            ),
-            backgroundColor: AppColors.success,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
+        ToastHelper.showSuccess(
+          context, 
+          _isEditing ? appState.tr('book_updated') : appState.tr('book_added'),
         );
 
         Navigator.pop(context);
       } catch (e) {
         Navigator.pop(context); // Close loading
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.error_rounded, color: Colors.white),
-                const SizedBox(width: 12),
-                Expanded(child: Text('Gagal: ${e.toString()}')),
-              ],
-            ),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
+        ToastHelper.showError(
+          context,
+          '${appState.language == 'id' ? 'Gagal' : 'Failed'}: ${e.toString()}',
         );
       }
     }
@@ -589,20 +570,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
               await appState.deleteBook(widget.bookToEdit!.id);
               if (!mounted) return;
               Navigator.pop(context); // Go back
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Row(
-                    children: [
-                      const Icon(Icons.delete_rounded, color: Colors.white),
-                      const SizedBox(width: 12),
-                      Text(appState.tr('book_deleted')),
-                    ],
-                  ),
-                  backgroundColor: AppColors.error,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-              );
+              ToastHelper.showSuccess(context, appState.tr('book_deleted'));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

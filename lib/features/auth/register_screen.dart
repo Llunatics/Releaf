@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/services/supabase_service.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/utils/page_transitions.dart';
+import '../../core/utils/toast_helper.dart';
 import '../home/main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -72,14 +73,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
         
         // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(appState.language == 'id' ? 'Akun berhasil dibuat! Selamat datang di Releaf.' : 'Account created! Welcome to Releaf.'),
-            backgroundColor: const Color(0xFF10B981),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: const EdgeInsets.all(16),
-          ),
+        ToastHelper.showSuccess(
+          context,
+          appState.language == 'id' ? 'Akun berhasil dibuat! Selamat datang di Releaf.' : 'Account created! Welcome to Releaf.',
         );
       }
     } catch (e) {

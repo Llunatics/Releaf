@@ -4,6 +4,7 @@ import '../../core/models/transaction.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/services/supabase_service.dart';
 import '../../core/utils/page_transitions.dart';
+import '../../core/utils/toast_helper.dart';
 import '../auth/login_screen.dart';
 import '../products/add_book_screen.dart';
 
@@ -1027,58 +1028,153 @@ If you have any questions about this Privacy Policy, please contact us at privac
         backgroundColor: cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         contentPadding: const EdgeInsets.all(28),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Logo matching splash/home screen
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E3A5F),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1E3A5F).withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
                 ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF3B82F6).withOpacity(0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Icon(
+                      Icons.auto_stories_rounded,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                    Positioned(
+                      top: 16,
+                      right: 16,
+                      child: Icon(
+                        Icons.eco_rounded,
+                        size: 20,
+                        color: const Color(0xFF4ADE80),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text('Releaf', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: textPrimary)),
+              const SizedBox(height: 6),
+              Text(isId ? 'Versi 1.0.0' : 'Version 1.0.0', style: TextStyle(color: textSecondary, fontSize: 14)),
+              const SizedBox(height: 16),
+              Text(
+                isId 
+                    ? 'Marketplace Buku Bekas\nBeri kehidupan baru pada buku 📚'
+                    : 'Preloved Books Marketplace\nGive books a new life 📚',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: textSecondary, height: 1.5),
+              ),
+              const SizedBox(height: 24),
+              
+              // Developer Credits Section
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.shade200,
                   ),
-                ],
-              ),
-              child: const Icon(Icons.eco_rounded, size: 44, color: Colors.white),
-            ),
-            const SizedBox(height: 20),
-            Text('Releaf', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: textPrimary)),
-            const SizedBox(height: 6),
-            Text(isId ? 'Versi 1.0.0' : 'Version 1.0.0', style: TextStyle(color: textSecondary, fontSize: 14)),
-            const SizedBox(height: 16),
-            Text(
-              isId 
-                  ? 'Marketplace Buku Bekas\nBeri kehidupan baru pada buku 📚'
-                  : 'Preloved Books Marketplace\nGive books a new life 📚',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: textSecondary, height: 1.5),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3B82F6),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 0,
                 ),
-                child: Text(isId ? 'Tutup' : 'Close', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.code_rounded,
+                          size: 18,
+                          color: const Color(0xFF3B82F6),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          isId ? 'Dikembangkan oleh' : 'Developed by',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF3B82F6),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDeveloperRow('Andiko Ramadani', '3337230003', textPrimary, textSecondary),
+                    const SizedBox(height: 8),
+                    _buildDeveloperRow('Ismet Maulana Azhari', '3337230014', textPrimary, textSecondary),
+                    const SizedBox(height: 8),
+                    _buildDeveloperRow('Muhamad Anggara R.', '3337230031', textPrimary, textSecondary),
+                  ],
+                ),
               ),
-            ),
-          ],
+              
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1E3A5F),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    elevation: 0,
+                  ),
+                  child: Text(isId ? 'Tutup' : 'Close', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+  
+  Widget _buildDeveloperRow(String name, String nim, Color textPrimary, Color textSecondary) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            name,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: textPrimary,
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            nim,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF3B82F6),
+              fontFamily: 'monospace',
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -1138,13 +1234,9 @@ If you have any questions about this Privacy Policy, please contact us at privac
                         }
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Kesalahan: ${e.toString()}'),
-                              backgroundColor: const Color(0xFFEF4444),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            ),
+                          ToastHelper.showError(
+                            context,
+                            '${appState.language == 'id' ? 'Kesalahan' : 'Error'}: ${e.toString()}',
                           );
                         }
                       }
@@ -2019,20 +2111,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                       await appState.deleteBook(book.id);
                       onDeleted();
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                const Icon(Icons.check_circle_rounded, color: Colors.white),
-                                const SizedBox(width: 12),
-                                Text(appState.tr('book_deleted')),
-                              ],
-                            ),
-                            backgroundColor: const Color(0xFF10B981),
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
-                        );
+                        ToastHelper.showSuccess(context, appState.tr('book_deleted'));
                       }
                     },
                     style: ElevatedButton.styleFrom(
