@@ -13,30 +13,30 @@ extension TransactionStatusExtension on TransactionStatus {
   String get label {
     switch (this) {
       case TransactionStatus.pending:
-        return 'Pending';
+        return 'Menunggu';
       case TransactionStatus.processing:
-        return 'Processing';
+        return 'Diproses';
       case TransactionStatus.shipped:
-        return 'Shipped';
+        return 'Dikirim';
       case TransactionStatus.completed:
-        return 'Completed';
+        return 'Selesai';
       case TransactionStatus.cancelled:
-        return 'Cancelled';
+        return 'Dibatalkan';
     }
   }
 
   String get description {
     switch (this) {
       case TransactionStatus.pending:
-        return 'Waiting for payment confirmation';
+        return 'Menunggu konfirmasi pembayaran';
       case TransactionStatus.processing:
-        return 'Order is being prepared';
+        return 'Pesanan sedang disiapkan';
       case TransactionStatus.shipped:
-        return 'Order has been shipped';
+        return 'Pesanan telah dikirim';
       case TransactionStatus.completed:
-        return 'Order delivered successfully';
+        return 'Pesanan berhasil diterima';
       case TransactionStatus.cancelled:
-        return 'Order has been cancelled';
+        return 'Pesanan telah dibatalkan';
     }
   }
 }

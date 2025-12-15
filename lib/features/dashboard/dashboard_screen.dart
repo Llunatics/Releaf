@@ -52,7 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 Expanded(
                   child: _buildSummaryCard(
-                    'Total Sales',
+                    'Total Penjualan',
                     currencyFormat.format(appState.totalSales),
                     Icons.attach_money_rounded,
                     AppColors.success,
@@ -62,7 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildSummaryCard(
-                    'Transactions',
+                    'Transaksi',
                     appState.totalTransactions.toString(),
                     Icons.receipt_long_rounded,
                     AppColors.primaryBlue,
@@ -76,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 Expanded(
                   child: _buildSummaryCard(
-                    'Completed',
+                    'Selesai',
                     appState.completedTransactions.toString(),
                     Icons.check_circle_rounded,
                     AppColors.success,
@@ -86,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildSummaryCard(
-                    'Pending',
+                    'Menunggu',
                     appState.pendingTransactions.toString(),
                     Icons.pending_rounded,
                     AppColors.warning,
@@ -100,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // Sales Trend Chart
             Text(
-              'Sales Trend (7 Days)',
+              'Tren Penjualan (7 Hari)',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // Sales by Category
             Text(
-              'Sales by Category',
+              'Penjualan per Kategori',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -154,7 +154,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // Best Selling Book
             Text(
-              'Best Selling Book',
+              'Buku Terlaris',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -167,7 +167,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // Recent Transactions
             Text(
-              'Recent Transactions',
+              'Transaksi Terbaru',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -346,7 +346,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (salesByCategory.isEmpty) {
       return Center(
         child: Text(
-          'No sales data yet',
+          'Belum ada data penjualan',
           style: TextStyle(
             color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
           ),
@@ -481,7 +481,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Icon(Icons.emoji_events_rounded, color: Colors.amber, size: 14),
                       SizedBox(width: 4),
                       Text(
-                        'Best Seller',
+                        'Terlaris',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 10,
@@ -571,7 +571,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${transaction.totalItems} items • ${DateFormat('dd MMM yyyy').format(transaction.date)}',
+                  '${transaction.totalItems} item • ${DateFormat('dd MMM yyyy').format(transaction.date)}',
                   style: TextStyle(
                     fontSize: 12,
                     color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,

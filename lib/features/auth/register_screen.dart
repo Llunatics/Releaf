@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!_formKey.currentState!.validate()) return;
     
     if (!_agreedToTerms) {
-      setState(() => _errorMessage = 'Please agree to Terms & Conditions');
+      setState(() => _errorMessage = 'Silakan setujui Syarat & Ketentuan');
       return;
     }
 
@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Account created successfully! Welcome to Releaf.'),
+            content: const Text('Akun berhasil dibuat! Selamat datang di Releaf.'),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -89,13 +89,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String _parseError(String error) {
     if (error.contains('User already registered')) {
-      return 'This email is already registered. Please sign in.';
+      return 'Email ini sudah terdaftar. Silakan masuk.';
     } else if (error.contains('Password should be')) {
-      return 'Password is too weak. Use letters and numbers.';
+      return 'Kata sandi terlalu lemah. Gunakan huruf dan angka.';
     } else if (error.contains('Invalid email')) {
-      return 'Please enter a valid email address.';
+      return 'Masukkan alamat email yang valid.';
     }
-    return 'Something went wrong. Please try again.';
+    return 'Terjadi kesalahan. Silakan coba lagi.';
   }
 
   @override
@@ -145,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   
                   // Title
                   Text(
-                    'Create Account',
+                    'Buat Akun',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w700,
@@ -157,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 8),
                   
                   Text(
-                    'Join Releaf and start your book journey',
+                    'Bergabunglah dengan Releaf dan mulai perjalanan membaca Anda',
                     style: TextStyle(
                       fontSize: 16,
                       color: textSecondary,
@@ -208,11 +208,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ).animate().shake(duration: 400.ms),
 
                   // Full Name Field
-                  _buildLabel('Full Name', textPrimary),
+                  _buildLabel('Nama Lengkap', textPrimary),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _nameController,
-                    hint: 'Enter your full name',
+                    hint: 'Masukkan nama lengkap Anda',
                     icon: Icons.person_outline_rounded,
                     isDark: isDark,
                     fillColor: inputFillColor,
@@ -221,8 +221,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintColor: textSecondary,
                     textCapitalization: TextCapitalization.words,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Name is required';
-                      if (value.length < 3) return 'Name must be at least 3 characters';
+                      if (value == null || value.isEmpty) return 'Nama wajib diisi';
+                      if (value.length < 3) return 'Nama minimal 3 karakter';
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
@@ -234,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _emailController,
-                    hint: 'Enter your email',
+                    hint: 'Masukkan email Anda',
                     icon: Icons.mail_outline_rounded,
                     keyboardType: TextInputType.emailAddress,
                     isDark: isDark,
@@ -243,9 +243,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textColor: textPrimary,
                     hintColor: textSecondary,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Email is required';
+                      if (value == null || value.isEmpty) return 'Email wajib diisi';
                       if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                        return 'Enter a valid email address';
+                        return 'Masukkan alamat email yang valid';
                       }
                       return null;
                     },
@@ -254,11 +254,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 18),
 
                   // Password Field
-                  _buildLabel('Password', textPrimary),
+                  _buildLabel('Kata Sandi', textPrimary),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _passwordController,
-                    hint: 'Create a password',
+                    hint: 'Buat kata sandi',
                     icon: Icons.lock_outline_rounded,
                     obscureText: _obscurePassword,
                     isDark: isDark,
@@ -275,8 +275,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password is required';
-                      if (value.length < 6) return 'Password must be at least 6 characters';
+                      if (value == null || value.isEmpty) return 'Kata sandi wajib diisi';
+                      if (value.length < 6) return 'Kata sandi minimal 6 karakter';
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 400.ms),
@@ -284,11 +284,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 18),
 
                   // Confirm Password Field
-                  _buildLabel('Confirm Password', textPrimary),
+                  _buildLabel('Konfirmasi Kata Sandi', textPrimary),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _confirmPasswordController,
-                    hint: 'Confirm your password',
+                    hint: 'Konfirmasi kata sandi Anda',
                     icon: Icons.lock_outline_rounded,
                     obscureText: _obscureConfirmPassword,
                     isDark: isDark,
@@ -305,8 +305,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Please confirm your password';
-                      if (value != _passwordController.text) return 'Passwords do not match';
+                      if (value == null || value.isEmpty) return 'Silakan konfirmasi kata sandi Anda';
+                      if (value != _passwordController.text) return 'Kata sandi tidak cocok';
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 500.ms),
@@ -349,17 +349,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 1.4,
                               ),
                               children: const [
-                                TextSpan(text: 'I agree to the '),
+                                TextSpan(text: 'Saya setuju dengan '),
                                 TextSpan(
-                                  text: 'Terms of Service',
+                                  text: 'Syarat Layanan',
                                   style: TextStyle(
                                     color: Color(0xFF3B82F6),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                TextSpan(text: ' and '),
+                                TextSpan(text: ' dan '),
                                 TextSpan(
-                                  text: 'Privacy Policy',
+                                  text: 'Kebijakan Privasi',
                                   style: TextStyle(
                                     color: Color(0xFF3B82F6),
                                     fontWeight: FontWeight.w600,
@@ -400,7 +400,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             )
                           : const Text(
-                              'Create Account',
+                              'Buat Akun',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -417,13 +417,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Already have an account? ',
+                          'Sudah punya akun? ',
                           style: TextStyle(color: textSecondary, fontSize: 15),
                         ),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
                           child: const Text(
-                            'Sign In',
+                            'Masuk',
                             style: TextStyle(
                               color: Color(0xFF3B82F6),
                               fontWeight: FontWeight.w700,

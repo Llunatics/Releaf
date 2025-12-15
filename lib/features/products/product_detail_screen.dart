@@ -4,7 +4,6 @@ import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/book.dart';
 import '../../core/utils/page_transitions.dart';
-import '../cart/cart_screen.dart';
 import '../home/main_screen.dart';
 import 'add_book_screen.dart';
 
@@ -305,7 +304,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                         // Author
                         Text(
-                          'by ${widget.book.author}',
+                          'oleh ${widget.book.author}',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
                           ),
@@ -335,7 +334,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '(${widget.book.reviewCount} reviews)',
+                              '(${widget.book.reviewCount} ulasan)',
                               style: TextStyle(
                                 color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
                                 fontSize: 14,
@@ -381,7 +380,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                         // Description
                         Text(
-                          'Description',
+                          'Deskripsi',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -558,15 +557,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         children: [
           _buildDetailRow('ISBN', widget.book.isbn, isDark),
           _buildDivider(isDark),
-          _buildDetailRow('Publisher', widget.book.publisher, isDark),
+          _buildDetailRow('Penerbit', widget.book.publisher, isDark),
           _buildDivider(isDark),
-          _buildDetailRow('Year', widget.book.year.toString(), isDark),
+          _buildDetailRow('Tahun', widget.book.year.toString(), isDark),
           _buildDivider(isDark),
-          _buildDetailRow('Pages', '${widget.book.pages} pages', isDark),
+          _buildDetailRow('Halaman', '${widget.book.pages} halaman', isDark),
           _buildDivider(isDark),
-          _buildDetailRow('Language', widget.book.language, isDark),
+          _buildDetailRow('Bahasa', widget.book.language, isDark),
           _buildDivider(isDark),
-          _buildDetailRow('Stock', '${widget.book.stock} available', isDark),
+          _buildDetailRow('Stok', '${widget.book.stock} tersedia', isDark),
         ],
       ),
     );
@@ -667,7 +666,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
           TextButton(
             onPressed: () {},
-            child: const Text('Visit Store'),
+            child: const Text('Kunjungi Toko'),
           ),
         ],
       ),

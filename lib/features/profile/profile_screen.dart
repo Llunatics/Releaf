@@ -556,7 +556,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Notification Settings',
+                  'Pengaturan Notifikasi',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -564,10 +564,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                _buildNotificationToggle('Push Notifications', pushNotif, (v) => setState(() => pushNotif = v), textPrimary),
-                _buildNotificationToggle('Email Notifications', emailNotif, (v) => setState(() => emailNotif = v), textPrimary),
-                _buildNotificationToggle('Order Updates', orderUpdates, (v) => setState(() => orderUpdates = v), textPrimary),
-                _buildNotificationToggle('Promotions', promotions, (v) => setState(() => promotions = v), textPrimary),
+                _buildNotificationToggle('Notifikasi Push', pushNotif, (v) => setState(() => pushNotif = v), textPrimary),
+                _buildNotificationToggle('Notifikasi Email', emailNotif, (v) => setState(() => emailNotif = v), textPrimary),
+                _buildNotificationToggle('Info Pesanan', orderUpdates, (v) => setState(() => orderUpdates = v), textPrimary),
+                _buildNotificationToggle('Promosi', promotions, (v) => setState(() => promotions = v), textPrimary),
                 const SizedBox(height: 16),
               ],
             ),
@@ -754,11 +754,11 @@ class ProfileScreen extends StatelessWidget {
               child: Container(width: 40, height: 4, decoration: BoxDecoration(color: borderColor, borderRadius: BorderRadius.circular(2))),
             ),
             const SizedBox(height: 24),
-            Text('Shipping Addresses', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Alamat Pengiriman', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
             const SizedBox(height: 24),
-            _buildAddressCard('Home', 'Jl. Sudirman No. 123, Jakarta', true, cardColor, textPrimary, textSecondary, borderColor),
+            _buildAddressCard('Rumah', 'Jl. Sudirman No. 123, Jakarta', true, cardColor, textPrimary, textSecondary, borderColor),
             const SizedBox(height: 12),
-            _buildAddressCard('Office', 'Jl. Gatot Subroto No. 456, Jakarta', false, cardColor, textPrimary, textSecondary, borderColor),
+            _buildAddressCard('Kantor', 'Jl. Gatot Subroto No. 456, Jakarta', false, cardColor, textPrimary, textSecondary, borderColor),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
@@ -766,7 +766,7 @@ class ProfileScreen extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.add_rounded, color: Color(0xFF3B82F6)),
-                label: const Text('Add New Address', style: TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
+                label: const Text('Tambah Alamat', style: TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Color(0xFF3B82F6)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -807,7 +807,7 @@ class ProfileScreen extends StatelessWidget {
                           color: const Color(0xFF3B82F6).withOpacity(0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Text('Default', style: TextStyle(color: Color(0xFF3B82F6), fontSize: 11, fontWeight: FontWeight.w600)),
+                        child: const Text('Utama', style: TextStyle(color: Color(0xFF3B82F6), fontSize: 11, fontWeight: FontWeight.w600)),
                       ),
                     ],
                   ],
@@ -839,9 +839,9 @@ class ProfileScreen extends StatelessWidget {
               child: Container(width: 40, height: 4, decoration: BoxDecoration(color: textSecondary.withOpacity(0.3), borderRadius: BorderRadius.circular(2))),
             ),
             const SizedBox(height: 24),
-            Text('Payment Methods', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Metode Pembayaran', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
             const SizedBox(height: 24),
-            _buildPaymentOption('Credit Card', '•••• •••• •••• 4242', Icons.credit_card_rounded, textPrimary, textSecondary),
+            _buildPaymentOption('Kartu Kredit', '•••• •••• •••• 4242', Icons.credit_card_rounded, textPrimary, textSecondary),
             const SizedBox(height: 12),
             _buildPaymentOption('GoPay', 'john.doe@email.com', Icons.account_balance_wallet_rounded, textPrimary, textSecondary),
             const SizedBox(height: 20),
@@ -851,7 +851,7 @@ class ProfileScreen extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.add_rounded, color: Color(0xFF3B82F6)),
-                label: const Text('Add Payment Method', style: TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
+                label: const Text('Tambah Metode Pembayaran', style: TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600)),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Color(0xFF3B82F6)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -899,12 +899,12 @@ class ProfileScreen extends StatelessWidget {
               child: Container(width: 40, height: 4, decoration: BoxDecoration(color: textSecondary.withOpacity(0.3), borderRadius: BorderRadius.circular(2))),
             ),
             const SizedBox(height: 24),
-            Text('Help Center', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+            Text('Pusat Bantuan', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
             const SizedBox(height: 24),
-            _buildHelpOption(Icons.chat_bubble_outline_rounded, 'Chat with Us', 'Get instant help', textPrimary, textSecondary),
-            _buildHelpOption(Icons.email_outlined, 'Email Support', 'support@releaf.com', textPrimary, textSecondary),
-            _buildHelpOption(Icons.phone_outlined, 'Call Us', '+62 21 1234 5678', textPrimary, textSecondary),
-            _buildHelpOption(Icons.help_outline_rounded, 'FAQs', 'Find answers to common questions', textPrimary, textSecondary),
+            _buildHelpOption(Icons.chat_bubble_outline_rounded, 'Chat dengan Kami', 'Dapatkan bantuan instan', textPrimary, textSecondary),
+            _buildHelpOption(Icons.email_outlined, 'Dukungan Email', 'support@releaf.com', textPrimary, textSecondary),
+            _buildHelpOption(Icons.phone_outlined, 'Hubungi Kami', '+62 21 1234 5678', textPrimary, textSecondary),
+            _buildHelpOption(Icons.help_outline_rounded, 'FAQ', 'Temukan jawaban pertanyaan umum', textPrimary, textSecondary),
             const SizedBox(height: 16),
           ],
         ),
@@ -950,33 +950,33 @@ class ProfileScreen extends StatelessWidget {
                 child: Container(width: 40, height: 4, decoration: BoxDecoration(color: textPrimary.withOpacity(0.2), borderRadius: BorderRadius.circular(2))),
               ),
               const SizedBox(height: 24),
-              Text('Privacy Policy', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
+              Text('Kebijakan Privasi', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary)),
               const SizedBox(height: 20),
               Expanded(
                 child: SingleChildScrollView(
                   controller: scrollController,
                   child: Text(
-                    '''Last updated: December 2024
+                    '''Terakhir diperbarui: Desember 2024
 
-Your privacy is important to us. This Privacy Policy explains how Releaf collects, uses, and protects your personal information.
+Privasi Anda penting bagi kami. Kebijakan Privasi ini menjelaskan bagaimana Releaf mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda.
 
-1. Information We Collect
-We collect information you provide directly to us, such as your name, email address, and payment information when you create an account or make a purchase.
+1. Informasi yang Kami Kumpulkan
+Kami mengumpulkan informasi yang Anda berikan langsung kepada kami, seperti nama, alamat email, dan informasi pembayaran saat Anda membuat akun atau melakukan pembelian.
 
-2. How We Use Your Information
-We use the information we collect to provide, maintain, and improve our services, process transactions, and send you related information.
+2. Cara Kami Menggunakan Informasi Anda
+Kami menggunakan informasi yang kami kumpulkan untuk menyediakan, memelihara, dan meningkatkan layanan kami, memproses transaksi, dan mengirimkan informasi terkait kepada Anda.
 
-3. Information Sharing
-We do not sell, trade, or otherwise transfer your personal information to outside parties without your consent.
+3. Berbagi Informasi
+Kami tidak menjual, memperdagangkan, atau mentransfer informasi pribadi Anda kepada pihak luar tanpa persetujuan Anda.
 
-4. Data Security
-We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
+4. Keamanan Data
+Kami menerapkan langkah-langkah keamanan yang tepat untuk melindungi informasi pribadi Anda dari akses, perubahan, pengungkapan, atau penghancuran yang tidak sah.
 
-5. Your Rights
-You have the right to access, update, or delete your personal information at any time through your account settings.
+5. Hak Anda
+Anda berhak mengakses, memperbarui, atau menghapus informasi pribadi Anda kapan saja melalui pengaturan akun Anda.
 
-6. Contact Us
-If you have any questions about this Privacy Policy, please contact us at privacy@releaf.com.''',
+6. Hubungi Kami
+Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami di privacy@releaf.com.''',
                     style: TextStyle(color: textPrimary.withOpacity(0.8), height: 1.6),
                   ),
                 ),
@@ -1021,10 +1021,10 @@ If you have any questions about this Privacy Policy, please contact us at privac
             const SizedBox(height: 20),
             Text('Releaf', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: textPrimary)),
             const SizedBox(height: 6),
-            Text('Version 1.0.0', style: TextStyle(color: textSecondary, fontSize: 14)),
+            Text('Versi 1.0.0', style: TextStyle(color: textSecondary, fontSize: 14)),
             const SizedBox(height: 16),
             Text(
-              'Preloved Books Marketplace\nGive books a second life 📚',
+              'Marketplace Buku Bekas\nBeri kehidupan baru pada buku 📚',
               textAlign: TextAlign.center,
               style: TextStyle(color: textSecondary, height: 1.5),
             ),
@@ -1039,7 +1039,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0,
                 ),
-                child: const Text('Close', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                child: const Text('Tutup', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
               ),
             ),
           ],
@@ -1106,7 +1106,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Error: ${e.toString()}'),
+                              content: Text('Kesalahan: ${e.toString()}'),
                               backgroundColor: const Color(0xFFEF4444),
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -1187,7 +1187,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'My Wishlist',
+                          'Wishlist Saya',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -1195,7 +1195,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           ),
                         ),
                         Text(
-                          '${appState.wishlist.length} books saved',
+                          '${appState.wishlist.length} buku tersimpan',
                           style: TextStyle(
                             fontSize: 14,
                             color: textSecondary,
@@ -1226,7 +1226,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No books in wishlist',
+                            'Wishlist masih kosong',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -1235,7 +1235,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Browse and save books you love!',
+                            'Jelajahi dan simpan buku yang Anda suka!',
                             style: TextStyle(
                               fontSize: 14,
                               color: textSecondary.withOpacity(0.7),
@@ -1441,7 +1441,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'My Orders',
+                          'Pesanan Saya',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -1449,7 +1449,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           ),
                         ),
                         Text(
-                          '${appState.transactions.length} orders',
+                          '${appState.transactions.length} pesanan',
                           style: TextStyle(
                             fontSize: 14,
                             color: textSecondary,
@@ -1480,7 +1480,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No orders yet',
+                            'Belum ada pesanan',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -1489,7 +1489,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Start shopping for preloved books!',
+                            'Mulai belanja buku bekas!',
                             style: TextStyle(
                               fontSize: 14,
                               color: textSecondary.withOpacity(0.7),
@@ -1551,7 +1551,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Total Amount',
+                                    'Total',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: textSecondary,
@@ -1569,7 +1569,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Date: ${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
+                                'Tanggal: ${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: textSecondary,

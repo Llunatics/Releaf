@@ -69,13 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _parseError(String error) {
     if (error.contains('Invalid login credentials')) {
-      return 'Email or password is incorrect';
+      return 'Email atau password salah';
     } else if (error.contains('Email not confirmed')) {
-      return 'Please verify your email first';
+      return 'Silakan verifikasi email Anda terlebih dahulu';
     } else if (error.contains('Too many requests')) {
-      return 'Too many attempts. Please try again later.';
+      return 'Terlalu banyak percobaan. Coba lagi nanti.';
     }
-    return 'Something went wrong. Please try again.';
+    return 'Terjadi kesalahan. Silakan coba lagi.';
   }
 
   @override
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 32),
                         
                         Text(
-                          'Welcome Back',
+                          'Selamat Datang',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w700,
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 8),
                         
                         Text(
-                          'Sign in to continue to Releaf',
+                          'Masuk untuk melanjutkan ke Releaf',
                           style: TextStyle(
                             fontSize: 16,
                             color: textSecondary,
@@ -215,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _emailController,
-                    hint: 'Enter your email',
+                    hint: 'Masukkan email Anda',
                     icon: Icons.mail_outline_rounded,
                     keyboardType: TextInputType.emailAddress,
                     isDark: isDark,
@@ -224,9 +224,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     textColor: textPrimary,
                     hintColor: textSecondary,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Email is required';
+                      if (value == null || value.isEmpty) return 'Email wajib diisi';
                       if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                        return 'Enter a valid email address';
+                        return 'Masukkan alamat email yang valid';
                       }
                       return null;
                     },
@@ -235,11 +235,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
 
                   // Password Field
-                  _buildLabel('Password', textPrimary),
+                  _buildLabel('Kata Sandi', textPrimary),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _passwordController,
-                    hint: 'Enter your password',
+                    hint: 'Masukkan kata sandi Anda',
                     icon: Icons.lock_outline_rounded,
                     obscureText: _obscurePassword,
                     isDark: isDark,
@@ -256,8 +256,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password is required';
-                      if (value.length < 6) return 'Password must be at least 6 characters';
+                      if (value == null || value.isEmpty) return 'Kata sandi wajib diisi';
+                      if (value.length < 6) return 'Kata sandi minimal 6 karakter';
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 500.ms),
@@ -270,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: GestureDetector(
                       onTap: () => _showForgotPasswordDialog(isDark, textPrimary, textSecondary, inputFillColor, inputBorderColor),
                       child: const Text(
-                        'Forgot Password?',
+                        'Lupa Kata Sandi?',
                         style: TextStyle(
                           color: Color(0xFF3B82F6),
                           fontWeight: FontWeight.w600,
@@ -307,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             )
                           : const Text(
-                              'Sign In',
+                              'Masuk',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -324,7 +324,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Expanded(child: Divider(color: inputBorderColor)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text('or', style: TextStyle(color: textSecondary, fontWeight: FontWeight.w500)),
+                        child: Text('atau', style: TextStyle(color: textSecondary, fontWeight: FontWeight.w500)),
                       ),
                       Expanded(child: Divider(color: inputBorderColor)),
                     ],
@@ -351,7 +351,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         backgroundColor: isDark ? const Color(0xFF161B22) : Colors.transparent,
                       ),
                       child: Text(
-                        'Continue as Guest',
+                        'Lanjutkan sebagai Tamu',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -369,7 +369,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account? ",
+                          'Belum punya akun? ',
                           style: TextStyle(color: textSecondary, fontSize: 15),
                         ),
                         GestureDetector(
@@ -380,7 +380,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                           child: const Text(
-                            'Sign Up',
+                            'Daftar',
                             style: TextStyle(
                               color: Color(0xFF3B82F6),
                               fontWeight: FontWeight.w700,
@@ -491,12 +491,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Reset Password',
+              'Reset Kata Sandi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary),
             ),
             const SizedBox(height: 8),
             Text(
-              'Enter your email address to receive a password reset link.',
+              'Masukkan alamat email Anda untuk menerima link reset kata sandi.',
               textAlign: TextAlign.center,
               style: TextStyle(color: textSecondary, fontSize: 14, height: 1.4),
             ),
@@ -506,7 +506,7 @@ class _LoginScreenState extends State<LoginScreen> {
               keyboardType: TextInputType.emailAddress,
               style: TextStyle(color: textPrimary, fontSize: 16),
               decoration: InputDecoration(
-                hintText: 'Email address',
+                hintText: 'Alamat email',
                 hintStyle: TextStyle(color: textSecondary.withOpacity(0.6)),
                 filled: true,
                 fillColor: inputFillColor,
@@ -533,7 +533,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () => Navigator.pop(ctx),
                     style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
-                    child: Text('Cancel', style: TextStyle(color: textSecondary, fontWeight: FontWeight.w600)),
+                    child: Text('Batal', style: TextStyle(color: textSecondary, fontWeight: FontWeight.w600)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -547,7 +547,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pop(ctx);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: const Text('Reset link sent! Check your email.'),
+                                content: const Text('Link reset terkirim! Cek email Anda.'),
                                 backgroundColor: const Color(0xFF10B981),
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -559,7 +559,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (ctx.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Error: ${e.toString()}'),
+                                content: Text('Kesalahan: ${e.toString()}'),
                                 backgroundColor: const Color(0xFFEF4444),
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -577,7 +577,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       elevation: 0,
                     ),
-                    child: const Text('Send Link', style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: const Text('Kirim Link', style: TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],

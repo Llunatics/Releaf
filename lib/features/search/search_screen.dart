@@ -74,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
             color: isDark ? Colors.white : AppColors.textPrimaryLight,
           ),
           decoration: InputDecoration(
-            hintText: 'Search books, authors, ISBN...',
+            hintText: 'Cari buku, penulis, ISBN...',
             hintStyle: TextStyle(
               color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
             ),
@@ -108,8 +108,8 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSuggestions(BuildContext context, AppState appState, bool isDark) {
-    final recentSearches = ['Fiction', 'Self-Help', 'Atomic Habits', 'Romance'];
-    final popularCategories = ['Fiction', 'Non-Fiction', 'Education', 'Self-Help', 'Biography'];
+    final recentSearches = ['Fiksi', 'Self-Help', 'Atomic Habits', 'Romansa'];
+    final popularCategories = ['Fiksi', 'Non-Fiksi', 'Pendidikan', 'Self-Help', 'Biografi'];
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -117,7 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Recent Searches',
+            'Pencarian Terakhir',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -157,7 +157,7 @@ class _SearchScreenState extends State<SearchScreen> {
           const SizedBox(height: 32),
 
           Text(
-            'Popular Categories',
+            'Kategori Populer',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -214,14 +214,14 @@ class _SearchScreenState extends State<SearchScreen> {
           ).animate().scale(duration: 300.ms),
           const SizedBox(height: 16),
           Text(
-            'No results found',
+            'Tidak ditemukan',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ).animate().fadeIn(duration: 300.ms, delay: 100.ms),
           const SizedBox(height: 8),
           Text(
-            'Try different keywords or check spelling',
+            'Coba kata kunci lain atau periksa ejaan',
             style: TextStyle(
               color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
             ),
@@ -238,7 +238,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
-            '${_searchResults.length} results found',
+            '${_searchResults.length} hasil ditemukan',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),

@@ -165,7 +165,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                 borderRadius: BorderRadius.circular(8),
                                               ),
                                               child: Text(
-                                                'Qty: ${item.quantity}',
+                                                'Jml: ${item.quantity}',
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,
@@ -298,7 +298,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       child: Column(
                         children: [
                           _buildModernPaymentOption(
-                            'Bank Transfer', 
+                            'Transfer Bank', 
                             'Transfer ke rekening bank', 
                             'transfer', 
                             Icons.account_balance_outlined, 
@@ -315,7 +315,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           Divider(height: 1, color: isDark ? Colors.grey.shade800 : Colors.grey.shade100),
                           _buildModernPaymentOption(
-                            'Cash on Delivery', 
+                            'Bayar di Tempat', 
                             'Bayar saat barang diterima', 
                             'cod', 
                             Icons.local_shipping_outlined, 

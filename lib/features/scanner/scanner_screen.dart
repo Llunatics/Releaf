@@ -123,7 +123,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
               ).animate().scale(duration: 300.ms),
               const SizedBox(height: 16),
               Text(
-                bookFound ? 'Book Found!' : 'Book Not Found',
+                bookFound ? 'Buku Ditemukan!' : 'Buku Tidak Ditemukan',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -215,7 +215,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'No book with this ISBN found in our catalog',
+                        'Tidak ada buku dengan ISBN ini di katalog kami',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
@@ -243,7 +243,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Scan Again'),
+                      child: const Text('Scan Lagi'),
                     ),
                   ),
                   if (bookFound) ...[
@@ -265,7 +265,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           ),
                         ),
                         child: const Text(
-                          'View Details',
+                          'Lihat Detail',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -373,7 +373,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: const Text(
-                    'Point camera at barcode or QR code',
+                    'Arahkan kamera ke barcode atau QR code',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,

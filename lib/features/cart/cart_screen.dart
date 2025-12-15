@@ -153,7 +153,7 @@ class CartScreen extends StatelessWidget {
               appState.removeFromCart(item.book.id);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('${item.book.title} removed from cart'),
+                  content: Text('${item.book.title} dihapus dari keranjang'),
                   backgroundColor: AppColors.error,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -163,7 +163,7 @@ class CartScreen extends StatelessWidget {
             backgroundColor: AppColors.error,
             foregroundColor: Colors.white,
             icon: Icons.delete_rounded,
-            label: 'Remove',
+            label: 'Hapus',
             borderRadius: BorderRadius.circular(16),
           ),
         ],
@@ -380,12 +380,12 @@ class CartScreen extends StatelessWidget {
       builder: (context) => AlertDialog(
         backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Clear Cart'),
-        content: const Text('Are you sure you want to remove all items from your cart?'),
+        title: const Text('Kosongkan Keranjang'),
+        content: const Text('Apakah Anda yakin ingin menghapus semua item dari keranjang?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text('Batal'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -393,7 +393,7 @@ class CartScreen extends StatelessWidget {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('Cart cleared'),
+                  content: const Text('Keranjang dikosongkan'),
                   backgroundColor: AppColors.success,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -401,7 +401,7 @@ class CartScreen extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Clear', style: TextStyle(color: Colors.white)),
+            child: const Text('Hapus', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

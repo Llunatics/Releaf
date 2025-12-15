@@ -9,26 +9,26 @@ extension BookConditionExtension on BookCondition {
   String get label {
     switch (this) {
       case BookCondition.likeNew:
-        return 'Like New';
+        return 'Seperti Baru';
       case BookCondition.veryGood:
-        return 'Very Good';
+        return 'Sangat Baik';
       case BookCondition.good:
-        return 'Good';
+        return 'Baik';
       case BookCondition.acceptable:
-        return 'Acceptable';
+        return 'Cukup';
     }
   }
 
   String get description {
     switch (this) {
       case BookCondition.likeNew:
-        return 'Mint condition, no visible wear';
+        return 'Kondisi mulus, tanpa tanda pemakaian';
       case BookCondition.veryGood:
-        return 'Minor signs of wear, pages intact';
+        return 'Sedikit tanda pemakaian, halaman utuh';
       case BookCondition.good:
-        return 'Some wear, all pages present';
+        return 'Ada tanda pemakaian, semua halaman lengkap';
       case BookCondition.acceptable:
-        return 'Readable copy with noticeable wear';
+        return 'Masih bisa dibaca dengan tanda pemakaian terlihat';
     }
   }
 

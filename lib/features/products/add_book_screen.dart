@@ -81,7 +81,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       appBar: AppBar(
-        title: Text(_isEditing ? 'Edit Book' : 'Add New Book'),
+        title: Text(_isEditing ? 'Edit Buku' : 'Tambah Buku Baru'),
         backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
         actions: [
           if (_isEditing)
@@ -140,9 +140,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
               // Title
               _buildTextField(
                 controller: _titleController,
-                label: 'Book Title',
-                hint: 'Enter book title',
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter title' : null,
+                label: 'Judul Buku',
+                hint: 'Masukkan judul buku',
+                validator: (value) => value?.isEmpty ?? true ? 'Masukkan judul' : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 100.ms),
 
@@ -151,9 +151,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
               // Author
               _buildTextField(
                 controller: _authorController,
-                label: 'Author',
-                hint: 'Enter author name',
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter author' : null,
+                label: 'Penulis',
+                hint: 'Masukkan nama penulis',
+                validator: (value) => value?.isEmpty ?? true ? 'Masukkan penulis' : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 150.ms),
 
@@ -162,10 +162,10 @@ class _AddBookScreenState extends State<AddBookScreen> {
               // Description
               _buildTextField(
                 controller: _descriptionController,
-                label: 'Description',
-                hint: 'Enter book description',
+                label: 'Deskripsi',
+                hint: 'Masukkan deskripsi buku',
                 maxLines: 4,
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter description' : null,
+                validator: (value) => value?.isEmpty ?? true ? 'Masukkan deskripsi' : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
 
@@ -176,7 +176,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 children: [
                   Expanded(
                     child: _buildDropdown(
-                      label: 'Category',
+                      label: 'Kategori',
                       value: _selectedCategory,
                       items: DummyData.categories,
                       onChanged: (value) => setState(() => _selectedCategory = value!),
@@ -198,10 +198,10 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   Expanded(
                     child: _buildTextField(
                       controller: _priceController,
-                      label: 'Selling Price (Rp)',
+                      label: 'Harga Jual (Rp)',
                       hint: '0',
                       keyboardType: TextInputType.number,
-                      validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+                      validator: (value) => value?.isEmpty ?? true ? 'Wajib diisi' : null,
                       isDark: isDark,
                     ),
                   ),
@@ -209,7 +209,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   Expanded(
                     child: _buildTextField(
                       controller: _originalPriceController,
-                      label: 'Original Price (Rp)',
+                      label: 'Harga Asli (Rp)',
                       hint: '0',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -236,7 +236,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     width: 100,
                     child: _buildTextField(
                       controller: _stockController,
-                      label: 'Stock',
+                      label: 'Stok',
                       hint: '1',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -253,8 +253,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   Expanded(
                     child: _buildTextField(
                       controller: _publisherController,
-                      label: 'Publisher',
-                      hint: 'Publisher name',
+                      label: 'Penerbit',
+                      hint: 'Nama penerbit',
                       isDark: isDark,
                     ),
                   ),
@@ -263,7 +263,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     width: 100,
                     child: _buildTextField(
                       controller: _yearController,
-                      label: 'Year',
+                      label: 'Tahun',
                       hint: '2024',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -281,7 +281,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     width: 100,
                     child: _buildTextField(
                       controller: _pagesController,
-                      label: 'Pages',
+                      label: 'Halaman',
                       hint: '0',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -290,7 +290,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: _buildDropdown(
-                      label: 'Language',
+                      label: 'Bahasa',
                       value: _selectedLanguage,
                       items: const ['English', 'Indonesian', 'Japanese', 'Korean', 'Chinese', 'Other'],
                       onChanged: (value) => setState(() => _selectedLanguage = value!),
@@ -315,7 +315,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     ),
                   ),
                   child: Text(
-                    _isEditing ? 'Save Changes' : 'Add Book',
+                    _isEditing ? 'Simpan Perubahan' : 'Tambah Buku',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -444,7 +444,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Condition',
+          'Kondisi',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
@@ -549,7 +549,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
               children: [
                 const Icon(Icons.error_rounded, color: Colors.white),
                 const SizedBox(width: 12),
-                Expanded(child: Text('Error: ${e.toString()}')),
+                Expanded(child: Text('Gagal: ${e.toString()}')),
               ],
             ),
             backgroundColor: AppColors.error,
@@ -619,7 +619,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Add Cover',
+          'Tambah Cover',
           style: TextStyle(
             color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
           ),
@@ -654,7 +654,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Add Book Cover',
+              'Tambah Cover Buku',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -667,8 +667,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
               controller: _imageUrlController,
               style: TextStyle(color: textPrimary),
               decoration: InputDecoration(
-                labelText: 'Image URL',
-                hintText: 'Paste image URL here...',
+                labelText: 'URL Gambar',
+                hintText: 'Tempel URL gambar di sini...',
                 prefixIcon: const Icon(Icons.link_rounded),
                 filled: true,
                 fillColor: isDark ? const Color(0xFF21262D) : const Color(0xFFF8FAFC),
@@ -710,7 +710,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                         children: [
                           Icon(Icons.error_outline, color: AppColors.error, size: 32),
                           const SizedBox(height: 8),
-                          Text('Invalid URL', style: TextStyle(color: AppColors.error)),
+                          Text('URL Tidak Valid', style: TextStyle(color: AppColors.error)),
                         ],
                       ),
                     ),
@@ -733,7 +733,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   ),
                 ),
                 child: const Text(
-                  'Save Cover',
+                  'Simpan Cover',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
