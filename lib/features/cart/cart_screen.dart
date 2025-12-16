@@ -7,6 +7,7 @@ import '../../core/providers/app_state.dart';
 import '../../core/models/cart_item.dart';
 import '../../core/utils/page_transitions.dart';
 import 'checkout_screen.dart';
+import '../products/products_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -122,7 +123,10 @@ class CartScreen extends StatelessWidget {
           const SizedBox(height: 40),
           ElevatedButton.icon(
             onPressed: () {
-              // Navigate to products
+              Navigator.push(
+                context,
+                PageTransitions.slideUp(const ProductsScreen()),
+              );
             },
             icon: const Icon(Icons.explore_outlined, color: Colors.white, size: 20),
             label: const Text(

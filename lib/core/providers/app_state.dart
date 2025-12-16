@@ -501,6 +501,141 @@ class AppState extends ChangeNotifier {
     _transactions.insert(0, transaction);
     notifyListeners();
   }
+  
+  /// Accept/Confirm order delivery
+  Future<void> acceptOrder(String transactionId, {String? review, double? rating}) async {
+    final index = _transactions.indexWhere((t) => t.id == transactionId);
+    if (index == -1) return;
+    
+    _transactions[index] = _transactions[index].copyWith(
+      status: TransactionStatus.completed,
+      review: review,
+      rating: rating,
+    );
+    notifyListeners();
+    
+    // TODO: Sync with Supabase
+    if (_currentUser != null) {
+      try {
+        // Update transaction status in Supabase
+        await SupabaseService.instance.updateTransactionStatus(
+          transactionId: transactionId,
+          status: 'completed',
+          review: review,
+          rating: rating,
+        );
+      } catch (e) {
+        debugPrint('Error updating transaction: $e');
+      }
+    }
+  }
+  
+  /// Update order status (for seller/admin)
+  Future<void> updateOrderStatus(String transactionId, TransactionStatus newStatus) async {
+    // Find in user transactions
+    int index = _transactions.indexWhere((t) => t.id == transactionId);
+    
+    // Also check all transactions for dashboard
+    int allIndex = _allTransactions.indexWhere((t) => t.id == transactionId);
+    
+    if (index == -1 && allIndex == -1) return;
+    
+    // Handle delivered status with auto-accept date
+    DateTime? deliveredDate;
+    DateTime? autoAcceptDate;
+    if (newStatus == TransactionStatus.delivered) {
+      deliveredDate = DateTime.now();
+      autoAcceptDate = deliveredDate.add(const Duration(days: 1));
+    }
+    
+    // Update in user transactions
+    if (index != -1) {
+      _transactions[index] = _transactions[index].copyWith(
+        status: newStatus,
+        deliveredDate: deliveredDate,
+        autoAcceptDate: autoAcceptDate,
+      );
+    }
+    
+    // Update in all transactions
+    if (allIndex != -1) {
+      _allTransactions[allIndex] = _allTransactions[allIndex].copyWith(
+        status: newStatus,
+        deliveredDate: deliveredDate,
+        autoAcceptDate: autoAcceptDate,
+      );
+    }
+    
+    notifyListeners();
+    
+    // Sync with Supabase
+    if (_currentUser != null) {
+      try {
+        await SupabaseService.instance.updateTransactionStatus(
+          transactionId: transactionId,
+          status: _statusToString(newStatus),
+          deliveredDate: deliveredDate,
+          autoAcceptDate: autoAcceptDate,
+        );
+      } catch (e) {
+        debugPrint('Error updating order status: $e');
+      }
+    }
+  }
+  
+  /// Convert TransactionStatus to string for Supabase
+  String _statusToString(TransactionStatus status) {
+    switch (status) {
+      case TransactionStatus.pending:
+        return 'pending';
+      case TransactionStatus.processing:
+        return 'processing';
+      case TransactionStatus.shipped:
+        return 'shipped';
+      case TransactionStatus.delivered:
+        return 'delivered';
+      case TransactionStatus.completed:
+        return 'completed';
+      case TransactionStatus.cancelled:
+        return 'cancelled';
+    }
+  }
+  
+  /// Mark order as delivered (for testing or manual update)
+  Future<void> markAsDelivered(String transactionId) async {
+    await updateOrderStatus(transactionId, TransactionStatus.delivered);
+  }
+  
+  /// Check and auto-accept orders that are past auto-accept date
+  Future<void> checkAutoAcceptOrders() async {
+    bool hasChanges = false;
+    
+    for (int i = 0; i < _transactions.length; i++) {
+      final transaction = _transactions[i];
+      if (transaction.canAutoAccept) {
+        _transactions[i] = transaction.copyWith(
+          status: TransactionStatus.completed,
+        );
+        hasChanges = true;
+        
+        // Sync with Supabase
+        if (_currentUser != null) {
+          try {
+            await SupabaseService.instance.updateTransactionStatus(
+              transactionId: transaction.id,
+              status: 'completed',
+            );
+          } catch (e) {
+            debugPrint('Error auto-accepting order: $e');
+          }
+        }
+      }
+    }
+    
+    if (hasChanges) {
+      notifyListeners();
+    }
+  }
 
   Future<BookTransaction?> createOrderFromCart({
     String? shippingAddress,

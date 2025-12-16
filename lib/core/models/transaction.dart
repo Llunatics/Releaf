@@ -5,6 +5,7 @@ enum TransactionStatus {
   pending,
   processing,
   shipped,
+  delivered,
   completed,
   cancelled,
 }
@@ -18,6 +19,8 @@ extension TransactionStatusExtension on TransactionStatus {
         return 'Processing';
       case TransactionStatus.shipped:
         return 'Shipped';
+      case TransactionStatus.delivered:
+        return 'Delivered';
       case TransactionStatus.completed:
         return 'Completed';
       case TransactionStatus.cancelled:
@@ -33,6 +36,8 @@ extension TransactionStatusExtension on TransactionStatus {
         return 'Order is being prepared';
       case TransactionStatus.shipped:
         return 'Order has been shipped';
+      case TransactionStatus.delivered:
+        return 'Order has arrived, waiting for confirmation';
       case TransactionStatus.completed:
         return 'Order delivered successfully';
       case TransactionStatus.cancelled:
@@ -50,6 +55,10 @@ class BookTransaction {
   final String? shippingAddress;
   final String? notes;
   final String? trackingNumber;
+  final DateTime? deliveredDate;
+  final DateTime? autoAcceptDate;
+  final String? review;
+  final double? rating;
 
   BookTransaction({
     required this.id,
@@ -60,6 +69,10 @@ class BookTransaction {
     this.shippingAddress,
     this.notes,
     this.trackingNumber,
+    this.deliveredDate,
+    this.autoAcceptDate,
+    this.review,
+    this.rating,
   });
 
   int get totalItems => items.fold(0, (sum, item) => sum + item.quantity);
@@ -73,6 +86,10 @@ class BookTransaction {
     String? shippingAddress,
     String? notes,
     String? trackingNumber,
+    DateTime? deliveredDate,
+    DateTime? autoAcceptDate,
+    String? review,
+    double? rating,
   }) {
     return BookTransaction(
       id: id ?? this.id,
@@ -83,6 +100,10 @@ class BookTransaction {
       shippingAddress: shippingAddress ?? this.shippingAddress,
       notes: notes ?? this.notes,
       trackingNumber: trackingNumber ?? this.trackingNumber,
+      deliveredDate: deliveredDate ?? this.deliveredDate,
+      autoAcceptDate: autoAcceptDate ?? this.autoAcceptDate,
+      review: review ?? this.review,
+      rating: rating ?? this.rating,
     );
   }
 
@@ -96,6 +117,10 @@ class BookTransaction {
       'shippingAddress': shippingAddress,
       'notes': notes,
       'trackingNumber': trackingNumber,
+      'deliveredDate': deliveredDate?.toIso8601String(),
+      'autoAcceptDate': autoAcceptDate?.toIso8601String(),
+      'review': review,
+      'rating': rating,
     };
   }
 
@@ -109,6 +134,10 @@ class BookTransaction {
       shippingAddress: json['shippingAddress'],
       notes: json['notes'],
       trackingNumber: json['trackingNumber'],
+      deliveredDate: json['deliveredDate'] != null ? DateTime.parse(json['deliveredDate']) : null,
+      autoAcceptDate: json['autoAcceptDate'] != null ? DateTime.parse(json['autoAcceptDate']) : null,
+      review: json['review'],
+      rating: json['rating']?.toDouble(),
     );
   }
 
@@ -143,6 +172,10 @@ class BookTransaction {
       shippingAddress: json['shipping_address'],
       notes: json['notes'],
       trackingNumber: json['tracking_number'],
+      deliveredDate: json['delivered_date'] != null ? DateTime.parse(json['delivered_date']) : null,
+      autoAcceptDate: json['auto_accept_date'] != null ? DateTime.parse(json['auto_accept_date']) : null,
+      review: json['review'],
+      rating: json['rating']?.toDouble(),
     );
   }
 
@@ -154,6 +187,8 @@ class BookTransaction {
         return TransactionStatus.processing;
       case 'shipped':
         return TransactionStatus.shipped;
+      case 'delivered':
+        return TransactionStatus.delivered;
       case 'completed':
         return TransactionStatus.completed;
       case 'cancelled':
@@ -161,5 +196,19 @@ class BookTransaction {
       default:
         return TransactionStatus.pending;
     }
+  }
+  
+  /// Check if transaction can be auto-accepted (1 day after delivered)
+  bool get canAutoAccept {
+    if (status != TransactionStatus.delivered || deliveredDate == null) {
+      return false;
+    }
+    final daysSinceDelivered = DateTime.now().difference(deliveredDate!).inDays;
+    return daysSinceDelivered >= 1;
+  }
+  
+  /// Check if transaction needs confirmation
+  bool get needsConfirmation {
+    return status == TransactionStatus.delivered;
   }
 }

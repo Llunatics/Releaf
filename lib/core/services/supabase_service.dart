@@ -506,6 +506,31 @@ class SupabaseService {
 
     return transaction;
   }
+  
+  /// Update transaction status
+  Future<void> updateTransactionStatus({
+    required String transactionId,
+    required String status,
+    String? review,
+    double? rating,
+    DateTime? deliveredDate,
+    DateTime? autoAcceptDate,
+  }) async {
+    final Map<String, dynamic> updates = {
+      'status': status,
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+    
+    if (review != null) updates['review'] = review;
+    if (rating != null) updates['rating'] = rating;
+    if (deliveredDate != null) updates['delivered_date'] = deliveredDate.toIso8601String();
+    if (autoAcceptDate != null) updates['auto_accept_date'] = autoAcceptDate.toIso8601String();
+    
+    await client
+        .from('transactions')
+        .update(updates)
+        .eq('id', transactionId);
+  }
 
   // ==================== STORAGE ====================
 

@@ -7,8 +7,23 @@ import '../../core/utils/page_transitions.dart';
 import '../auth/login_screen.dart';
 import '../products/add_book_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Check for auto-accept orders when profile is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final appState = AppStateProvider.of(context);
+      appState.checkAutoAcceptOrders();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1575,6 +1590,159 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                   color: textSecondary,
                                 ),
                               ),
+                              // Show status update button for non-completed orders
+                              if (transaction.status != TransactionStatus.completed && 
+                                  transaction.status != TransactionStatus.cancelled) ...[
+                                const SizedBox(height: 12),
+                                OutlinedButton.icon(
+                                  onPressed: () {
+                                    _showUpdateStatusDialog(context, appState, transaction, isDark);
+                                  },
+                                  icon: const Icon(Icons.update, size: 18),
+                                  label: const Text('Update Status'),
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: const Color(0xFF3B82F6),
+                                    side: const BorderSide(color: Color(0xFF3B82F6)),
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              // Show "Mark as Delivered" button for shipped status (for testing)
+                              if (transaction.status == TransactionStatus.shipped) ...[
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton.icon(
+                                        onPressed: () async {
+                                          await appState.markAsDelivered(transaction.id);
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: const Row(
+                                                  children: [
+                                                    Icon(Icons.local_shipping, color: Colors.white),
+                                                    SizedBox(width: 12),
+                                                    Text('Pesanan ditandai sudah sampai'),
+                                                  ],
+                                                ),
+                                                backgroundColor: const Color(0xFF3B82F6),
+                                                behavior: SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        icon: const Icon(Icons.local_shipping, size: 18),
+                                        label: const Text('Tandai Sudah Sampai'),
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: const Color(0xFF3B82F6),
+                                          side: const BorderSide(color: Color(0xFF3B82F6)),
+                                          padding: const EdgeInsets.symmetric(vertical: 10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              // Show accept button for delivered status
+                              if (transaction.status == TransactionStatus.delivered) ...[
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          _showAcceptOrderDialog(context, appState, transaction, isDark);
+                                        },
+                                        icon: const Icon(Icons.check_circle_outline, size: 18),
+                                        label: const Text('Terima Pesanan'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color(0xFF10B981),
+                                          foregroundColor: Colors.white,
+                                          padding: const EdgeInsets.symmetric(vertical: 10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if (transaction.autoAcceptDate != null) ...[
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Auto-accept: ${transaction.autoAcceptDate!.day}/${transaction.autoAcceptDate!.month}/${transaction.autoAcceptDate!.year}',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: textSecondary,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                              // Show review if completed and has review
+                              if (transaction.status == TransactionStatus.completed && transaction.review != null) ...[
+                                const SizedBox(height: 12),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: isDark ? const Color(0xFF1A1F2E) : const Color(0xFFF8F9FA),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.rate_review, size: 16, color: Color(0xFFFBBF24)),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            'Your Review',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: textPrimary,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          if (transaction.rating != null)
+                                            Row(
+                                              children: [
+                                                const Icon(Icons.star, size: 14, color: Color(0xFFFBBF24)),
+                                                const SizedBox(width: 2),
+                                                Text(
+                                                  transaction.rating!.toStringAsFixed(1),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: textPrimary,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        transaction.review!,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                         );
@@ -2030,9 +2198,366 @@ If you have any questions about this Privacy Policy, please contact us at privac
         return const Color(0xFFF59E0B);
       case TransactionStatus.cancelled:
         return const Color(0xFFEF4444);
+      case TransactionStatus.delivered:
+        return const Color(0xFF8B5CF6);
       case TransactionStatus.processing:
       case TransactionStatus.shipped:
         return const Color(0xFF3B82F6);
     }
+  }
+  
+  void _showUpdateStatusDialog(BuildContext context, AppState appState, BookTransaction transaction, bool isDark) {
+    final cardColor = isDark ? const Color(0xFF161B22) : Colors.white;
+    final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
+    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
+    
+    // Available next statuses based on current status
+    List<TransactionStatus> availableStatuses = [];
+    switch (transaction.status) {
+      case TransactionStatus.pending:
+        availableStatuses = [TransactionStatus.processing, TransactionStatus.cancelled];
+        break;
+      case TransactionStatus.processing:
+        availableStatuses = [TransactionStatus.shipped, TransactionStatus.cancelled];
+        break;
+      case TransactionStatus.shipped:
+        availableStatuses = [TransactionStatus.delivered];
+        break;
+      case TransactionStatus.delivered:
+        // Can only be completed by buyer through accept dialog
+        availableStatuses = [];
+        break;
+      default:
+        availableStatuses = [];
+    }
+    
+    if (availableStatuses.isEmpty) return;
+    
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF3B82F6).withOpacity(0.12),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.update, color: Color(0xFF3B82F6), size: 28),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Update Status',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: textPrimary,
+                        ),
+                      ),
+                      Text(
+                        'Order #${transaction.id.substring(0, 8)}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Current Status: ${transaction.status.label}',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: textSecondary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Select New Status:',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: textPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            ...availableStatuses.map((status) => Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: OutlinedButton(
+                onPressed: () async {
+                  await appState.updateOrderStatus(transaction.id, status);
+                  if (context.mounted) {
+                    Navigator.pop(ctx);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            const Icon(Icons.check_circle_rounded, color: Colors.white),
+                            const SizedBox(width: 12),
+                            Text('Status updated to ${status.label}'),
+                          ],
+                        ),
+                        backgroundColor: const Color(0xFF10B981),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: _getStatusColor(status),
+                  side: BorderSide(color: _getStatusColor(status)),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(_getStatusIcon(status), size: 20),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            status.label,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: _getStatusColor(status),
+                            ),
+                          ),
+                          Text(
+                            status.description,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  IconData _getStatusIcon(TransactionStatus status) {
+    switch (status) {
+      case TransactionStatus.pending:
+        return Icons.schedule;
+      case TransactionStatus.processing:
+        return Icons.inventory_2;
+      case TransactionStatus.shipped:
+        return Icons.local_shipping;
+      case TransactionStatus.delivered:
+        return Icons.home;
+      case TransactionStatus.completed:
+        return Icons.check_circle;
+      case TransactionStatus.cancelled:
+        return Icons.cancel;
+    }
+  }
+  
+  void _showAcceptOrderDialog(BuildContext context, AppState appState, BookTransaction transaction, bool isDark) {
+    final cardColor = isDark ? const Color(0xFF161B22) : Colors.white;
+    final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
+    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
+    
+    final reviewController = TextEditingController();
+    double rating = 5.0;
+    
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          backgroundColor: cardColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          contentPadding: const EdgeInsets.all(24),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF10B981).withOpacity(0.12),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.check_circle, color: Color(0xFF10B981), size: 28),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Konfirmasi Penerimaan',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: textPrimary,
+                            ),
+                          ),
+                          Text(
+                            'Berikan review untuk pesanan ini',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Rating',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (index) {
+                    return IconButton(
+                      onPressed: () {
+                        setState(() {
+                          rating = (index + 1).toDouble();
+                        });
+                      },
+                      icon: Icon(
+                        index < rating ? Icons.star : Icons.star_border,
+                        color: const Color(0xFFFBBF24),
+                        size: 36,
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Review (Opsional)',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: reviewController,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    hintText: 'Bagaimana pengalaman Anda dengan produk ini?',
+                    hintStyle: TextStyle(color: textSecondary.withOpacity(0.5)),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF0D1117) : const Color(0xFFF3F4F6),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  style: TextStyle(color: textPrimary),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(ctx),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: Text(
+                          'Batal',
+                          style: TextStyle(
+                            color: textSecondary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await appState.acceptOrder(
+                            transaction.id,
+                            review: reviewController.text.isNotEmpty ? reviewController.text : null,
+                            rating: rating,
+                          );
+                          if (context.mounted) {
+                            Navigator.pop(ctx);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Row(
+                                  children: [
+                                    Icon(Icons.check_circle_rounded, color: Colors.white),
+                                    SizedBox(width: 12),
+                                    Text('Pesanan berhasil dikonfirmasi!'),
+                                  ],
+                                ),
+                                backgroundColor: const Color(0xFF10B981),
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF10B981),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Konfirmasi',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
