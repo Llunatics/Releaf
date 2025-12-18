@@ -666,4 +666,33 @@ class SupabaseService {
         .maybeSingle();
     return response;
   }
+
+  /// Add review to book
+  Future<void> addBookReview({
+    required String bookId,
+    required double rating,
+    required String comment,
+  }) async {
+    final userId = currentUser?.id;
+    final userName = currentUser?.email?.split('@')[0] ?? 'Anonymous';
+
+    await client.from('book_reviews').insert({
+      'book_id': bookId,
+      'user_id': userId,
+      'user_name': userName,
+      'rating': rating,
+      'comment': comment,
+      'created_at': DateTime.now().toIso8601String(),
+    });
+  }
+
+  /// Get reviews for a book
+  Future<List<Map<String, dynamic>>> getBookReviews(String bookId) async {
+    final response = await client
+        .from('book_reviews')
+        .select()
+        .eq('book_id', bookId)
+        .order('created_at', ascending: false);
+    return List<Map<String, dynamic>>.from(response);
+  }
 }

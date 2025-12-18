@@ -6,6 +6,7 @@ import '../../core/services/supabase_service.dart';
 import '../../core/utils/page_transitions.dart';
 import '../auth/login_screen.dart';
 import '../products/add_book_screen.dart';
+import 'purchased_books_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -167,6 +168,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     const SizedBox(height: 28),
                   ],
+
+                  // Quick Access Section
+                  _buildSectionTitle('Akses Cepat', textPrimary),
+                  const SizedBox(height: 14),
+                  
+                  _buildSettingsCard([
+                    _buildNavigationItem(
+                      icon: Icons.shopping_bag_rounded,
+                      title: 'Buku yang Dibeli',
+                      subtitle: appState.language == 'id' 
+                          ? 'Lihat semua buku yang sudah Anda beli'
+                          : 'View all books you have purchased',
+                      cardColor: cardColor,
+                      textPrimary: textPrimary,
+                      textSecondary: textSecondary,
+                      iconColor: const Color(0xFF10B981),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransitions.slideUp(const PurchasedBooksScreen()),
+                        );
+                      },
+                    ),
+                  ], cardColor, borderColor),
+
+                  const SizedBox(height: 28),
 
                   // Preferences Section
                   _buildSectionTitle(appState.tr('preferences'), textPrimary),
@@ -487,7 +514,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required Color textPrimary,
     required Color textSecondary,
     required VoidCallback onTap,
+    Color? iconColor,
   }) {
+    final finalIconColor = iconColor ?? const Color(0xFF3B82F6);
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -498,10 +527,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6).withOpacity(0.1),
+                color: finalIconColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: const Color(0xFF3B82F6), size: 22),
+              child: Icon(icon, color: finalIconColor, size: 22),
             ),
             const SizedBox(width: 14),
             Expanded(

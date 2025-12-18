@@ -507,6 +507,8 @@ class AppState extends ChangeNotifier {
     final index = _transactions.indexWhere((t) => t.id == transactionId);
     if (index == -1) return;
     
+    final transaction = _transactions[index];
+    
     _transactions[index] = _transactions[index].copyWith(
       status: TransactionStatus.completed,
       review: review,
@@ -524,6 +526,20 @@ class AppState extends ChangeNotifier {
           review: review,
           rating: rating,
         );
+        
+        // Add review to the book if rating and comment provided
+        if (rating != null && review != null && review.isNotEmpty) {
+          for (var item in transaction.items) {
+            await SupabaseService.instance.addBookReview(
+              bookId: item.book.id,
+              rating: rating,
+              comment: review,
+            );
+          }
+          
+          // Reload books to get updated reviews
+          await refreshBooks();
+        }
       } catch (e) {
         debugPrint('Error updating transaction: $e');
       }
