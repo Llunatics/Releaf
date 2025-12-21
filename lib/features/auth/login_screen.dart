@@ -48,9 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
         // Initialize user session in AppState
         final appState = AppStateProvider.of(context);
         await appState.initUserSession(response.user!);
-        
+
         if (!mounted) return;
-        
+
         Navigator.pushReplacement(
           context,
           PageTransitions.fade(const MainScreen()),
@@ -82,12 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
-    
-    final backgroundColor = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
+
+    final backgroundColor =
+        isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
     final textPrimary = isDark ? Colors.white : const Color(0xFF1E293B);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
     final inputFillColor = isDark ? const Color(0xFF161B22) : Colors.white;
-    final inputBorderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
+    final inputBorderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -102,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 60),
-                  
+
                   // Logo & Title
                   Center(
                     child: Column(
@@ -115,7 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF1E3A5F).withOpacity(0.3),
+                                color: const Color(0xFF1E3A5F)
+                                    .withValues(alpha: 0.3),
                                 blurRadius: 28,
                                 offset: const Offset(0, 14),
                               ),
@@ -140,10 +144,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                        ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
-                        
+                        )
+                            .animate()
+                            .scale(duration: 600.ms, curve: Curves.elasticOut),
                         const SizedBox(height: 32),
-                        
                         Text(
                           'Welcome Back',
                           style: TextStyle(
@@ -153,9 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             letterSpacing: -0.5,
                           ),
                         ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
-                        
                         const SizedBox(height: 8),
-                        
                         Text(
                           'Sign in to continue to Releaf',
                           style: TextStyle(
@@ -175,10 +177,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.all(16),
                       margin: const EdgeInsets.only(bottom: 24),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEF4444).withOpacity(isDark ? 0.15 : 0.08),
+                        color: const Color(0xFFEF4444)
+                            .withValues(alpha: isDark ? 0.15 : 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: const Color(0xFFEF4444).withOpacity(0.25),
+                          color:
+                              const Color(0xFFEF4444).withValues(alpha: 0.25),
                         ),
                       ),
                       child: Row(
@@ -186,7 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFEF4444).withOpacity(0.2),
+                              color: const Color(0xFFEF4444)
+                                  .withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
@@ -200,7 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               _errorMessage!,
                               style: TextStyle(
-                                color: isDark ? const Color(0xFFFCA5A5) : const Color(0xFFDC2626),
+                                color: isDark
+                                    ? const Color(0xFFFCA5A5)
+                                    : const Color(0xFFDC2626),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -224,8 +231,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     textColor: textPrimary,
                     hintColor: textSecondary,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Email is required';
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email is required';
+                      }
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
                         return 'Enter a valid email address';
                       }
                       return null;
@@ -249,15 +259,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintColor: textSecondary,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        _obscurePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
                         color: textSecondary,
                         size: 22,
                       ),
-                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password is required';
-                      if (value.length < 6) return 'Password must be at least 6 characters';
+                      if (value == null || value.isEmpty) {
+                        return 'Password is required';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 500.ms),
@@ -268,7 +285,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: () => _showForgotPasswordDialog(isDark, textPrimary, textSecondary, inputFillColor, inputBorderColor),
+                      onTap: () => _showForgotPasswordDialog(
+                          isDark,
+                          textPrimary,
+                          textSecondary,
+                          inputFillColor,
+                          inputBorderColor),
                       child: const Text(
                         'Forgot Password?',
                         style: TextStyle(
@@ -291,7 +313,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF3B82F6),
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: const Color(0xFF3B82F6).withOpacity(0.6),
+                        disabledBackgroundColor:
+                            const Color(0xFF3B82F6).withValues(alpha: 0.6),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -324,7 +347,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       Expanded(child: Divider(color: inputBorderColor)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text('or', style: TextStyle(color: textSecondary, fontWeight: FontWeight.w500)),
+                        child: Text('or',
+                            style: TextStyle(
+                                color: textSecondary,
+                                fontWeight: FontWeight.w500)),
                       ),
                       Expanded(child: Divider(color: inputBorderColor)),
                     ],
@@ -348,7 +374,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        backgroundColor: isDark ? const Color(0xFF161B22) : Colors.transparent,
+                        backgroundColor: isDark
+                            ? const Color(0xFF161B22)
+                            : Colors.transparent,
                       ),
                       child: Text(
                         'Continue as Guest',
@@ -376,7 +404,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              PageTransitions.slideFromRight(const RegisterScreen()),
+                              PageTransitions.slideFromRight(
+                                  const RegisterScreen()),
                             );
                           },
                           child: const Text(
@@ -391,7 +420,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ).animate().fadeIn(duration: 400.ms, delay: 1000.ms),
-                  
+
                   const SizedBox(height: 40),
                 ],
               ),
@@ -431,7 +460,8 @@ class _LoginScreenState extends State<LoginScreen> {
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: hintColor.withOpacity(0.6), fontSize: 15),
+        hintStyle:
+            TextStyle(color: hintColor.withValues(alpha: 0.6), fontSize: 15),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 16, right: 12),
           child: Icon(icon, color: hintColor, size: 22),
@@ -439,7 +469,8 @@ class _LoginScreenState extends State<LoginScreen> {
         suffixIcon: suffixIcon,
         filled: true,
         fillColor: fillColor,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
@@ -468,10 +499,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showForgotPasswordDialog(bool isDark, Color textPrimary, Color textSecondary, Color inputFillColor, Color inputBorderColor) {
+  void _showForgotPasswordDialog(bool isDark, Color textPrimary,
+      Color textSecondary, Color inputFillColor, Color inputBorderColor) {
     final emailController = TextEditingController();
     final bgColor = isDark ? const Color(0xFF161B22) : Colors.white;
-    
+
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -484,15 +516,19 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B82F6).withOpacity(0.12),
+                color: const Color(0xFF3B82F6).withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.lock_reset_rounded, color: Color(0xFF3B82F6), size: 32),
+              child: const Icon(Icons.lock_reset_rounded,
+                  color: Color(0xFF3B82F6), size: 32),
             ),
             const SizedBox(height: 20),
             Text(
               'Reset Password',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: textPrimary),
             ),
             const SizedBox(height: 8),
             Text(
@@ -507,10 +543,12 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(color: textPrimary, fontSize: 16),
               decoration: InputDecoration(
                 hintText: 'Email address',
-                hintStyle: TextStyle(color: textSecondary.withOpacity(0.6)),
+                hintStyle:
+                    TextStyle(color: textSecondary.withValues(alpha: 0.6)),
                 filled: true,
                 fillColor: inputFillColor,
-                prefixIcon: Icon(Icons.mail_outline_rounded, color: textSecondary),
+                prefixIcon:
+                    Icon(Icons.mail_outline_rounded, color: textSecondary),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -521,9 +559,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF3B82F6), width: 2),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               ),
             ),
             const SizedBox(height: 24),
@@ -532,8 +572,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Expanded(
                   child: TextButton(
                     onPressed: () => Navigator.pop(ctx),
-                    style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
-                    child: Text('Cancel', style: TextStyle(color: textSecondary, fontWeight: FontWeight.w600)),
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14)),
+                    child: Text('Cancel',
+                        style: TextStyle(
+                            color: textSecondary, fontWeight: FontWeight.w600)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -542,27 +585,33 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if (emailController.text.isNotEmpty) {
                         try {
-                          await SupabaseService.instance.resetPassword(emailController.text.trim());
+                          await SupabaseService.instance
+                              .resetPassword(emailController.text.trim());
                           if (ctx.mounted) {
                             Navigator.pop(ctx);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text('Reset link sent! Check your email.'),
-                                backgroundColor: const Color(0xFF10B981),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                margin: const EdgeInsets.all(16),
-                              ),
-                            );
+                            if (ctx.mounted) {
+                              ScaffoldMessenger.of(ctx).showSnackBar(
+                                SnackBar(
+                                  content: const Text(
+                                      'Reset link sent! Check your email.'),
+                                  backgroundColor: const Color(0xFF10B981),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.all(16),
+                                ),
+                              );
+                            }
                           }
                         } catch (e) {
                           if (ctx.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
+                            ScaffoldMessenger.of(ctx).showSnackBar(
                               SnackBar(
                                 content: Text('Error: ${e.toString()}'),
                                 backgroundColor: const Color(0xFFEF4444),
                                 behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
                                 margin: const EdgeInsets.all(16),
                               ),
                             );
@@ -574,10 +623,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor: const Color(0xFF3B82F6),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       elevation: 0,
                     ),
-                    child: const Text('Send Link', style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: const Text('Send Link',
+                        style: TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],

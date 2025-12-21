@@ -34,9 +34,9 @@ class BookCard extends StatelessWidget {
         color: isDark ? AppColors.cardDark : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isDark 
-            ? Colors.white.withOpacity(0.1)
-            : Colors.grey.withOpacity(0.15),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.grey.withValues(alpha: 0.15),
         ),
       ),
       child: Column(
@@ -51,10 +51,9 @@ class BookCard extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: isDark 
-                      ? Colors.grey[850] 
-                      : const Color(0xFFF5F5F5),
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    color: isDark ? Colors.grey[850] : const Color(0xFFF5F5F5),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(12)),
                   ),
                   child: Center(
                     child: Padding(
@@ -65,8 +64,10 @@ class BookCard extends StatelessWidget {
                           imageUrl: book.imageUrl,
                           fit: BoxFit.contain,
                           placeholder: (context, url) => Shimmer.fromColors(
-                            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
-                            highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+                            baseColor:
+                                isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                            highlightColor:
+                                isDark ? Colors.grey[700]! : Colors.grey[100]!,
                             child: Container(
                               width: 80,
                               height: 120,
@@ -149,9 +150,11 @@ class BookCard extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 1),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFDC2626).withOpacity(0.1),
+                            color:
+                                const Color(0xFFDC2626).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -191,8 +194,8 @@ class BookCard extends StatelessWidget {
 
   String _formatPrice(int price) {
     return price.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]}.',
+        );
   }
 }
