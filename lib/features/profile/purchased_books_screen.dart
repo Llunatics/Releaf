@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import '../../core/models/transaction.dart';
-import '../../core/models/cart_item.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/utils/page_transitions.dart';
 import '../products/product_detail_screen.dart';
@@ -21,23 +20,40 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
   Widget build(BuildContext context) {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
-    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
-    final backgroundColor = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
+    final backgroundColor =
+        isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
     final cardColor = isDark ? const Color(0xFF161B22) : Colors.white;
     final textPrimary = isDark ? Colors.white : const Color(0xFF1E293B);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
-    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
+    final borderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE5E7EB);
 
     // Get all purchased books from transactions
     List<Map<String, dynamic>> purchasedBooks = [];
     for (var transaction in appState.transactions) {
       // Filter by status if needed
-      if (_filterStatus == 'completed' && transaction.status != TransactionStatus.completed) continue;
-      if (_filterStatus == 'pending' && (transaction.status == TransactionStatus.completed || transaction.status == TransactionStatus.cancelled)) continue;
-      if (_filterStatus == 'shipped' && transaction.status != TransactionStatus.shipped) continue;
-      if (_filterStatus == 'cancelled' && transaction.status != TransactionStatus.cancelled) continue;
-      
+      if (_filterStatus == 'completed' &&
+          transaction.status != TransactionStatus.completed) {
+        continue;
+      }
+      if (_filterStatus == 'pending' &&
+          (transaction.status == TransactionStatus.completed ||
+              transaction.status == TransactionStatus.cancelled)) {
+        continue;
+      }
+      if (_filterStatus == 'shipped' &&
+          transaction.status != TransactionStatus.shipped) {
+        continue;
+      }
+      if (_filterStatus == 'cancelled' &&
+          transaction.status != TransactionStatus.cancelled) {
+        continue;
+      }
+
       for (var item in transaction.items) {
         purchasedBooks.add({
           'book': item.book,
@@ -92,21 +108,29 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                 _buildFilterChip(
                   'Selesai',
                   'completed',
-                  appState.transactions.where((t) => t.status == TransactionStatus.completed).fold(0, (sum, t) => sum + t.items.length),
+                  appState.transactions
+                      .where((t) => t.status == TransactionStatus.completed)
+                      .fold(0, (sum, t) => sum + t.items.length),
                   isDark,
                 ),
                 const SizedBox(width: 8),
                 _buildFilterChip(
                   'Dalam Proses',
                   'pending',
-                  appState.transactions.where((t) => t.status != TransactionStatus.completed && t.status != TransactionStatus.cancelled).fold(0, (sum, t) => sum + t.items.length),
+                  appState.transactions
+                      .where((t) =>
+                          t.status != TransactionStatus.completed &&
+                          t.status != TransactionStatus.cancelled)
+                      .fold(0, (sum, t) => sum + t.items.length),
                   isDark,
                 ),
                 const SizedBox(width: 8),
                 _buildFilterChip(
                   'Dibatalkan',
                   'cancelled',
-                  appState.transactions.where((t) => t.status == TransactionStatus.cancelled).fold(0, (sum, t) => sum + t.items.length),
+                  appState.transactions
+                      .where((t) => t.status == TransactionStatus.cancelled)
+                      .fold(0, (sum, t) => sum + t.items.length),
                   isDark,
                 ),
               ],
@@ -178,8 +202,8 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Colors.white.withOpacity(0.2)
-                      : const Color(0xFF3B82F6).withOpacity(0.1),
+                      ? Colors.white.withValues(alpha: 0.2)
+                      : const Color(0xFF3B82F6).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -230,7 +254,7 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
           border: Border.all(color: borderColor, width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -249,7 +273,9 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                   child: Container(
                     width: 80,
                     height: 100,
-                    color: isDark ? const Color(0xFF0D1117) : const Color(0xFFF3F4F6),
+                    color: isDark
+                        ? const Color(0xFF0D1117)
+                        : const Color(0xFFF3F4F6),
                     child: book.imageUrl.isNotEmpty
                         ? Image.network(
                             book.imageUrl,
@@ -300,9 +326,11 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withOpacity(0.1),
+                              color: const Color(0xFF10B981)
+                                  .withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -316,9 +344,11 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                           ),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF3B82F6).withOpacity(0.1),
+                              color: const Color(0xFF3B82F6)
+                                  .withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -337,11 +367,11 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
             Divider(height: 1, color: borderColor),
             const SizedBox(height: 12),
-            
+
             // Transaction Info
             Row(
               children: [
@@ -357,9 +387,11 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(transaction.status).withOpacity(0.1),
+                    color: _getStatusColor(transaction.status)
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -373,9 +405,9 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             // Purchase Date
             Row(
               children: [
@@ -390,17 +422,20 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                 ),
               ],
             ),
-            
+
             // Review Section (if completed and has review)
-            if (transaction.status == TransactionStatus.completed && transaction.review != null) ...[
+            if (transaction.status == TransactionStatus.completed &&
+                transaction.review != null) ...[
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF0D1117) : const Color(0xFFF8F9FA),
+                  color: isDark
+                      ? const Color(0xFF0D1117)
+                      : const Color(0xFFF8F9FA),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: const Color(0xFFFBBF24).withOpacity(0.2),
+                    color: const Color(0xFFFBBF24).withValues(alpha: 0.2),
                   ),
                 ),
                 child: Column(
@@ -408,7 +443,8 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.rate_review, size: 16, color: Color(0xFFFBBF24)),
+                        const Icon(Icons.rate_review,
+                            size: 16, color: Color(0xFFFBBF24)),
                         const SizedBox(width: 6),
                         Text(
                           'Review Anda',
@@ -450,7 +486,9 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
             ],
           ],
         ),
-      ).animate().fadeIn(duration: 300.ms, delay: Duration(milliseconds: index * 50))
+      )
+          .animate()
+          .fadeIn(duration: 300.ms, delay: Duration(milliseconds: index * 50))
           .slideX(begin: 0.1, duration: 300.ms),
     );
   }
@@ -464,8 +502,8 @@ class _PurchasedBooksScreenState extends State<PurchasedBooksScreen> {
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
               color: isDark
-                  ? const Color(0xFF1E3A5F).withOpacity(0.3)
-                  : const Color(0xFF3B82F6).withOpacity(0.08),
+                  ? const Color(0xFF1E3A5F).withValues(alpha: 0.3)
+                  : const Color(0xFF3B82F6).withValues(alpha: 0.08),
               shape: BoxShape.circle,
             ),
             child: Icon(
