@@ -555,8 +555,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: const Color(0xFF3B82F6),
-            activeTrackColor: const Color(0xFF3B82F6).withValues(alpha: 0.3),
+            thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const Color(0xFF3B82F6);
+              }
+              return Colors.grey;
+            }),
+            trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const Color(0xFF3B82F6).withValues(alpha: 0.3);
+              }
+              return Colors.grey.withValues(alpha: 0.3);
+            }),
           ),
         ],
       ),
@@ -697,7 +707,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeThumbColor: const Color(0xFF3B82F6),
+        thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const Color(0xFF3B82F6);
+          }
+          return Colors.grey;
+        }),
       ),
     );
   }
@@ -1869,26 +1884,31 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                     borderRadius: BorderRadius.circular(12),
                                     gradient: LinearGradient(
                                       colors: [
-                                        const Color(0xFF3B82F6).withValues(alpha: 0.1),
-                                        const Color(0xFF8B5CF6).withValues(alpha: 0.05),
+                                        const Color(0xFF3B82F6)
+                                            .withValues(alpha: 0.1),
+                                        const Color(0xFF8B5CF6)
+                                            .withValues(alpha: 0.05),
                                       ],
                                     ),
                                     border: Border.all(
-                                      color: const Color(0xFF3B82F6).withValues(alpha: 0.3),
+                                      color: const Color(0xFF3B82F6)
+                                          .withValues(alpha: 0.3),
                                     ),
                                   ),
                                   child: Material(
                                     color: Colors.transparent,
                                     child: InkWell(
                                       onTap: () {
-                                        _showUpdateStatusDialog(
-                                            context, appState, transaction, isDark);
+                                        _showUpdateStatusDialog(context,
+                                            appState, transaction, isDark);
                                       },
                                       borderRadius: BorderRadius.circular(12),
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             const Icon(
                                               Icons.swap_vert_rounded,
@@ -1920,19 +1940,23 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                     borderRadius: BorderRadius.circular(12),
                                     gradient: LinearGradient(
                                       colors: [
-                                        const Color(0xFF8B5CF6).withValues(alpha: 0.12),
-                                        const Color(0xFF6366F1).withValues(alpha: 0.06),
+                                        const Color(0xFF8B5CF6)
+                                            .withValues(alpha: 0.12),
+                                        const Color(0xFF6366F1)
+                                            .withValues(alpha: 0.06),
                                       ],
                                     ),
                                     border: Border.all(
-                                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.35),
+                                      color: const Color(0xFF8B5CF6)
+                                          .withValues(alpha: 0.35),
                                     ),
                                   ),
                                   child: Material(
                                     color: Colors.transparent,
                                     child: InkWell(
                                       onTap: () async {
-                                        await appState.markAsDelivered(transaction.id);
+                                        await appState
+                                            .markAsDelivered(transaction.id);
                                         if (context.mounted) {
                                           ToastHelper.showSuccess(
                                             context,
@@ -1942,9 +1966,11 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                       },
                                       borderRadius: BorderRadius.circular(12),
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             const Icon(
                                               Icons.home_rounded,
@@ -1982,7 +2008,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                                        color: const Color(0xFF10B981)
+                                            .withValues(alpha: 0.35),
                                         blurRadius: 12,
                                         offset: const Offset(0, 4),
                                       ),
@@ -1997,9 +2024,11 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                       },
                                       borderRadius: BorderRadius.circular(12),
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14, horizontal: 16),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             const Icon(
                                               Icons.check_circle_rounded,
@@ -2024,9 +2053,11 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                 if (transaction.autoAcceptDate != null) ...[
                                   const SizedBox(height: 6),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFFBBF24).withValues(alpha: 0.1),
+                                      color: const Color(0xFFFBBF24)
+                                          .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Row(
@@ -2687,7 +2718,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
     final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
     final textSecondary =
         isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
-    final surfaceColor = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
+    final surfaceColor =
+        isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
 
     // Available next statuses based on current status
     List<TransactionStatus> availableStatuses = [];
@@ -2808,12 +2840,14 @@ If you have any questions about this Privacy Policy, please contact us at privac
                   children: [
                     // Current status chip
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
                         color: surfaceColor,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: _getStatusColor(transaction.status).withValues(alpha: 0.3),
+                          color: _getStatusColor(transaction.status)
+                              .withValues(alpha: 0.3),
                         ),
                       ),
                       child: Row(
@@ -2838,7 +2872,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                   ),
                                 ),
                                 Text(
-                                  _getLocalizedStatusLabel(transaction.status, appState),
+                                  _getLocalizedStatusLabel(
+                                      transaction.status, appState),
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -2865,14 +2900,15 @@ If you have any questions about this Privacy Policy, please contact us at privac
                     ...availableStatuses.map((status) {
                       final isCancel = status == TransactionStatus.cancelled;
                       final statusColor = _getStatusColor(status);
-                      
+
                       return Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () async {
-                              await appState.updateOrderStatus(transaction.id, status);
+                              await appState.updateOrderStatus(
+                                  transaction.id, status);
                               if (context.mounted) {
                                 Navigator.pop(ctx);
                                 ToastHelper.showSuccess(
@@ -2883,7 +2919,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                             },
                             borderRadius: BorderRadius.circular(14),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 14),
                               decoration: BoxDecoration(
                                 color: isCancel
                                     ? statusColor.withValues(alpha: 0.08)
@@ -2899,7 +2936,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                   Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: statusColor.withValues(alpha: 0.15),
+                                      color:
+                                          statusColor.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(
@@ -2911,10 +2949,12 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                   const SizedBox(width: 14),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          _getStatusActionLabel(status, appState),
+                                          _getStatusActionLabel(
+                                              status, appState),
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -2922,7 +2962,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                           ),
                                         ),
                                         Text(
-                                          _getLocalizedStatusDesc(status, appState),
+                                          _getLocalizedStatusDesc(
+                                              status, appState),
                                           style: TextStyle(
                                             fontSize: 11,
                                             color: textSecondary,
@@ -2976,7 +3017,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
     final textPrimary = isDark ? Colors.white : const Color(0xFF1F2937);
     final textSecondary =
         isDark ? const Color(0xFF8B949E) : const Color(0xFF6B7280);
-    final surfaceColor = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
+    final surfaceColor =
+        isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
 
     final reviewController = TextEditingController();
     double rating = 5.0;
@@ -2986,7 +3028,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
       builder: (ctx) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
           backgroundColor: cardColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
           contentPadding: EdgeInsets.zero,
           content: Container(
             width: double.maxFinite,
@@ -3017,7 +3060,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF10B981).withValues(alpha: 0.2),
+                            color:
+                                const Color(0xFF10B981).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: const Icon(
@@ -3084,12 +3128,14 @@ If you have any questions about this Privacy Policy, please contact us at privac
                         const SizedBox(height: 12),
                         // Star rating
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 12),
                           decoration: BoxDecoration(
                             color: surfaceColor,
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: const Color(0xFFFBBF24).withValues(alpha: 0.3),
+                              color: const Color(0xFFFBBF24)
+                                  .withValues(alpha: 0.3),
                             ),
                           ),
                           child: Row(
@@ -3102,9 +3148,12 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                   });
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 4),
                                   child: Icon(
-                                    index < rating ? Icons.star_rounded : Icons.star_outline_rounded,
+                                    index < rating
+                                        ? Icons.star_rounded
+                                        : Icons.star_outline_rounded,
                                     color: const Color(0xFFFBBF24),
                                     size: 38,
                                   ),
@@ -3166,7 +3215,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: textSecondary.withValues(alpha: 0.25),
+                                    color:
+                                        textSecondary.withValues(alpha: 0.25),
                                   ),
                                 ),
                                 child: Material(
@@ -3175,7 +3225,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                     onTap: () => Navigator.pop(ctx),
                                     borderRadius: BorderRadius.circular(12),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
                                       child: Text(
                                         appState.tr('cancel'),
                                         textAlign: TextAlign.center,
@@ -3203,7 +3254,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                                      color: const Color(0xFF10B981)
+                                          .withValues(alpha: 0.35),
                                       blurRadius: 10,
                                       offset: const Offset(0, 4),
                                     ),
@@ -3230,7 +3282,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
                                     },
                                     borderRadius: BorderRadius.circular(12),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
                                       child: Text(
                                         appState.tr('confirm'),
                                         textAlign: TextAlign.center,
