@@ -152,6 +152,17 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// Load user profile from database
+  Future<void> _loadUserProfile() async {
+    if (_currentUser == null) return;
+    try {
+      _userProfile = await SupabaseService.instance.getProfile(_currentUser!.id);
+      debugPrint('Profile loaded for user: ${_currentUser!.id}');
+    } catch (e) {
+      debugPrint('Error loading profile: $e');
+    }
+  }
+
   Future<void> _loadUserWishlist() async {
     if (_currentUser == null) return;
     try {
@@ -733,6 +744,71 @@ class AppState extends ChangeNotifier {
     _cart.clear();
     notifyListeners();
 
+    return transaction;
+  }
+
+  /// Quick checkout - create order directly from a single book
+  Future<BookTransaction?> quickCheckout({
+    required Book book,
+    int quantity = 1,
+    String? shippingAddress,
+    String? shippingName,
+    String? shippingPhone,
+    String? paymentMethod,
+    String? notes,
+  }) async {
+    // Create cart item for this book
+    final cartItem = CartItem(book: book, quantity: quantity);
+    final totalAmount = book.price * quantity;
+
+    // Create local transaction
+    final transaction = BookTransaction(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      items: [cartItem],
+      totalAmount: totalAmount,
+      date: DateTime.now(),
+      status: TransactionStatus.pending,
+      shippingAddress: shippingAddress,
+      notes: notes,
+    );
+
+    // Add to local transactions
+    _transactions.insert(0, transaction);
+
+    // Sync with Supabase if logged in
+    if (_currentUser != null) {
+      try {
+        // Temporarily add to cart for transaction creation
+        await SupabaseService.instance.addToCart(book.id, quantity: quantity);
+        
+        final result = await SupabaseService.instance.createTransaction(
+          totalAmount: totalAmount,
+          shippingAddress: shippingAddress ?? '',
+          shippingName: shippingName ?? '',
+          shippingPhone: shippingPhone ?? '',
+          paymentMethod: paymentMethod,
+          notes: notes,
+        );
+
+        // Update local transaction with Supabase ID
+        final idx = _transactions.indexWhere((t) => t.id == transaction.id);
+        if (idx != -1) {
+          _transactions[idx] = BookTransaction(
+            id: result['id'],
+            items: transaction.items,
+            totalAmount: transaction.totalAmount,
+            date: transaction.date,
+            status: transaction.status,
+            shippingAddress: transaction.shippingAddress,
+            notes: transaction.notes,
+          );
+        }
+      } catch (e) {
+        debugPrint('Error creating quick checkout transaction: $e');
+      }
+    }
+
+    notifyListeners();
     return transaction;
   }
 
