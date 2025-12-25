@@ -156,10 +156,11 @@ class _AddBookScreenState extends State<AddBookScreen> {
               // Title
               _buildTextField(
                 controller: _titleController,
-                label: 'Book Title',
-                hint: 'Enter book title',
-                validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter title' : null,
+                label: isId ? 'Judul Buku' : 'Book Title',
+                hint: isId ? 'Masukkan judul buku' : 'Enter book title',
+                validator: (value) => value?.isEmpty ?? true
+                    ? (isId ? 'Masukkan judul' : 'Please enter title')
+                    : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 100.ms),
 
@@ -168,10 +169,11 @@ class _AddBookScreenState extends State<AddBookScreen> {
               // Author
               _buildTextField(
                 controller: _authorController,
-                label: 'Author',
-                hint: 'Enter author name',
-                validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter author' : null,
+                label: isId ? 'Penulis' : 'Author',
+                hint: isId ? 'Masukkan nama penulis' : 'Enter author name',
+                validator: (value) => value?.isEmpty ?? true
+                    ? (isId ? 'Masukkan penulis' : 'Please enter author')
+                    : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 150.ms),
 
@@ -180,11 +182,13 @@ class _AddBookScreenState extends State<AddBookScreen> {
               // Description
               _buildTextField(
                 controller: _descriptionController,
-                label: 'Description',
-                hint: 'Enter book description',
+                label: isId ? 'Deskripsi' : 'Description',
+                hint:
+                    isId ? 'Masukkan deskripsi buku' : 'Enter book description',
                 maxLines: 4,
-                validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter description' : null,
+                validator: (value) => value?.isEmpty ?? true
+                    ? (isId ? 'Masukkan deskripsi' : 'Please enter description')
+                    : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
 
@@ -195,17 +199,19 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 children: [
                   Expanded(
                     child: _buildDropdown(
-                      label: 'Category',
+                      label: isId ? 'Kategori' : 'Category',
                       value: _selectedCategory,
                       items: DummyData.categories,
                       onChanged: (value) =>
                           setState(() => _selectedCategory = value!),
                       isDark: isDark,
+                      itemLabelBuilder: (item) =>
+                          DummyData.getCategoryName(item, appState.language),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _buildConditionDropdown(isDark),
+                    child: _buildConditionDropdown(isDark, isId),
                   ),
                 ],
               ).animate().fadeIn(duration: 300.ms, delay: 250.ms),
@@ -218,11 +224,12 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   Expanded(
                     child: _buildTextField(
                       controller: _priceController,
-                      label: 'Selling Price (Rp)',
+                      label: isId ? 'Harga Jual (Rp)' : 'Selling Price (Rp)',
                       hint: '0',
                       keyboardType: TextInputType.number,
-                      validator: (value) =>
-                          value?.isEmpty ?? true ? 'Required' : null,
+                      validator: (value) => value?.isEmpty ?? true
+                          ? (isId ? 'Wajib diisi' : 'Required')
+                          : null,
                       isDark: isDark,
                     ),
                   ),
@@ -230,7 +237,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   Expanded(
                     child: _buildTextField(
                       controller: _originalPriceController,
-                      label: 'Original Price (Rp)',
+                      label: isId ? 'Harga Asli (Rp)' : 'Original Price (Rp)',
                       hint: '0',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -257,7 +264,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     width: 100,
                     child: _buildTextField(
                       controller: _stockController,
-                      label: 'Stock',
+                      label: isId ? 'Stok' : 'Stock',
                       hint: '1',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -274,8 +281,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   Expanded(
                     child: _buildTextField(
                       controller: _publisherController,
-                      label: 'Publisher',
-                      hint: 'Publisher name',
+                      label: isId ? 'Penerbit' : 'Publisher',
+                      hint: isId ? 'Nama penerbit' : 'Publisher name',
                       isDark: isDark,
                     ),
                   ),
@@ -284,7 +291,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     width: 100,
                     child: _buildTextField(
                       controller: _yearController,
-                      label: 'Year',
+                      label: isId ? 'Tahun' : 'Year',
                       hint: '2024',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -302,7 +309,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     width: 100,
                     child: _buildTextField(
                       controller: _pagesController,
-                      label: 'Pages',
+                      label: isId ? 'Halaman' : 'Pages',
                       hint: '0',
                       keyboardType: TextInputType.number,
                       isDark: isDark,
@@ -311,7 +318,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: _buildDropdown(
-                      label: 'Language',
+                      label: isId ? 'Bahasa Buku' : 'Language',
                       value: _selectedLanguage,
                       items: const [
                         'English',
@@ -324,6 +331,26 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       onChanged: (value) =>
                           setState(() => _selectedLanguage = value!),
                       isDark: isDark,
+                      itemLabelBuilder: isId
+                          ? (item) {
+                              switch (item) {
+                                case 'English':
+                                  return 'Inggris';
+                                case 'Indonesian':
+                                  return 'Indonesia';
+                                case 'Japanese':
+                                  return 'Jepang';
+                                case 'Korean':
+                                  return 'Korea';
+                                case 'Chinese':
+                                  return 'Mandarin';
+                                case 'Other':
+                                  return 'Lainnya';
+                                default:
+                                  return item;
+                              }
+                            }
+                          : null,
                     ),
                   ),
                 ],
@@ -430,6 +457,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
     required List<String> items,
     required Function(String?) onChanged,
     required bool isDark,
+    String Function(String)? itemLabelBuilder,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -462,7 +490,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
               items: items
                   .map((item) => DropdownMenuItem(
                         value: item,
-                        child: Text(item),
+                        child: Text(itemLabelBuilder != null
+                            ? itemLabelBuilder(item)
+                            : item),
                       ))
                   .toList(),
               onChanged: onChanged,
@@ -473,12 +503,12 @@ class _AddBookScreenState extends State<AddBookScreen> {
     );
   }
 
-  Widget _buildConditionDropdown(bool isDark) {
+  Widget _buildConditionDropdown(bool isDark, bool isId) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Condition',
+          isId ? 'Kondisi' : 'Condition',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
@@ -505,7 +535,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
               items: BookCondition.values
                   .map((condition) => DropdownMenuItem(
                         value: condition,
-                        child: Text(condition.label),
+                        child: Text(condition.localizedLabel(isId)),
                       ))
                   .toList(),
               onChanged: (value) => setState(() => _selectedCondition = value!),

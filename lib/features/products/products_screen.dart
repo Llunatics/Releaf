@@ -25,14 +25,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
-    
+
     var books = appState.books.toList();
-    
+
     // Filter by category
     if (_selectedCategory != null) {
       books = books.where((b) => b.category == _selectedCategory).toList();
     }
-    
+
     // Sort books
     switch (_sortBy) {
       case 'newest':
@@ -50,10 +50,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
     }
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor:
+          isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       appBar: AppBar(
         title: Text(appState.language == 'id' ? 'Semua Buku' : 'All Books'),
-        backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+        backgroundColor:
+            isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
         actions: [
           IconButton(
             onPressed: () {
@@ -71,17 +73,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
         ],
       ),
-      floatingActionButton: appState.isLoggedIn ? FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageTransitions.slideUp(const AddBookScreen()),
-          );
-        },
-        backgroundColor: AppColors.primaryBlue,
-        icon: const Icon(Icons.add_rounded, color: Colors.white),
-        label: Text(appState.language == 'id' ? 'Tambah Buku' : 'Add Book', style: const TextStyle(color: Colors.white)),
-      ).animate().scale(delay: 300.ms, duration: 300.ms) : null,
+      floatingActionButton: appState.isLoggedIn
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransitions.slideUp(const AddBookScreen()),
+                );
+              },
+              backgroundColor: AppColors.primaryBlue,
+              icon: const Icon(Icons.add_rounded, color: Colors.white),
+              label: Text(
+                  appState.language == 'id' ? 'Tambah Buku' : 'Add Book',
+                  style: const TextStyle(color: Colors.white)),
+            ).animate().scale(delay: 300.ms, duration: 300.ms)
+          : null,
       body: Column(
         children: [
           // Category Filter
@@ -102,8 +108,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   );
                 }
                 final category = DummyData.categories[index - 1];
+                final categoryLabel =
+                    DummyData.getCategoryName(category, appState.language);
                 return _buildFilterChip(
-                  category,
+                  categoryLabel,
                   _selectedCategory == category,
                   () => setState(() => _selectedCategory = category),
                   isDark,
@@ -111,14 +119,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
               },
             ),
           ),
-          
+
           // Results count
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
                 Text(
-                  appState.language == 'id' 
+                  appState.language == 'id'
                       ? '${books.length} buku ditemukan'
                       : '${books.length} books found',
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -126,19 +134,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
               ],
             ),
           ),
-          
+
           // Books Grid/List
           Expanded(
             child: _isGridView
-              ? _buildGridView(books, isDark)
-              : _buildListView(books, isDark),
+                ? _buildGridView(books, isDark)
+                : _buildListView(books, isDark),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFilterChip(String label, bool isSelected, VoidCallback onTap, bool isDark) {
+  Widget _buildFilterChip(
+      String label, bool isSelected, VoidCallback onTap, bool isDark) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       child: GestureDetector(
@@ -148,20 +157,26 @@ class _ProductsScreenState extends State<ProductsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             gradient: isSelected ? AppColors.primaryGradient : null,
-            color: isSelected ? null : (isDark ? AppColors.surfaceDark : Colors.white),
+            color: isSelected
+                ? null
+                : (isDark ? AppColors.surfaceDark : Colors.white),
             borderRadius: BorderRadius.circular(12),
-            border: isSelected ? null : Border.all(
-              color: isDark 
-                ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
-                : AppColors.textTertiaryLight.withValues(alpha: 0.3),
-            ),
+            border: isSelected
+                ? null
+                : Border.all(
+                    color: isDark
+                        ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
+                        : AppColors.textTertiaryLight.withValues(alpha: 0.3),
+                  ),
           ),
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected 
-                ? Colors.white 
-                : (isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight),
+              color: isSelected
+                  ? Colors.white
+                  : (isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondaryLight),
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               fontSize: 13,
             ),
@@ -195,7 +210,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      PageTransitions.scaleUp(ProductDetailScreen(book: books[index])),
+                      PageTransitions.scaleUp(
+                          ProductDetailScreen(book: books[index])),
                     );
                   },
                 ),
@@ -232,7 +248,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget _buildListItem(book, bool isDark) {
     final appState = AppStateProvider.of(context);
     final isWishlisted = appState.isInWishlist(book.id);
-    
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -262,7 +278,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
               height: 110,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: isDark ? AppColors.surfaceDark : AppColors.backgroundLight,
+                color:
+                    isDark ? AppColors.surfaceDark : AppColors.backgroundLight,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -297,20 +314,24 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     book.author,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                      color: isDark
+                          ? AppColors.textSecondaryDark
+                          : AppColors.textSecondaryLight,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppColors.primaryBlue.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          book.category,
+                          DummyData.getCategoryName(
+                              book.category, appState.language),
                           style: const TextStyle(
                             fontSize: 10,
                             color: AppColors.primaryBlue,
@@ -319,14 +340,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Icon(Icons.star_rounded, size: 14, color: AppColors.warning),
+                      Icon(Icons.star_rounded,
+                          size: 14, color: AppColors.warning),
                       const SizedBox(width: 2),
                       Text(
                         book.rating.toStringAsFixed(1),
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: isDark ? Colors.white : AppColors.textPrimaryLight,
+                          color: isDark
+                              ? Colors.white
+                              : AppColors.textPrimaryLight,
                         ),
                       ),
                     ],
@@ -347,7 +371,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         onPressed: () => appState.toggleWishlist(book),
                         icon: Icon(
                           isWishlisted ? Icons.favorite : Icons.favorite_border,
-                          color: isWishlisted ? AppColors.error : AppColors.textSecondaryLight,
+                          color: isWishlisted
+                              ? AppColors.error
+                              : AppColors.textSecondaryLight,
                         ),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -367,7 +393,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
     final isId = appState.language == 'id';
-    
+
     showModalBottomSheet(
       context: context,
       backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
@@ -386,7 +412,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: isDark ? AppColors.textTertiaryDark : AppColors.textTertiaryLight,
+                    color: isDark
+                        ? AppColors.textTertiaryDark
+                        : AppColors.textTertiaryLight,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -395,14 +423,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
               Text(
                 isId ? 'Urutkan' : 'Sort By',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(height: 16),
               _buildSortOption(isId ? 'Terbaru' : 'Newest', 'newest', isDark),
-              _buildSortOption(isId ? 'Harga: Rendah ke Tinggi' : 'Price: Low to High', 'price_low', isDark),
-              _buildSortOption(isId ? 'Harga: Tinggi ke Rendah' : 'Price: High to Low', 'price_high', isDark),
-              _buildSortOption(isId ? 'Rating Tertinggi' : 'Highest Rating', 'rating', isDark),
+              _buildSortOption(
+                  isId ? 'Harga: Rendah ke Tinggi' : 'Price: Low to High',
+                  'price_low',
+                  isDark),
+              _buildSortOption(
+                  isId ? 'Harga: Tinggi ke Rendah' : 'Price: High to Low',
+                  'price_high',
+                  isDark),
+              _buildSortOption(isId ? 'Rating Tertinggi' : 'Highest Rating',
+                  'rating', isDark),
               const SizedBox(height: 16),
             ],
           ),
@@ -420,12 +455,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
       },
       leading: Icon(
         isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-        color: isSelected ? AppColors.primaryBlue : (isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight),
+        color: isSelected
+            ? AppColors.primaryBlue
+            : (isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: isSelected ? AppColors.primaryBlue : (isDark ? Colors.white : AppColors.textPrimaryLight),
+          color: isSelected
+              ? AppColors.primaryBlue
+              : (isDark ? Colors.white : AppColors.textPrimaryLight),
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
         ),
       ),
@@ -434,8 +475,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   String _formatPrice(int price) {
     return price.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]}.',
-    );
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]}.',
+        );
   }
 }

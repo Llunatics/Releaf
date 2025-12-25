@@ -16,16 +16,37 @@ class DummyData {
     'Biography',
   ];
 
+  // Bilingual category names
+  static final Map<String, Map<String, String>> categoryNames = {
+    'Fiction': {'en': 'Fiction', 'id': 'Fiksi'},
+    'Non-Fiction': {'en': 'Non-Fiction', 'id': 'Non-Fiksi'},
+    'Education': {'en': 'Education', 'id': 'Pendidikan'},
+    'Children': {'en': 'Children', 'id': 'Anak-Anak'},
+    'Romance': {'en': 'Romance', 'id': 'Romansa'},
+    'Science': {'en': 'Science', 'id': 'Sains'},
+    'History': {'en': 'History', 'id': 'Sejarah'},
+    'Mystery': {'en': 'Mystery', 'id': 'Misteri'},
+    'Self-Help': {'en': 'Self-Help', 'id': 'Pengembangan Diri'},
+    'Biography': {'en': 'Biography', 'id': 'Biografi'},
+  };
+
+  // Get localized category name
+  static String getCategoryName(String category, String language) {
+    return categoryNames[category]?[language] ?? category;
+  }
+
   static final List<Book> books = [
     Book(
       id: '1',
       title: 'The Midnight Library',
       author: 'Matt Haig',
-      description: 'Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived. This philosophical fiction explores themes of regret, possibility, and the meaning of life.',
+      description:
+          'Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived. This philosophical fiction explores themes of regret, possibility, and the meaning of life.',
       price: 85000,
       originalPrice: 150000,
       category: 'Fiction',
-      imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400',
       condition: BookCondition.veryGood,
       isbn: '978-0-525-55947-4',
       stock: 3,
@@ -42,11 +63,13 @@ class DummyData {
       id: '2',
       title: 'Atomic Habits',
       author: 'James Clear',
-      description: 'An Easy & Proven Way to Build Good Habits & Break Bad Ones. This breakthrough book reveals exactly how tiny changes can grow into life-altering outcomes.',
+      description:
+          'An Easy & Proven Way to Build Good Habits & Break Bad Ones. This breakthrough book reveals exactly how tiny changes can grow into life-altering outcomes.',
       price: 95000,
       originalPrice: 180000,
       category: 'Self-Help',
-      imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400',
       condition: BookCondition.likeNew,
       isbn: '978-0-735-21129-2',
       stock: 5,
@@ -63,11 +86,13 @@ class DummyData {
       id: '3',
       title: 'Educated: A Memoir',
       author: 'Tara Westover',
-      description: 'A memoir about a young woman who leaves her survivalist family and goes on to earn a PhD from Cambridge University. An unforgettable story about the transformative power of education.',
+      description:
+          'A memoir about a young woman who leaves her survivalist family and goes on to earn a PhD from Cambridge University. An unforgettable story about the transformative power of education.',
       price: 72000,
       originalPrice: 120000,
       category: 'Biography',
-      imageUrl: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400',
       condition: BookCondition.good,
       isbn: '978-0-399-59050-4',
       stock: 2,
@@ -84,11 +109,13 @@ class DummyData {
       id: '4',
       title: 'The Silent Patient',
       author: 'Alex Michaelides',
-      description: 'A woman shoots her husband five times and then never speaks another word. A criminal psychotherapist becomes obsessed with uncovering her mystery.',
+      description:
+          'A woman shoots her husband five times and then never speaks another word. A criminal psychotherapist becomes obsessed with uncovering her mystery.',
       price: 68000,
       originalPrice: 140000,
       category: 'Mystery',
-      imageUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=400',
       condition: BookCondition.veryGood,
       isbn: '978-1-250-30169-7',
       stock: 4,
@@ -105,11 +132,13 @@ class DummyData {
       id: '5',
       title: 'Sapiens: A Brief History',
       author: 'Yuval Noah Harari',
-      description: 'A groundbreaking narrative of humanity\'s creation and evolution that explores how biology and history have defined us.',
+      description:
+          'A groundbreaking narrative of humanity\'s creation and evolution that explores how biology and history have defined us.',
       price: 110000,
       originalPrice: 200000,
       category: 'History',
-      imageUrl: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400',
       condition: BookCondition.likeNew,
       isbn: '978-0-062-31609-7',
       stock: 3,
@@ -126,11 +155,13 @@ class DummyData {
       id: '6',
       title: 'The Very Hungry Caterpillar',
       author: 'Eric Carle',
-      description: 'The classic children\'s book about a caterpillar who eats through a variety of foods before becoming a butterfly.',
+      description:
+          'The classic children\'s book about a caterpillar who eats through a variety of foods before becoming a butterfly.',
       price: 45000,
       originalPrice: 85000,
       category: 'Children',
-      imageUrl: 'https://images.unsplash.com/photo-1629992101753-56d196c8aabb?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1629992101753-56d196c8aabb?w=400',
       condition: BookCondition.good,
       isbn: '978-0-399-22690-6',
       stock: 8,
@@ -147,11 +178,13 @@ class DummyData {
       id: '7',
       title: 'Pride and Prejudice',
       author: 'Jane Austen',
-      description: 'A romantic novel following the emotional development of Elizabeth Bennet as she deals with issues of manners, upbringing, and marriage.',
+      description:
+          'A romantic novel following the emotional development of Elizabeth Bennet as she deals with issues of manners, upbringing, and marriage.',
       price: 55000,
       originalPrice: 95000,
       category: 'Romance',
-      imageUrl: 'https://images.unsplash.com/photo-1603162525937-96357efb3c5d?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1603162525937-96357efb3c5d?w=400',
       condition: BookCondition.acceptable,
       isbn: '978-0-141-43951-8',
       stock: 6,
@@ -168,11 +201,13 @@ class DummyData {
       id: '8',
       title: 'A Brief History of Time',
       author: 'Stephen Hawking',
-      description: 'A landmark volume in science writing exploring time, space, black holes, and the Big Bang in language accessible to the layperson.',
+      description:
+          'A landmark volume in science writing exploring time, space, black holes, and the Big Bang in language accessible to the layperson.',
       price: 88000,
       originalPrice: 165000,
       category: 'Science',
-      imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400',
       condition: BookCondition.veryGood,
       isbn: '978-0-553-38016-3',
       stock: 2,
@@ -189,11 +224,13 @@ class DummyData {
       id: '9',
       title: 'Python Crash Course',
       author: 'Eric Matthes',
-      description: 'A hands-on, project-based introduction to programming. Learn Python fundamentals and build useful projects.',
+      description:
+          'A hands-on, project-based introduction to programming. Learn Python fundamentals and build useful projects.',
       price: 125000,
       originalPrice: 220000,
       category: 'Education',
-      imageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400',
       condition: BookCondition.likeNew,
       isbn: '978-1-593-27928-8',
       stock: 4,
@@ -210,11 +247,13 @@ class DummyData {
       id: '10',
       title: 'The Alchemist',
       author: 'Paulo Coelho',
-      description: 'A magical fable about following your dreams. Santiago, a shepherd boy, travels from Spain to Egypt in search of treasure.',
+      description:
+          'A magical fable about following your dreams. Santiago, a shepherd boy, travels from Spain to Egypt in search of treasure.',
       price: 62000,
       originalPrice: 110000,
       category: 'Fiction',
-      imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400',
       condition: BookCondition.good,
       isbn: '978-0-061-12241-5',
       stock: 7,
@@ -231,11 +270,13 @@ class DummyData {
       id: '11',
       title: 'Thinking, Fast and Slow',
       author: 'Daniel Kahneman',
-      description: 'Nobel laureate Daniel Kahneman\'s seminal work on behavioral psychology and decision-making.',
+      description:
+          'Nobel laureate Daniel Kahneman\'s seminal work on behavioral psychology and decision-making.',
       price: 98000,
       originalPrice: 175000,
       category: 'Non-Fiction',
-      imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400',
       condition: BookCondition.veryGood,
       isbn: '978-0-374-53355-7',
       stock: 3,
@@ -252,11 +293,13 @@ class DummyData {
       id: '12',
       title: 'Where the Crawdads Sing',
       author: 'Delia Owens',
-      description: 'A haunting tale of a young woman who raised herself in the marshes of North Carolina. Part coming-of-age, part mystery.',
+      description:
+          'A haunting tale of a young woman who raised herself in the marshes of North Carolina. Part coming-of-age, part mystery.',
       price: 78000,
       originalPrice: 145000,
       category: 'Fiction',
-      imageUrl: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=400',
+      imageUrl:
+          'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=400',
       condition: BookCondition.likeNew,
       isbn: '978-0-735-21909-0',
       stock: 5,

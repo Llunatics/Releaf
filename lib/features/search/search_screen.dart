@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/book.dart';
+import '../../core/data/dummy_data.dart';
 import '../../core/utils/page_transitions.dart';
 import '../products/product_detail_screen.dart';
 
@@ -45,9 +46,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
     final lowercaseQuery = query.toLowerCase();
     final results = appState.books.where((book) {
+      // Get localized category name for searching
+      final localizedCategory =
+          DummyData.getCategoryName(book.category, appState.language);
       return book.title.toLowerCase().contains(lowercaseQuery) ||
           book.author.toLowerCase().contains(lowercaseQuery) ||
           book.category.toLowerCase().contains(lowercaseQuery) ||
+          localizedCategory.toLowerCase().contains(lowercaseQuery) ||
           book.isbn.toLowerCase().contains(lowercaseQuery);
     }).toList();
 
@@ -181,6 +186,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ...popularCategories.asMap().entries.map((entry) {
             final index = entry.key;
             final category = entry.value;
+            final categoryLabel =
+                DummyData.getCategoryName(category, appState.language);
             return ListTile(
               onTap: () {
                 _searchController.text = category;
@@ -200,7 +207,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       .categoryColors[index % AppColors.categoryColors.length],
                 ),
               ),
-              title: Text(category),
+              title: Text(categoryLabel),
               trailing: Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 16,
@@ -277,7 +284,7 @@ class _SearchScreenState extends State<SearchScreen> {
             itemCount: _searchResults.length,
             itemBuilder: (context, index) {
               final book = _searchResults[index];
-              return _buildResultItem(context, book, isDark, index);
+              return _buildResultItem(context, book, isDark, index, appState);
             },
           ),
         ),
@@ -285,8 +292,8 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildResultItem(
-      BuildContext context, Book book, bool isDark, int index) {
+  Widget _buildResultItem(BuildContext context, Book book, bool isDark,
+      int index, AppState appState) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -365,7 +372,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          book.category,
+                          DummyData.getCategoryName(
+                              book.category, appState.language),
                           style: const TextStyle(
                             fontSize: 10,
                             color: AppColors.primaryBlue,

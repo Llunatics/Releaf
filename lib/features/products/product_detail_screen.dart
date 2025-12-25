@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/app_state.dart';
 import '../../core/models/book.dart';
+import '../../core/data/dummy_data.dart';
 import '../../core/utils/page_transitions.dart';
 import '../../core/utils/toast_helper.dart';
 import '../home/main_screen.dart';
@@ -293,7 +294,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                widget.book.category,
+                                DummyData.getCategoryName(
+                                    widget.book.category, appState.language),
                                 style: const TextStyle(
                                   color: AppColors.primaryBlue,
                                   fontSize: 12,
