@@ -40,15 +40,24 @@ class _AddBookScreenState extends State<AddBookScreen> {
     super.initState();
     _titleController = TextEditingController(text: widget.bookToEdit?.title);
     _authorController = TextEditingController(text: widget.bookToEdit?.author);
-    _descriptionController = TextEditingController(text: widget.bookToEdit?.description);
-    _priceController = TextEditingController(text: widget.bookToEdit?.price.toStringAsFixed(0));
-    _originalPriceController = TextEditingController(text: widget.bookToEdit?.originalPrice.toStringAsFixed(0));
+    _descriptionController =
+        TextEditingController(text: widget.bookToEdit?.description);
+    _priceController = TextEditingController(
+        text: widget.bookToEdit?.price.toStringAsFixed(0));
+    _originalPriceController = TextEditingController(
+        text: widget.bookToEdit?.originalPrice.toStringAsFixed(0));
     _isbnController = TextEditingController(text: widget.bookToEdit?.isbn);
-    _stockController = TextEditingController(text: widget.bookToEdit?.stock.toString() ?? '1');
-    _publisherController = TextEditingController(text: widget.bookToEdit?.publisher);
-    _yearController = TextEditingController(text: widget.bookToEdit?.year.toString() ?? DateTime.now().year.toString());
-    _pagesController = TextEditingController(text: widget.bookToEdit?.pages.toString());
-    _imageUrlController = TextEditingController(text: widget.bookToEdit?.imageUrl);
+    _stockController =
+        TextEditingController(text: widget.bookToEdit?.stock.toString() ?? '1');
+    _publisherController =
+        TextEditingController(text: widget.bookToEdit?.publisher);
+    _yearController = TextEditingController(
+        text: widget.bookToEdit?.year.toString() ??
+            DateTime.now().year.toString());
+    _pagesController =
+        TextEditingController(text: widget.bookToEdit?.pages.toString());
+    _imageUrlController =
+        TextEditingController(text: widget.bookToEdit?.imageUrl);
 
     if (widget.bookToEdit != null) {
       _selectedCategory = widget.bookToEdit!.category;
@@ -79,15 +88,18 @@ class _AddBookScreenState extends State<AddBookScreen> {
     final isDark = appState.isDarkMode;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor:
+          isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       appBar: AppBar(
         title: Text(_isEditing ? 'Edit Book' : 'Add New Book'),
-        backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+        backgroundColor:
+            isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
         actions: [
           if (_isEditing)
             IconButton(
               onPressed: _showDeleteConfirmation,
-              icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
+              icon: const Icon(Icons.delete_outline_rounded,
+                  color: AppColors.error),
             ),
         ],
       ),
@@ -127,7 +139,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                             child: Image.network(
                               _imageUrlController.text,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => _buildImagePlaceholder(isDark),
+                              errorBuilder: (context, error, stackTrace) =>
+                                  _buildImagePlaceholder(isDark),
                             ),
                           )
                         : _buildImagePlaceholder(isDark),
@@ -142,7 +155,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 controller: _titleController,
                 label: 'Book Title',
                 hint: 'Enter book title',
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter title' : null,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Please enter title' : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 100.ms),
 
@@ -153,7 +167,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 controller: _authorController,
                 label: 'Author',
                 hint: 'Enter author name',
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter author' : null,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Please enter author' : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 150.ms),
 
@@ -165,7 +180,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 label: 'Description',
                 hint: 'Enter book description',
                 maxLines: 4,
-                validator: (value) => value?.isEmpty ?? true ? 'Please enter description' : null,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Please enter description' : null,
                 isDark: isDark,
               ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
 
@@ -179,7 +195,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       label: 'Category',
                       value: _selectedCategory,
                       items: DummyData.categories,
-                      onChanged: (value) => setState(() => _selectedCategory = value!),
+                      onChanged: (value) =>
+                          setState(() => _selectedCategory = value!),
                       isDark: isDark,
                     ),
                   ),
@@ -201,7 +218,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       label: 'Selling Price (Rp)',
                       hint: '0',
                       keyboardType: TextInputType.number,
-                      validator: (value) => value?.isEmpty ?? true ? 'Required' : null,
+                      validator: (value) =>
+                          value?.isEmpty ?? true ? 'Required' : null,
                       isDark: isDark,
                     ),
                   ),
@@ -292,8 +310,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     child: _buildDropdown(
                       label: 'Language',
                       value: _selectedLanguage,
-                      items: const ['English', 'Indonesian', 'Japanese', 'Korean', 'Chinese', 'Other'],
-                      onChanged: (value) => setState(() => _selectedLanguage = value!),
+                      items: const [
+                        'English',
+                        'Indonesian',
+                        'Japanese',
+                        'Korean',
+                        'Chinese',
+                        'Other'
+                      ],
+                      onChanged: (value) =>
+                          setState(() => _selectedLanguage = value!),
                       isDark: isDark,
                     ),
                   ),
@@ -369,22 +395,23 @@ class _AddBookScreenState extends State<AddBookScreen> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: isDark 
-                  ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
-                  : AppColors.textTertiaryLight.withValues(alpha: 0.3),
+                color: isDark
+                    ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
+                    : AppColors.textTertiaryLight.withValues(alpha: 0.3),
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: isDark 
-                  ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
-                  : AppColors.textTertiaryLight.withValues(alpha: 0.3),
+                color: isDark
+                    ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
+                    : AppColors.textTertiaryLight.withValues(alpha: 0.3),
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+              borderSide:
+                  const BorderSide(color: AppColors.primaryBlue, width: 2),
             ),
           ),
         ),
@@ -417,9 +444,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
             color: isDark ? AppColors.surfaceDark : Colors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: isDark 
-                ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
-                : AppColors.textTertiaryLight.withValues(alpha: 0.3),
+              color: isDark
+                  ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
+                  : AppColors.textTertiaryLight.withValues(alpha: 0.3),
             ),
           ),
           child: DropdownButtonHideUnderline(
@@ -427,10 +454,12 @@ class _AddBookScreenState extends State<AddBookScreen> {
               value: value,
               isExpanded: true,
               dropdownColor: isDark ? AppColors.surfaceDark : Colors.white,
-              items: items.map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(item),
-              )).toList(),
+              items: items
+                  .map((item) => DropdownMenuItem(
+                        value: item,
+                        child: Text(item),
+                      ))
+                  .toList(),
               onChanged: onChanged,
             ),
           ),
@@ -458,9 +487,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
             color: isDark ? AppColors.surfaceDark : Colors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: isDark 
-                ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
-                : AppColors.textTertiaryLight.withValues(alpha: 0.3),
+              color: isDark
+                  ? AppColors.textTertiaryDark.withValues(alpha: 0.2)
+                  : AppColors.textTertiaryLight.withValues(alpha: 0.3),
             ),
           ),
           child: DropdownButtonHideUnderline(
@@ -468,10 +497,12 @@ class _AddBookScreenState extends State<AddBookScreen> {
               value: _selectedCondition,
               isExpanded: true,
               dropdownColor: isDark ? AppColors.surfaceDark : Colors.white,
-              items: BookCondition.values.map((condition) => DropdownMenuItem(
-                value: condition,
-                child: Text(condition.label),
-              )).toList(),
+              items: BookCondition.values
+                  .map((condition) => DropdownMenuItem(
+                        value: condition,
+                        child: Text(condition.label),
+                      ))
+                  .toList(),
               onChanged: (value) => setState(() => _selectedCondition = value!),
             ),
           ),
@@ -483,7 +514,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       final appState = AppStateProvider.of(context);
-      
+
       // Show loading
       showDialog(
         context: context,
@@ -492,17 +523,19 @@ class _AddBookScreenState extends State<AddBookScreen> {
           child: CircularProgressIndicator(color: AppColors.primaryBlue),
         ),
       );
-      
+
       final book = Book(
         id: widget.bookToEdit?.id ?? const Uuid().v4(),
         title: _titleController.text,
         author: _authorController.text,
         description: _descriptionController.text,
         price: double.tryParse(_priceController.text) ?? 0,
-        originalPrice: double.tryParse(_originalPriceController.text) ?? double.tryParse(_priceController.text) ?? 0,
+        originalPrice: double.tryParse(_originalPriceController.text) ??
+            double.tryParse(_priceController.text) ??
+            0,
         category: _selectedCategory,
-        imageUrl: _imageUrlController.text.isNotEmpty 
-            ? _imageUrlController.text 
+        imageUrl: _imageUrlController.text.isNotEmpty
+            ? _imageUrlController.text
             : 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400',
         condition: _selectedCondition,
         isbn: _isbnController.text,
@@ -521,22 +554,25 @@ class _AddBookScreenState extends State<AddBookScreen> {
         } else {
           await appState.addBook(book);
         }
-        
+
         if (!mounted) return;
         Navigator.pop(context); // Close loading
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
               children: [
                 const Icon(Icons.check_circle_rounded, color: Colors.white),
                 const SizedBox(width: 12),
-                Text(_isEditing ? appState.tr('book_updated') : appState.tr('book_added')),
+                Text(_isEditing
+                    ? appState.tr('book_updated')
+                    : appState.tr('book_added')),
               ],
             ),
             backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
         );
 
@@ -554,7 +590,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
             ),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
         );
       }
@@ -564,14 +601,15 @@ class _AddBookScreenState extends State<AddBookScreen> {
   void _showDeleteConfirmation() {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(appState.tr('delete_book')),
-        content: Text('Are you sure you want to delete "${widget.bookToEdit?.title}"?'),
+        content: Text(
+            'Are you sure you want to delete "${widget.bookToEdit?.title}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -579,11 +617,14 @@ class _AddBookScreenState extends State<AddBookScreen> {
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.pop(context); // Close dialog
+              final nav = Navigator.of(context);
+              final messenger = ScaffoldMessenger.of(context);
+
+              nav.pop(); // Close dialog
               await appState.deleteBook(widget.bookToEdit!.id);
               if (!mounted) return;
-              Navigator.pop(context); // Go back
-              ScaffoldMessenger.of(context).showSnackBar(
+              nav.pop(); // Go back
+              messenger.showSnackBar(
                 SnackBar(
                   content: Row(
                     children: [
@@ -594,14 +635,16 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   ),
                   backgroundColor: AppColors.error,
                   behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                 ),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: Text(appState.tr('delete'), style: const TextStyle(color: Colors.white)),
+            child: Text(appState.tr('delete'),
+                style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -621,7 +664,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
         Text(
           'Add Cover',
           style: TextStyle(
-            color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+            color: isDark
+                ? AppColors.textSecondaryDark
+                : AppColors.textSecondaryLight,
           ),
         ),
       ],
@@ -631,7 +676,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
   void _showImageOptions(BuildContext context, bool isDark) {
     final textPrimary = isDark ? Colors.white : const Color(0xFF1E293B);
     final cardColor = isDark ? const Color(0xFF161B22) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
+    final borderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
 
     showModalBottomSheet(
       context: context,
@@ -671,7 +717,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 hintText: 'Paste image URL here...',
                 prefixIcon: const Icon(Icons.link_rounded),
                 filled: true,
-                fillColor: isDark ? const Color(0xFF21262D) : const Color(0xFFF8FAFC),
+                fillColor:
+                    isDark ? const Color(0xFF21262D) : const Color(0xFFF8FAFC),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -682,7 +729,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
+                  borderSide:
+                      const BorderSide(color: AppColors.primaryBlue, width: 2),
                 ),
               ),
               onChanged: (value) {
@@ -708,9 +756,11 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.error_outline, color: AppColors.error, size: 32),
+                          Icon(Icons.error_outline,
+                              color: AppColors.error, size: 32),
                           const SizedBox(height: 8),
-                          Text('Invalid URL', style: TextStyle(color: AppColors.error)),
+                          Text('Invalid URL',
+                              style: TextStyle(color: AppColors.error)),
                         ],
                       ),
                     ),

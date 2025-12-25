@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     if (!_agreedToTerms) {
       setState(() => _errorMessage = 'Please agree to Terms & Conditions');
       return;
@@ -59,23 +59,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
         // Initialize user session in AppState
         final appState = AppStateProvider.of(context);
         await appState.initUserSession(response.user!);
-        
+
         if (!mounted) return;
-        
+
         // Go directly to main screen without email confirmation
         Navigator.pushAndRemoveUntil(
           context,
           PageTransitions.fade(const MainScreen()),
           (route) => false,
         );
-        
+
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Account created successfully! Welcome to Releaf.'),
+            content:
+                const Text('Account created successfully! Welcome to Releaf.'),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             margin: const EdgeInsets.all(16),
           ),
         );
@@ -102,12 +104,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final appState = AppStateProvider.of(context);
     final isDark = appState.isDarkMode;
-    
-    final backgroundColor = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
+
+    final backgroundColor =
+        isDark ? const Color(0xFF0D1117) : const Color(0xFFF8FAFC);
     final textPrimary = isDark ? Colors.white : const Color(0xFF1E293B);
-    final textSecondary = isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
+    final textSecondary =
+        isDark ? const Color(0xFF8B949E) : const Color(0xFF64748B);
     final inputFillColor = isDark ? const Color(0xFF161B22) : Colors.white;
-    final inputBorderColor = isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
+    final inputBorderColor =
+        isDark ? const Color(0xFF30363D) : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -142,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 16),
-                  
+
                   // Title
                   Text(
                     'Create Account',
@@ -153,9 +158,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       letterSpacing: -0.5,
                     ),
                   ).animate().fadeIn(duration: 400.ms),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   Text(
                     'Join Releaf and start your book journey',
                     style: TextStyle(
@@ -172,10 +177,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       padding: const EdgeInsets.all(16),
                       margin: const EdgeInsets.only(bottom: 24),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEF4444).withOpacity(isDark ? 0.15 : 0.08),
+                        color: const Color(0xFFEF4444)
+                            .withValues(alpha: isDark ? 0.15 : 0.08),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: const Color(0xFFEF4444).withOpacity(0.25),
+                          color:
+                              const Color(0xFFEF4444).withValues(alpha: 0.25),
                         ),
                       ),
                       child: Row(
@@ -183,7 +190,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFEF4444).withOpacity(0.2),
+                              color: const Color(0xFFEF4444)
+                                  .withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Icon(
@@ -197,7 +205,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Text(
                               _errorMessage!,
                               style: TextStyle(
-                                color: isDark ? const Color(0xFFFCA5A5) : const Color(0xFFDC2626),
+                                color: isDark
+                                    ? const Color(0xFFFCA5A5)
+                                    : const Color(0xFFDC2626),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -221,8 +231,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintColor: textSecondary,
                     textCapitalization: TextCapitalization.words,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Name is required';
-                      if (value.length < 3) return 'Name must be at least 3 characters';
+                      if (value == null || value.isEmpty) {
+                        return 'Name is required';
+                      }
+                      if (value.length < 3) {
+                        return 'Name must be at least 3 characters';
+                      }
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
@@ -243,8 +257,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textColor: textPrimary,
                     hintColor: textSecondary,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Email is required';
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email is required';
+                      }
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
                         return 'Enter a valid email address';
                       }
                       return null;
@@ -268,15 +285,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintColor: textSecondary,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        _obscurePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
                         color: textSecondary,
                         size: 22,
                       ),
-                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password is required';
-                      if (value.length < 6) return 'Password must be at least 6 characters';
+                      if (value == null || value.isEmpty) {
+                        return 'Password is required';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 400.ms),
@@ -298,15 +322,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintColor: textSecondary,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        _obscureConfirmPassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
                         color: textSecondary,
                         size: 22,
                       ),
-                      onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                      onPressed: () => setState(() =>
+                          _obscureConfirmPassword = !_obscureConfirmPassword),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Please confirm your password';
-                      if (value != _passwordController.text) return 'Passwords do not match';
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
                       return null;
                     },
                   ).animate().fadeIn(duration: 400.ms, delay: 500.ms),
@@ -315,7 +346,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   // Terms & Conditions
                   GestureDetector(
-                    onTap: () => setState(() => _agreedToTerms = !_agreedToTerms),
+                    onTap: () =>
+                        setState(() => _agreedToTerms = !_agreedToTerms),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -324,19 +356,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           height: 22,
                           margin: const EdgeInsets.only(top: 2),
                           decoration: BoxDecoration(
-                            color: _agreedToTerms 
-                                ? const Color(0xFF3B82F6) 
+                            color: _agreedToTerms
+                                ? const Color(0xFF3B82F6)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                              color: _agreedToTerms 
-                                  ? const Color(0xFF3B82F6) 
+                              color: _agreedToTerms
+                                  ? const Color(0xFF3B82F6)
                                   : inputBorderColor,
                               width: 1.5,
                             ),
                           ),
                           child: _agreedToTerms
-                              ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
+                              ? const Icon(Icons.check_rounded,
+                                  size: 16, color: Colors.white)
                               : null,
                         ),
                         const SizedBox(width: 12),
@@ -384,7 +417,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF3B82F6),
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: const Color(0xFF3B82F6).withOpacity(0.6),
+                        disabledBackgroundColor:
+                            const Color(0xFF3B82F6).withValues(alpha: 0.6),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -434,7 +468,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
                   ).animate().fadeIn(duration: 400.ms, delay: 800.ms),
-                  
+
                   const SizedBox(height: 40),
                 ],
               ),
@@ -476,7 +510,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: hintColor.withOpacity(0.6), fontSize: 15),
+        hintStyle:
+            TextStyle(color: hintColor.withValues(alpha: 0.6), fontSize: 15),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 16, right: 12),
           child: Icon(icon, color: hintColor, size: 22),
@@ -484,7 +519,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         suffixIcon: suffixIcon,
         filled: true,
         fillColor: fillColor,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
