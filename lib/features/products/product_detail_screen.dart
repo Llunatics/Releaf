@@ -975,8 +975,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
-    // Get language from context - we'll use a simple approach
-    final isId = true; // Will be replaced with proper context access
 
     if (difference.inDays == 0) {
       return 'Today';
